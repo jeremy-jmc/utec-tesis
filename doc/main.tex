@@ -1,0 +1,101 @@
+%% --------------------------------------------------------------------
+%% Template UTEC Tesis
+%% --------------------------------------------------------------------
+% Este es el archivo que se debe compilar.
+% 
+% Este template ha sido modificado y actualizado por Eduardo Castro y Roosevelt Ubaldo en base a lo trabajado por Víctor Murray, Oscar Ramos y Juan Carlos Barbaran.
+%
+% Última actualización: Mayo, 2022
+
+\documentclass[a4paper,12pt,oneside]{tesisutec}
+
+
+\selectlanguage{spanish}
+%% Paquetes
+\usepackage[utf8]{inputenc}
+\usepackage[square, numbers, comma, sort&compress]{natbib}
+% Libreria de idioma
+\usepackage[spanish]{babel}
+% Libreria para posicionamiento
+\usepackage{float}
+% Librerias para insertar codigos
+\usepackage[spanish,onelanguage,ruled,vlined]{algorithm2e}
+\usepackage{verbatim} 
+% Librería para hipervínculos
+\usepackage{hyperref}
+ % Librería necesaria para arreglar el orden de referencias en overleaf.com
+\usepackage{notoccite}
+\usepackage{amsmath}
+% \usepackage{multirow}
+
+
+% Incluir acá los paquetes adicionales que deseas. 
+% Ubicación de los imágenes.
+\graphicspath{images/}
+\usepackage{svg}
+\makeatletter
+% Reinsert missing \algbackskip
+\def\algbackskip{\hskip-\ALG@thistlm}
+\makeatother
+
+\hypersetup{urlcolor=blue, colorlinks=true}
+
+\begin{document}
+
+\frontmatter
+
+\department{CIENCIA DE LA COMPUTACIÓN}
+
+
+\title{CrimeLens Chat: An LLM-Powered Natural-Language and Visual Analytics Interface for Local Crime Exploration}
+% Titulos alternativos:
+
+% “CrimeGPT: Conversational Spatial‑Temporal Crime Analysis with Interactive Visualizations”
+
+
+
+\author{Marcos Daniel Ayala Pineda \\ Jeremy Jeffrey Matos Cangalaya} % Es obligatorio agregar ORCID del alumno
+\supervisor{Cristian Lopez \\ Germain Garcia} % Es obligatorio agregar ORCID del asesor
+
+\date{2025}
+\degree{Licenciado }
+\major{Ciencia de la computación}
+\maketitle
+
+\setstretch{1.5}
+
+
+%\input{encabezados/dedicatoria}
+%\input{encabezados/agradecimientos}
+
+\tableofcontents
+
+
+
+\addtocontents{toc}{\vspace{1.5em}}
+
+%% ============================================================================
+\mainmatter
+\pagestyle{fancy}
+
+% \input{secciones/resumen}
+% \input{secciones/abstract} 
+\input{secciones/introduccion}
+\input{secciones/capitulo1}
+\input{secciones/capitulo2}
+\input{secciones/capitulo3}
+% \input{secciones/capitulo4}
+% \input{secciones/conclusiones}
+%\input{secciones/recomendaciones} % sección opcional
+
+
+%% ============================================================================
+\renewcommand{\bibname}{\hfill\Large\bf{BIBLIOGRAPHY}\hfill}
+
+\bibliographystyle{IEEEtran} % Estableciendo el estilo de citas IEEEtram.
+
+\bibliography{referencias} % Recibe las referencias de IEEE
+
+% \input{secciones/anexos}
+
+\end{document}  
