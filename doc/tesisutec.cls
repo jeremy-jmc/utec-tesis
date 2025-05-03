@@ -51,7 +51,7 @@
 % For Spanish
 \usepackage[utf8]{inputenc}
 \PassOptionsToPackage{english}{babel}
-\PassOptionsToPackage{spanish,es-tabla,es-nodecimaldot}{babel}
+%\PassOptionsToPackage{english,es-tabla,es-nodecimaldot}{babel}
 \RequirePackage{babel}
 
 % For Times New Roman

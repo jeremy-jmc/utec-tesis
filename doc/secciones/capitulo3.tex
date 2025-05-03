@@ -19,7 +19,7 @@ This section presents our proposed architecture, designed to overcome these limi
 
 \section{Methodological Proposal}
 
-The proposal is divided into two phases. The first phase focuses on the development of a prototype that integrates a hybrid retrieval mechanism with an LLM-based chat interface. This prototype will be evaluated through user studies to assess its usability and effectiveness in answering spatio-temporal crime questions. The second phase aims to enhance the system by generating synthetic datasets and fine-tuning the selected LLMs based on the generated data. This approach will allow us to improve the model's performance and adapt it to specific crime-related tasks.
+The proposal is divided into two phases. The first phase focuses on the development of a prototype that integrates a hybrid retrieval mechanism with an LLM-based chat interface by using a criminalistic dataset from China as a knowledge base. The evaluation method will be done by user studies, in order to determine its effectiveness in answering spatio-temporal crime questions. The second phase aims to enhance the system by generating synthetic datasets and fine-tuning the selected LLMs based on the generated data. This approach will allow us to improve the model's performance and adapt it to specific crime-related tasks.
 
 \cite{Moshkov2025AIMO2}
 
@@ -105,7 +105,7 @@ The \textbf{query decomposition module} and \textbf{summarization module} was in
 
 \begin{itemize}
     \item \textbf{Synthetic Dataset Generation}: The capabilities of proprietary LLMs will be leveraged to generate synthetic answers (\cite{Nvidia2024KaggleMath}, \cite{Liu2024NLDriven}) based on the formulated questions and the retrieval mechanism. The generated chain-of-thought (CoT) reasoning and associated code will be stored for fine tune the selected LLMs.
-    \item \textbf{Model Fine-tuning and Evaluation}: The selected LLMs will be fine-tuned using the expanded dataset, and their performance will be assessed using metrics such as BLEU, ROUGE, BertScore, and METEOR.
+    \item \textbf{Model Fine-tuning and Evaluation}: The selected LLMs will be fine-tuned using the expanded dataset, and their performance will be assessed using metrics such as BLEU \cite{bleuPaper}, ROUGE \cite{rougePaper}, BertScore \cite{bertscorePaper}, and METEOR \cite{meteorPaper}.
 \end{itemize}
 
 

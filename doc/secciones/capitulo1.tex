@@ -34,14 +34,29 @@ Large Language Models (LLMs) are built upon the transformer architecture, origin
 
 The core components of the transformer architecture include:
 \begin{itemize}
-    \item \textbf{Self-attention mechanisms}: Allow the model to assess the importance of different words within a given context.
+    \item \textbf{Self-attention mechanisms}: Allow the model to assess the importance of different words within a given context. By computing weighted sums of all positions in a sequence, with weights determined by query-key interactions, the model can focus on relevant information while ignoring irrelevant parts.
+    $$Attention (Q, K, V) = softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+    where \( Q \) is the query matrix, \( K \) is the key matrix, \( V \) is the value matrix, and \( d_k \) is the dimension of the keys.
+
     \item \textbf{Multi-head attention}: Enables the model to attend to information from multiple representation subspaces simultaneously.
+    $$MultiHead(Q, K, V) = Concat(head_1, \dots, head_h)W^O$$
+    where \( head_i = Attention(QW_i^Q, KW_i^K, VW_i^V) \) and \( W_i^Q, W_i^K, W_i^V \) are learned projection matrices.
+
     \item \textbf{Feed-forward neural networks}: Apply non-linear transformations to the attention outputs.
     \item \textbf{Layer normalization}: Helps stabilize and accelerate the training process.
-    \item \textbf{Positional encoding}: Introduces information about the order of tokens in a sequence.
+    $$LayerNorm(x) = \omega \odot  \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$$
+
+    where \( \mu \) and \( \sigma^2 \) are the mean and variance of the input, \( \epsilon \) is a small constant for numerical stability, and \( \omega \) and \( \beta \) are learnable parameters.
+    
+
+    \item \textbf{Positional encoding}: Introduces information about the order of tokens in a sequence. It is tipically encoded using sine and cosine functions of different frequencies.
+    $$PE_{(pos, 2i)} = sin\left(\frac{pos}{10000^{\frac{2i}{d_{model}}}}\right)$$  
+    $$PE_{(pos, 2i+1)} = cos\left(\frac{pos}{10000^{\frac{2i}{d_{model}}}}\right)$$
+    where \( pos \) is the position and \( i \) is the dimension index.
+
 \end{itemize}
 
-Notable examples of LLMs include OpenAI's GPT-3, Google's BERT and T5, and Meta's RoBERTa. These models have set new benchmarks across a variety of NLP tasks such as text classification, machine translation, and summarization. While all are built on the transformer architecture, they differ in their design choices and training objectives. For instance, BERT uses a masked language modeling objective, where random tokens in a sentence are masked and the model learns to predict them using surrounding context. In contrast, GPT-3 follows an autoregressive training strategy, generating one token at a time based on previously generated tokens.
+Notable examples of LLMs include OpenAI's GPT-3, Google's BERT and T5, and Meta's RoBERTa. These models have set new benchmarks across a variety of NLP tasks such as text classification, machine translation, and summarization. While all are built on the transformer architecture, they differ in their design choices and training objectives. For instance, BERT \cite{bertPaper} uses a masked language modeling objective, where random tokens in a sentence are masked and the model learns to predict them using surrounding context. In contrast, GPT-3 \cite{gpt3Paper} follows an autoregressive training strategy, generating one token at a time based on previously generated tokens.
 
 The theoretical foundation of LLMs lies in probabilistic language modeling. Given a sequence of tokens \( x = (x_1, x_2, \dots, x_n) \), a language model aims to estimate either the joint probability \( P(x) \) or the conditional probability of the next token \( P(x_n \mid x_1, \dots, x_{n-1}) \). The model is trained to assign higher probabilities to sequences that are more likely to appear in natural language, based on patterns learned from large-scale datasets. This is made possible by the transformer's use of self-attention and feed-forward layers, which together capture complex dependencies across tokens. In particular, positional encodings and multi-head attention enable LLMs to model long-range relationships—something that earlier architectures like RNNs and LSTMs struggled to achieve effectively.
 
@@ -57,10 +72,11 @@ Each method has its own advantages and disadvantages, depending on the task at h
 
 % https://www.promptingguide.ai/ cite from here 
 Prompt engineering is an emerging field focused on crafting and refining prompts to make the most effective use of language models (LMs) 
-across diverse applications and research areas. It plays a crucial role in enhancing our understanding of the strengths and limitations of large language models (LLMs). 
+across diverse applications and research areas. It plays a crucial role in enhancing our understanding of the strengths and limitations of LLMs. 
 Beyond simply writing prompts, prompt engineering involves a broad set of techniques essential for building with, interacting with, and expanding the capabilities of LLMs. 
 It also contributes to improving model safety and enables the integration of specialized knowledge and functionalities into LLM-based systems
 
+The following methods are some of the most common techniques and used in our work:
 
 \begin{itemize}
     \item \textbf{Zero-shot prompting}: Involves providing the model with a task description or question without any examples. The model is expected to generate a response based solely on its pre-existing knowledge and understanding of the task.
@@ -84,11 +100,11 @@ Retrieval-Augmented Generation (RAG), first introduced by \cite{RAG2021}, is a f
 The RAG architecture consists of two primary components: 
 \begin{itemize}
      
-    \item \textbf{Retriever}: This component retrieves relevant documents or passages from a large corpus based on the input query. It typically employs models such as BM25 or dense retrieval methods to identify the most relevant information. 
+    \item \textbf{Retriever}: This component retrieves relevant documents or sentences from a large corpus based on the input query. It typically employs models such as BM25 \cite{bm25Paper} or dense retrieval methods to identify the most relevant information. 
     \item \textbf{Generator}: Once the retriever has collected the relevant documents, the generator—usually a transformer-based language model—takes them as input to produce a coherent and contextually appropriate response. The generator can be fine-tuned for specific tasks to further improve its performance. 
 \end{itemize}
 
-In recent years, RAG has gained considerable attention in the NLP community for its ability to generate high-quality responses. This has spurred the development of new techniques to improve both retrieval precision and generation quality. For instance, \cite{modularRAG2024} introduces a modular RAG framework that enables the integration of diverse components across different stages of the pipeline. These include techniques such as query expansion, reformulation, and transformation in the pre-retrieval phase, as well as the use of large language models as judges in the post-retrieval phase to evaluate if the response is enoughly complete.
+In recent years, RAG has gained considerable attention in the NLP community for its ability to generate high-quality responses. This has spurred the development of new techniques to improve both retrieval precision and generation quality. For instance, \cite{modularRAG2024} introduces a modular RAG framework that enables the integration of diverse components across different stages of the pipeline. These include techniques such as query expansion, reformulation, and transformation in the pre-retrieval phase, as well as the use of LLMs as judges in the post-retrieval phase to evaluate if the response is enoughly complete.
 This modular design encourages flexibility and supports experimentation with novel combinations and architectural variations.
 
 
