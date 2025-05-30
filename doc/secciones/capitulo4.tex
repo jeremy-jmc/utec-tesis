@@ -6,6 +6,52 @@
 
 \section{Experimentos}
 
+\begin{table}[h!]
+\centering
+\caption{Evaluation Metrics: Mean, Std, and Median per Model}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|ccc|ccc}
+\toprule
+\multirow{\textbf{Metric}} 
+& \multicolumn{3}{c|}{\textbf{GPT-4o}} 
+& \multicolumn{3}{c}{\textbf{Deepseek-chat}} \\
+& \textbf{Mean} & \textbf{Std} & \textbf{Median} 
+& \textbf{Mean} & \textbf{Std} & \textbf{Median} \\
+\midrule
+pass@k        & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0  \\
+maj@k         & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0  \\
+pass\textasciicircum k & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 \\
+code\_bleu@k  & 0.273 & 0.045 & 0.273 & 0.304 & 0.042 & 0.29  \\
+perc\_error@k & 1.0 & 0.0 & 1.0 & 1.0 & 0.0 & 1.0  \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:metrics_models}
+\end{table}
+
+
+\begin{table}[h!]
+\centering
+\caption{Evaluation Metrics of Qwen2.5-code-7b: Mean, Std, and Median per Model Checkpoint}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|ccc|ccc}
+\toprule
+\textbf{Metric} 
+& \multicolumn{3}{c|}{\textbf{Checkpoint 50}} 
+& \multicolumn{3}{c}{\textbf{Checkpoint 300}} \\
+& \textbf{Mean} & \textbf{Std} & \textbf{Median} 
+& \textbf{Mean} & \textbf{Std} & \textbf{Median} \\
+\midrule
+pass@k        & 0.115 & 0.319 & 0.0 & 0.12 & 0.324 & 0.0   \\
+maj@k         & 0.046 & 0.209 & 0.0 & 0.054 & 0.227 & 0.0   \\
+pass\textasciicircum k & 0.017 & 0.064 & 0.0 & 0.015 & 0.051 & 0.0  \\
+code\_bleu@k  & 0.36 & 0.065 & 0.356 & 0.357 & 0.227 & 0.352  \\
+perc\_error@k & 0.402 & 0.213 & 0.375 & 0.419 & 0.219 & 0.375   \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:metrics_checkpoints}
+\end{table}
 
 % \subsection{Protocolo de experimentación}
 
