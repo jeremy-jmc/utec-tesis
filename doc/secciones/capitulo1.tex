@@ -73,9 +73,16 @@ A common variant of SFT is instruction tuning, which trains the model on supervi
 
 \subsection{LoRA (Low-Rank Adaptation)}
 
-LoRA \cite{Hu2021LoRA} is a parameter-efficient fine-tuning technique that reduces the computational cost of adapting large language models. Instead of updating all model parameters, LoRA introduces low-rank matrices to the model's architecture, enabling task-specific adaptation with minimal resource usage. This makes it particularly useful for deploying LLMs in resource-constrained environments.
 
-\cite{Dettmers2023QLora}
+LoRA \cite{Hu2021LoRA} is a fine-tuning method designed to efficiently adapt large language models (LLMs) by minimizing computational overhead. Instead of updating all model parameters—which can number in the hundreds of billions for modern LLMs—LoRA introduces trainable low-rank matrices into existing weight layers, such as attention or feed-forward layers. These matrices encode task-specific adjustments while keeping the pre-trained model weights unchanged, significantly reducing the number of parameters that need to be trained.
+
+Mathematically, LoRA approximates the weight update $\Delta W$ using a low-rank decomposition $\Delta W = A B$, where $A \in \mathbb{R}^{d \times r}$ and $B \in \mathbb{R}^{r \times k}$, with $r \ll \min(d,k)$. This approach greatly lowers memory and computational requirements, making it particularly suitable for fine-tuning on devices with limited resources.
+
+LoRA is highly modular and can be seamlessly integrated into transformer-based architectures without requiring structural modifications. It can also be combined with other optimization techniques, such as quantization or pruning, to further enhance efficiency. Studies have demonstrated that LoRA achieves performance comparable to or better than full fine-tuning across various tasks, while modifying less than 1% of the model's parameters.
+
+Extensions of LoRA, such as QLoRA (Quantized LoRA) and AdaLoRA (Adaptive LoRA), have further refined its capabilities. For instance, QLoRA enables fine-tuning on models quantized to 4 bits \cite{Dettmers2023QLoRA}, facilitating efficient deployment on consumer-grade hardware.
+
+Thanks to its efficiency and flexibility, LoRA has become a popular choice in open-source LLM projects, especially for scenarios with limited computational resources or strict privacy requirements.
 
 
 \begin{figure}[hbtp]
@@ -87,7 +94,9 @@ LoRA \cite{Hu2021LoRA} is a parameter-efficient fine-tuning technique that reduc
 
 \subsection{Tool Integrated Reasoning}
 
-Several works combine natural language reasoning with Python code execution to improving accuracy on math problem resolution tasks \cite{Gou2024ToRA}, \cite{Moshkov2025AIMO2}, \cite{Yin2024MuMathCode}, \cite{Li2024NuminaMath}, \cite{Fleureau2024NuminaMath}.
+Tool-integrated Reasoning Agents (ToRA) offer a conceptual framework for augmenting large language models (LLMs) by enabling them to utilize external tools during the reasoning process. Rather than relying solely on internal language generation, ToRA integrates natural language inference with symbolic computation or code execution, treating reasoning as a hybrid process. This approach is inspired by dual-process cognitive theories—System 1 (intuitive) and System 2 (analytical)—and positions the LLM as a decision-making controller that determines when and how to delegate tasks to tools such as symbolic solvers, code interpreters, or retrieval systems.
+
+This paradigm is exemplified by models like AIMO2 \cite{Moshkov2025AIMO2}, which propose modular agent architectures for tool interaction, and MuMathCode \cite{Yin2024MuMathCode}, which highlights the benefits of program synthesis and iterative self-correction for improving mathematical reasoning. ToRA adopts a similar methodology, leveraging training on tool-use trajectories and imitation learning to teach models how to incorporate intermediate tool outputs into reasoning workflows. Additionally, NuminaMath \cite{Li2024NuminaMath, Fleureau2024NuminaMath} introduces symbolic memory modules that align with ToRA’s goal of maintaining coherent multi-step reasoning through persistent access to verified tool outputs.
 
 % Tool Integrated Reasoning enhances the reasoning capabilities of language models by integrating external tools, such as APIs or specialized algorithms, into the generation process. In the context of crime data chatbots, this approach allows the model to query real-time crime databases or perform geospatial analysis to provide users with accurate and actionable information about potential dangers.
 
@@ -141,15 +150,42 @@ The following methods are some of the most common techniques and used in our wor
 
 \subsection{Pass@K}
 
-\cite{Levi2024SimpleModelInferenceScalingLaws}
+Pass@k is a metric that evaluates the probability of a model generating a correct answer within the top-k responses. It is particularly useful for assessing the performance of language models in tasks where multiple answers can be generated, such as question answering or text generation \cite{Levi2024SimpleModelInferenceScalingLaws}. The metric is defined as:
+
+\begin{equation}
+    Pass@k = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(y_i \in \hat{y}_i^{(1:k)})
+\end{equation}
+
+where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the top-k responses, and 0 otherwise.
 
 \subsection{Majority@K}
 
-\cite{Wang2023SelfConsistency}
+Majority@k is a metric that evaluates if the group with the majority of the top-k generated answers is similar to the ground truth answer. It is particularly useful for assessing the performance of language models in tasks where multiple answers can be generated, such as question answering or text generation \cite{Wang2023SelfConsistency}. The metric is defined as:
+\begin{equation}
+    Majority@k = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(y_i \in \text{majority}(\hat{y}_i^{(1:k)}))
+\end{equation}
+where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the majority of the top-k responses, and 0 otherwise.
+
 
 \subsection{Code-BLEU}
 
-\cite{Ren2020CodeBLEU}
+CodeBLEU is a specialized metric designed to evaluate the quality of code generation by comparing machine-generated code against one or more reference implementations. It extends the traditional BLEU metric—commonly used in natural language processing for tasks such as machine translation—by incorporating programming-specific characteristics such as syntax, structure, and semantic correctness \cite{Ren2020CodeBLEU}. This makes CodeBLEU better aligned with the nuanced requirements of programming languages.
+
+The metric is formulated as a weighted linear combination of four complementary components:
+\begin{equation}
+    \text{CodeBLEU} = \alpha \cdot \text{BLEU} + \beta \cdot \text{BLEU}_{\text{weight}} + \gamma \cdot \text{Match}_{\text{AST}} + \delta \cdot \text{Match}_{\text{DF}}
+\end{equation}
+Here, \(\text{BLEU}\) is the standard BLEU score, \(\text{BLEU}_{\text{weight}}\) is a weighted variant that accounts for the relative importance of different n-grams, \(\text{Match}_{\text{AST}}\) measures syntactic similarity based on abstract syntax trees (ASTs), and \(\text{Match}_{\text{DF}}\) evaluates semantic similarity through data flow analysis. The coefficients \(\alpha\), \(\beta\), \(\gamma\), and \(\delta\) are tunable hyperparameters that balance the influence of each component.
+
+The BLEU component is computed as:
+
+\begin{equation}
+    \text{BLEU} = BP \cdot \exp\left(\sum_{n=1}^{N} w_n \cdot \log p_n\right)
+\end{equation}
+
+where \(BP\) is the brevity penalty, \(w_n\) denotes the weight assigned to n-grams of length \(n\), and \(p_n\) is the precision of those n-grams in the generated code relative to the reference code.
+
+
 
 % \subsection{Exact Match (EM)}
 
