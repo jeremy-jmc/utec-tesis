@@ -1,8 +1,12 @@
 \chapter{ METHODOLOGY}
 
+\noindent
+In this chapter, we present the methodological framework adopted for our study. We detail the processes of data preparation, question-answer generation, model training, and evaluation, as well as the development of the visualization tool. Each section outlines the specific steps and techniques employed to ensure the reliability and reproducibility of our results.
+
 \section{Data preparation}
 
-In this section, we describe the data preparation process used in our study.
+\noindent
+This section describes the procedures followed to curate and preprocess the datasets used in our research. We explain the selection of data sources, the integration of supplementary geographic and road network information, and the steps taken to ensure data quality and consistency prior to analysis.
 
 \subsection{Data sources}
 
@@ -14,7 +18,9 @@ The crime dataset was enhanced through integration with publicly available admin
 
 To develop our question-answer dataset, we first created 100 question templates (inspired by \cite{Dai2024QASTKG, Contractor2020QATourism}),  covering different types of inquiries including spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
 
-We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75). These question categories are summarized in Table~\ref{tab:question_types}. Then, for each original question type, we selected random examples and developed Python code solutions manually. These hand-crafted solutions provided context for generating additional synthetic code answers using the DeepSeek V3 model with prompting (Appendix~\ref{appendix:prompts}) and nucleus-sampling \cite{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath}, generating new reasoning paths and coding approaches.
+We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75). These question categories are summarized in Table~\ref{tab:question_types}. Then, for each original question type, we selected random examples and developed Python code solutions manually. These hand-crafted solutions provided context for generating additional synthetic code answers using the DeepSeek V3 model with prompting (Appendix~\ref{appendix:prompts}) and nucleus-sampling \cite{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath} (top\_p set to 0.95), generating new reasoning paths and coding approaches.
+
+% temperature set to 0.6 and top_p set to 0.95
 
 To ensure quality, we verified that all LLM-generated Python solutions executed correctly. When errors occurred, we resubmitted queries to the LLM until either receiving a working solution or reaching the maximum retry limit. Finally, we conducted manual reviews of all question-answer pairs to guarantee their quality.
 
@@ -73,8 +79,10 @@ Quantization & 4-bit (NF4, double quant) \\
 \end{table}
 
 
+\subsection{Model Evaluation}
 
-
+% We adopted the approach proposed by \cite{Fleureau2024NuminaMath}, Self-Consistency Tool-Integrated Reasoning (SC-TIR) to evaluate our fine tuned model
+For model evaluation, we adopted a comprehensive approach combining both automated and LLM-based assessment methods. Specifically, we used pass@k \cite{Levi2024SimpleModelInferenceScalingLaws} (with $k=16$), where correctness was determined using an LLM-as-a-judge \cite{Li2025LLMJudge} (Appendix~\ref{appendix:prompts}) using GPT-4.1, and CodeBLEU \cite{Ren2020CodeBLEU}, which provides a purely quantitative measure of code generation quality. Additionally, we calculated the error percentage across all generated code samples to assess overall robustness. Finally, we performed Tool Integrated Reasoning (TIR) \cite{Fleureau2024NuminaMath} evaluations, allowing a single retry per question to mitigate frequent inference errors such as ZeroDivisionError and IndexError, while maintaining evaluation efficiency.
 
 % The model was trained using QLoRA \cite{Dettmers2023QLoRA} with a rank of 64, alpha of 16, and a dropout rate of 0.05. 
 
@@ -84,3 +92,4 @@ Quantization & 4-bit (NF4, double quant) \\
 
 
 \section{Visualization Tool}
+
