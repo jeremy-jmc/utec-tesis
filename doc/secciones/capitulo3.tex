@@ -1,126 +1,86 @@
 \chapter{ METHODOLOGY}
 
-% In this chapter we present the methodology used in this research. We begin by outlining the research objectives, followed by a detailed description of the proposed architecture. We then discuss the datasets utilized in our experiments, including their characteristics and relevance to our study. Finally, we describe the evaluation metrics and benchmarks employed to assess the performance of our proposed approach.
+\section{Data preparation}
 
-% - Actualmente, en el estado del arte no ha sido explorada arquitecturas de RAG orientada directamente a la búsqueda de información espacio-temporal y utilizar esta información para generar respuestas a preguntas relacionadas con la criminalidad de una localidad en un determinado periodo de tiempo. 
-Recent advancements in Retrieval-Augmented Generation (RAG) have shown great promise across various domains \cite{Yu2025SpatialRAG, Yang2024TimeRAG, He2024GRetriever, Hu2024GRAG, Guo2024LightRAG}; however, none of these architectures are specifically tailored for spatio-temporal information retrieval and reasoning over crime data. Existing approaches typically focus on textual or knowledge graph-based sources, leaving a key research gap for systems capable of handling dynamic urban crime contexts across space and time.
+In this section, we describe the data preparation process used in our study.
 
-% - No existe una herramienta de visualización geográfica que permita a los usuarios hacer consultas mediante lenguaje natural 
-In parallel, numerous visualization tools have been developed to support crime data analysis \cite{Garcia2022CriPAV, Salah2022BigCDVis, Silva2017CrimeVisAI, Garcia2020MiranteAV, Garcia2021CrimAnalyzer}, and recent works attempt to bridge natural language interfaces with visual analytics \cite{Liu2024NLDriven}. Yet, none of these efforts fully integrate geographic crime data querying through natural language while also offering intuitive, interactive visualizations. This highlights a missed opportunity to democratize access to urban crime insights.
+\subsection{Data sources}
 
-% - Se ha explorado el uso de LLMs para el Q\&A de datos espaciales; sin embargo, ....
-Moreover, while large language models (LLMs) have been used for spatio-temporal question answering, current pipelines still face limitations. For instance, \cite{Wei2024TourLLM} embed domain knowledge directly into the model via fine-tuning, which reduces transparency and flexibility. Google's recent work \cite{2025GoogleGeospatialReasoning} proposes LLM-based reasoning over geospatial data, but without a focus on urban safety or crime-specific tasks. Similarly, \cite{Jiang2024UrbanLLM} and \cite{Li2024UrbanGPT} apply LLMs to urban computing, but rely on pre-embedded data in prompts, bypassing interactive user-driven retrieval.
+We leveraged the comprehensive China crime dataset published by \cite{Zhang2025CrimeDatasetChina}. The dataset underwent thorough cleaning procedures, including handling of missing values, consolidating category columns through LLM-based classification and standardization of date formats, with all text fields subsequently translated to English. To maintain analytical focus, we concentrated on the three provinces exhibiting the highest crime incidence during the 2017-2019 period: \textit{Jiangsu}, \textit{Guangdong}, and \textit{Zhejiang}. 
 
-This section presents our proposed architecture, designed to overcome these limitations by enabling spatio-temporal crime data analysis and visualization through natural language interaction.
+The crime dataset was enhanced through integration with publicly available administrative boundary data for China \cite{GeoJSON2025China}, providing polygon-level geographic context. Additionally, we incorporated road network data from OpenStreetMap \cite{Vargas2021OSM} to enable crucial proximity calculations between criminal incidents and nearby roads, a significant variable within our analytical framework. Full dataset columns details are provided in Appendix \ref{appendix:dataset}.
 
-% To address these limitations, we propose a modular architecture that leverages a multi-stage LLM pipeline with hybrid retrieval strategies to support natural language interactions over spatio-temporal crime data. Our method enables users to ask localized, time-sensitive questions and receive coherent, explainable responses, complemented by dynamic visualizations. The following sections describe each component of the proposed system.
+\subsection{Question-Answer generation}
 
-% TODO: mandar estas ideas a justificacion
-\section{Methodology - Dataset Creation}
+To develop our question-answer dataset, we first created 100 question templates (inspired by \cite{Dai2024QASTKG, Contractor2020QATourism}),  covering different types of inquiries including spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
 
-\cite{Holtzman2020NucleusSampling}, \cite{Yin2024MuMathCode}
+We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75). These question categories are summarized in Table~\ref{tab:question_types}. Then, for each original question type, we selected random examples and developed Python code solutions manually. These hand-crafted solutions provided context for generating additional synthetic code answers using the DeepSeek V3 model with prompting (Appendix~\ref{appendix:prompts}) and nucleus-sampling \cite{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath}, generating new reasoning paths and coding approaches.
 
-\section{Methodology - Model Training}
+To ensure quality, we verified that all LLM-generated Python solutions executed correctly. When errors occurred, we resubmitted queries to the LLM until either receiving a working solution or reaching the maximum retry limit. Finally, we conducted manual reviews of all question-answer pairs to guarantee their quality.
 
-\cite{Qwen2025Qwen2.5}
+The resulting dataset, which we named "ChinaCrimeQACode", contains 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \cite{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation.     % , and has been made publicly available
 
-\section{Methodological Proposal}
+% TODO: poner ejemplo de question-answer pair
 
-The proposal is divided into two phases. The first phase focuses on the development of a prototype that integrates a hybrid retrieval mechanism with an LLM-based chat interface by using a criminalistic dataset from China as a knowledge base. The evaluation method will be done by user studies, in order to determine its effectiveness in answering spatio-temporal crime questions. The second phase aims to enhance the system by generating synthetic datasets and fine-tuning the selected LLMs based on the generated data. This approach will allow us to improve the model's performance and adapt it to specific crime-related tasks.
+\begin{table}[hbtp]
+\centering
+\caption{Question Types in the ChinaCrimeQACode Dataset}
+\label{tab:question_types}
+\begin{tabular}{ll}
+\toprule
+\textbf{Question Type} & \textbf{Description} \\
+\midrule
+\texttt{spatial\_lookup} & Location-only questions \\
+\texttt{temporal\_lookup} & Time-centric questions \\
+\texttt{spatio\_temporal\_lookup} & Joint space-time filters \\
+\texttt{comparative\_trends} & Rankings and evolution analysis \\
+\texttt{causal\_contextual} & Event patterns and conditional queries \\
+\texttt{hypotheticals\_counterfactuals} & Projections and counterfactual reasoning \\
+\texttt{multi\_step\_aggregation} & Multi-step reasoning and aggregation \\
+\bottomrule
+\end{tabular}
+\end{table}
 
-\cite{Moshkov2025AIMO2}, \cite{Fleureau2024NuminaMath}, \cite{Jain2024MetaFineTuning}, \cite{Wang2023SelfConsistency}, \cite{Ahmad2025OCRNVidia}
+% This review process involved verifying that the answers were accurate, relevant, and aligned with the corresponding questions. We also ensured that the answers were concise and clear, making them suitable for use in our visualization tool.
 
-\section{Datasets}
+\subsection{Model Training}
 
-% DONE: Poner que tipos de preguntas estadisticas se van a abordar, tabla de clasificacion de pregunta con su ejemplo (clasificacion, ejm de plantilla de pregunta) para el dataset de China, hazlo una tabla
-
-We base our prototype on the dataset introduced by \cite{Zhang2025CrimeDatasetChina}, which provides a large-scale, open-access repository of nearly one million criminal court records across China. From this dataset, we construct a benchmark of spatio-temporal statistical questions designed to evaluate the performance of our LLM-based system in crime data exploration. Inspired by prior work on question classification for temporal knowledge graphs \cite{Saxena2021TemporalKGQA}, as well as tourism and spatial reasoning benchmarks \cite{Contractor2020QATourism, Dai2024QASTKG}, we define a taxonomy of question types that reflects the analytical goals of urban crime investigation.
-
-Table~\ref{tab:dataset_questions} summarizes the types of questions we support, along with representative templates and instantiated examples using the Chinese crime dataset.
-
-% Dataset size: 
-
-\cite{Unsloth2024Dataset1}, \cite{Unsloth2024WhatModel}, \cite{Li2024NuminaMath}, \cite{Yin2024MuMathCode}
+We fine-tuned the Llama-3-8B Instruct model \cite{Grattafiori2024Llama3, Unsloth2024WhatModel} by implementing the techniques described in \cite{Pareja2024RecipesSFT}. For the fine-tuning process, we utilized Hugging Face Transformers alongside the Unsloth library to optimize computational resources and accelerate training. The entire fine-tuning procedure was completed in approximately 3 hours using a single NVIDIA H100 GPU with 80GB memory provided by Lightning AI.
 
 \begin{table}[H]
-    \centering
-    \caption{Question type examples supported over the spatio-temporal crime dataset}
-    \label{tab:dataset_questions}
-    \begin{tabular}{|p{4.5cm}|p{10cm}|}
-    \hline
-    \textbf{Category} & \textbf{Question Template Example} \\
-    \hline
-    \textbf{Simple time reasoning} & How many crimes occurred on \textless Time Entity\textgreater? \\
-    \hline
-    \textbf{Spatial aggregation} & How many incidents occurred in \textless Spatial Entity\textgreater? \\
-    \hline
-    \textbf{Spatio-temporal filtering} & How many crimes happened in \textless Spatial Entity\textgreater during \textless Time Entity\textgreater? \\
-    \hline
-    \textbf{Before/After comparison} & Did crime increase in \textless Spatial Entity\textgreater after \textless Time Point\textgreater? \\
-    \hline
-    \textbf{First/Last occurrence} & When was the last crime reported in \textless Spatial Entity\textgreater? \\
-    \hline
-    \textbf{Most affected area} & What is the most crime-prone \textless Spatial Level\textgreater during \textless Time Period\textgreater? \\
-    \hline
-    \textbf{Location-based correlation} & How does crime frequency vary between \textless Entity 1\textgreater and \textless Entity 2\textgreater? \\
-    \hline
-    \textbf{Intersection or routing} & What streets intersect with \textless Street Name\textgreater? \\
-    \hline
-    \end{tabular}
+\centering
+\caption{Fine-tuning Hyperparameters for ChinaCrimeQACode}
+\label{tab:hyperparameters}
+\begin{tabular}{ll}
+\toprule
+\textbf{Hyperparameter} & \textbf{Value} \\
+\midrule
+LoRA rank ($r$) & 64 \\
+LoRA alpha & 16 \\
+LoRA dropout & 0.0 \\
+Batch size (per device) & 32 \\
+Gradient accumulation steps & 4 \\
+Max sequence length & 3,200 tokens \\
+Training epochs & 7 \\
+Learning rate & 7e-5 \\
+Optimizer & \texttt{adamw\_torch\_fused} \\
+Scheduler & \texttt{linear} \\
+Warmup ratio & 0.1 \\
+Weight decay & 0.01 \\
+Quantization & 4-bit (NF4, double quant) \\
+\bottomrule
+\end{tabular}
 \end{table}
-    
-
-% This taxonomy will guide the construction of training and evaluation prompts in both phases of the project. In Phase 1, templates are used to manually generate synthetic question-answer pairs. In Phase 2, these templates will be programmatically expanded using the dataset's metadata and LLM-based generation strategies.
 
 
-\subsection{Phase 1: Expected PFC3}
-
-The following components structure this phase:
-
-\begin{itemize}
-    \item \textbf{Dataset Question Generation}: Utilizing question templates such as those proposed in \cite{Contractor2020QATourism} and \cite{Dai2024QASTKG}, we will generate spatio-temporal statistical questions derived from the dataset presented in \cite{Zhang2025CrimeDatasetChina}.
-    \item \textbf{Hybrid Retrieval Mechanism}: Drawing on methodologies outlined in works like \cite{Guo2024LightRAG}, a hybrid RAG mechanism will be implemented, integrating vector-based and query-based retrieval approaches to enhance accuracy.
-    \item \textbf{Model Selection and Prompting}: Open-source LLMs, like Llama3 \cite{Grattafiori2024Llama3} and Qwen2.5 \cite{Qwen2025Qwen2.5} series, will be evaluated for their effectiveness in generating responses to the formulated questions.
-    \item \textbf{Chat Implementation and Feedback Loop}: A chat-based interface will be developed to preprocess user queries and generate responses. This interface will incorporate geospatial visualization tools to provide users with visual feedback. Additionally, user studies will be conducted to evaluate the usability and effectiveness of the interface.
-\end{itemize}
-
-% We will also conduct user studies to assess the usability and effectiveness of the chat interface.
 
 
-\subsection{Phase 1: Pipeline}
 
-The proposed pipeline, illustrated in Figure~\ref{fig:proposal_f1}, describes the architecture of the first prototype. The system is designed to process natural language queries about crime occurrences across space and time, combining language models with a hybrid retrieval strategy and visual feedback mechanisms.
+% The model was trained using QLoRA \cite{Dettmers2023QLoRA} with a rank of 64, alpha of 16, and a dropout rate of 0.05. 
 
-%  such as: “Has robbery increased in the northern districts compared to last year?” 
-The architecture begins with an \textbf{LLM-powered chat interface}, where users can ask statistical-spatio temporal queries. This initial query is processed through a \textbf{query decomposition module}, which splits the question into street-level subqueries that the selected model can handle.
+% We employed a learning rate of 2e-4 with the AdamW optimizer and cosine learning rate scheduler with 100 warm-up steps. Training was performed for 3 epochs with a batch size of 16, using a maximum sequence length of 2048 tokens. To maintain training stability, we applied gradient clipping with a maximum norm of 1.0.
 
-% , city sectors
-These subqueries are routed through a \textbf{hybrid retrieval mechanism}, inspired by \cite{Guo2024LightRAG}, which is divided in two \textbf{LLM extractors}. The first, the \textbf{Entity Extractor} extract named entities (e.g., street names) using a dense retriever based on multilingual sentence embeddings and a sparse retriever using BM25. While the \textbf{Time Extractor} extracts temporal references (e.g., “Q1 2024”, “last month”). With this information we retrieve the spatio-temporal data from the dataset, which is a collection of crime records. These records are then passed to a \textbf{data parsing module}, which processes the data and pass to the prompt as a contextual information. 
-
-Once the context has been aligned, each subquery is processed by an LLM, which generates a set of answers. These answers are then passed to a \textbf{summarization module} that produces the final response. This response is further enhanced with \textbf{visual elements}, such as a map that highlights the queried streets.
-
-The \textbf{query decomposition module} and \textbf{summarization module} was inspired by the bottom-up approach presented by \cite{Deng2025VisualChronicles}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{images/PFC3.drawio.png}
-    \caption{Proposed Pipeline - Phase 1}
-    \label{fig:proposal_f1}
-\end{figure}
-
-\subsection{Phase 2: Expected Next Semester}
-
-\begin{itemize}
-    \item \textbf{Synthetic Dataset Generation}: The capabilities of proprietary LLMs will be leveraged to generate synthetic answers (\cite{Nvidia2024KaggleMath}, \cite{Liu2024NLDriven}) based on the formulated questions and the retrieval mechanism. The generated chain-of-thought (CoT) reasoning and associated code will be stored for fine tune the selected LLMs.
-    \item \textbf{Model Fine-tuning and Evaluation}: The selected LLMs will be fine-tuned using the expanded dataset, and their performance will be assessed using metrics such as BLEU \cite{bleuPaper}, ROUGE \cite{rougePaper}, BertScore \cite{bertscorePaper}, and METEOR \cite{meteorPaper}.
-\end{itemize}
+% For instruction tuning, we formatted our question-code pairs using a standard template that clearly specified the task context and expectations. Each question was prefaced with a system prompt indicating that the model should generate executable Python code to analyze crime data and answer the given question. 
 
 
-% \section{Benchmarks}
-
-% \subsection{Estructura de los \textit{datasets}}
-
-% \section{Entrenamiento/Optimización del modelo}
-
-% \section{Evaluación del modelo}
-
+\section{Visualization Tool}

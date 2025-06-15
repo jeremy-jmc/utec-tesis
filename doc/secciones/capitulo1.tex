@@ -7,9 +7,6 @@ The spatio-temporal data is a type of data that contains information about the s
 This dual indexing enables the representation of complex relationships between spatial and temporal elements, allowing for a more comprehensive understanding of the data.
 
 The spatio-temporal data can be formalized as a tuple $ST = \{ (s_i, t_j, X_{ij} | s_i \in S , t_j \in T , X_{ij} \in \mathbb{R}^d )\}$, where $S$ is the spatial domain, $T$ is the temporal domain, and $X_{ij}$ signifies the observed attributes at location $s_i$ and time $t_j$.
- 
-
-
 
 
 %\section{Textual Graphs}
@@ -21,7 +18,6 @@ The spatio-temporal data can be formalized as a tuple $ST = \{ (s_i, t_j, X_{ij}
 %\subsection{Temporal Graphs}
 
 %\subsection{Spatial-Temporal Graphs}
-
 
 
 
@@ -62,23 +58,40 @@ The theoretical foundation of LLMs lies in probabilistic language modeling. Give
 
 \subsection{Supervised Fine-Tuning}
 
-% Supervised fine-tuning is a process where a pre-trained language model is further trained on a labeled dataset specific to a task. This step refines the model's weights to improve performance on the desired application. For instance, in the context of crime data chatbots, fine-tuning can help the model better understand domain-specific terminology and generate more accurate responses.
+% * SFT
+Supervised fine-tuning (SFT) of large language models (LLMs) is a technique used to adapt pre-trained models on large corpora to specific tasks, improving their performance and alignment with human preferences or task requirements \cite{Wang2023AligningLargeLanguageModels}. This process involves training the model on a labeled dataset, where each input is paired with a corresponding output.
+
+% * Instruction Tuning
+A common variant of SFT is instruction tuning, which trains the model on supervised datasets containing (instruction, output) pairs \cite{Wei2022FinetunedLMZeroShot}. This method improves the model’s zero-shot performance by shifting its behavior from next-token prediction to better understanding and following human directions \cite{Zhang2024InstructionTuningLLM}. 
+
+% ? TODO: Poner esto o no?: In the context of crime data, instruction tuning can help the model better interpret domain-specific terminology and generate more accurate, context-aware responses.
+% ! TODO: formula de next token prediction en LLMs
+
+% Supervised fine-tuning is a process where a pre-trained language model is further trained on a labeled dataset specific to a task. This step refines the model's weights to improve performance on the desired application. 
+% \cite{Mishra2022CrossTaskGeneralization}, \cite{Ouyang2022TrainingLMsIT}
 
 
 \subsection{LoRA (Low-Rank Adaptation)}
 
-% LoRA is a parameter-efficient fine-tuning technique that reduces the computational cost of adapting large language models. Instead of updating all model parameters, LoRA introduces low-rank matrices to the model's architecture, enabling task-specific adaptation with minimal resource usage. This makes it particularly useful for deploying LLMs in resource-constrained environments.
+LoRA \cite{Hu2021LoRA} is a parameter-efficient fine-tuning technique that reduces the computational cost of adapting large language models. Instead of updating all model parameters, LoRA introduces low-rank matrices to the model's architecture, enabling task-specific adaptation with minimal resource usage. This makes it particularly useful for deploying LLMs in resource-constrained environments.
 
-\cite{Hu2021LoRA}
+\cite{Dettmers2023QLora}
 
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.29\textwidth]{images/lora.pdf}
+  \caption{LoRA}
+  \label{fig:reparam}
+\end{figure}
 
 \subsection{Tool Integrated Reasoning}
 
-\cite{Gou2024ToRA}
-
-\cite{Moshkov2025AIMO2}. \cite{Yin2024MuMathCode}, \cite{Li2024NuminaMath}
+Several works combine natural language reasoning with Python code execution to improving accuracy on math problem resolution tasks \cite{Gou2024ToRA}, \cite{Moshkov2025AIMO2}, \cite{Yin2024MuMathCode}, \cite{Li2024NuminaMath}, \cite{Fleureau2024NuminaMath}.
 
 % Tool Integrated Reasoning enhances the reasoning capabilities of language models by integrating external tools, such as APIs or specialized algorithms, into the generation process. In the context of crime data chatbots, this approach allows the model to query real-time crime databases or perform geospatial analysis to provide users with accurate and actionable information about potential dangers.
+
+
 
 
 \section{Prompting}
@@ -100,7 +113,7 @@ The following methods are some of the most common techniques and used in our wor
 
 \begin{itemize}
     \item \textbf{Zero-shot prompting}: Involves providing the model with a task description or question without any examples. The model is expected to generate a response based solely on its pre-existing knowledge and understanding of the task.
-    \item \textbf{Few-shot prompting}: As mentioned by \cite{fewshot2020}, this technique involves providing the model with a few examples of the desired output format or task. This helps the model understand the context and generate more accurate responses.
+    \item \textbf{Few-shot prompting}: As mentioned by \cite{gpt3Paper}, this technique involves providing the model with a few examples of the desired output format or task. This helps the model understand the context and generate more accurate responses.
     \item \textbf{Chain-of-thought prompting}: Firstly introduced by \cite{chainofthought2023}, encourages the model to generate intermediate reasoning steps before arriving at a final answer. This approach has been shown to improve performance on complex tasks, such as arithmetic reasoning and logical inference.
     % TODO: PAL https://www.promptingguide.ai/techniques/pal
 \end{itemize}
@@ -108,28 +121,19 @@ The following methods are some of the most common techniques and used in our wor
 
 
 
+% \section{Retrieval Augmented Generation (RAG)}
 
+% Retrieval-Augmented Generation (RAG), first introduced by \cite{RAG2021}, is a framework that combines the strengths of retrieval-based and generative approaches for question answering. Its core idea is to enhance the generative capabilities of language models by incorporating relevant information retrieved from external knowledge sources, rather than relying solely on parametric knowledge (i.e., information encoded in the model's weights).
 
-
-
-
-
-\section{Retrieval Augmented Generation (RAG)}
-
-Retrieval-Augmented Generation (RAG), first introduced by \cite{RAG2021}, is a framework that combines the strengths of retrieval-based and generative approaches for question answering. Its core idea is to enhance the generative capabilities of language models by incorporating relevant information retrieved from external knowledge sources, rather than relying solely on parametric knowledge (i.e., information encoded in the model's weights).
-
-The RAG architecture consists of two primary components: 
-\begin{itemize}
+% The RAG architecture consists of two primary components: 
+% \begin{itemize}
      
-    \item \textbf{Retriever}: This component retrieves relevant documents or sentences from a large corpus based on the input query. It typically employs models such as BM25 \cite{bm25Paper} or dense retrieval methods to identify the most relevant information. 
-    \item \textbf{Generator}: Once the retriever has collected the relevant documents, the generator—usually a transformer-based language model—takes them as input to produce a coherent and contextually appropriate response. The generator can be fine-tuned for specific tasks to further improve its performance. 
-\end{itemize}
+%     \item \textbf{Retriever}: This component retrieves relevant documents or sentences from a large corpus based on the input query. It typically employs models such as BM25 \cite{bm25Paper} or dense retrieval methods to identify the most relevant information. 
+%     \item \textbf{Generator}: Once the retriever has collected the relevant documents, the generator—usually a transformer-based language model—takes them as input to produce a coherent and contextually appropriate response. The generator can be fine-tuned for specific tasks to further improve its performance. 
+% \end{itemize}
 
-In recent years, RAG has gained considerable attention in the NLP community for its ability to generate high-quality responses. This has spurred the development of new techniques to improve both retrieval precision and generation quality. For instance, \cite{modularRAG2024} introduces a modular RAG framework that enables the integration of diverse components across different stages of the pipeline. These include techniques such as query expansion, reformulation, and transformation in the pre-retrieval phase, as well as the use of LLMs as judges in the post-retrieval phase to evaluate if the response is enoughly complete.
-This modular design encourages flexibility and supports experimentation with novel combinations and architectural variations.
-
-
-
+% In recent years, RAG has gained considerable attention in the NLP community for its ability to generate high-quality responses. This has spurred the development of new techniques to improve both retrieval precision and generation quality. For instance, \cite{modularRAG2024} introduces a modular RAG framework that enables the integration of diverse components across different stages of the pipeline. These include techniques such as query expansion, reformulation, and transformation in the pre-retrieval phase, as well as the use of LLMs as judges in the post-retrieval phase to evaluate if the response is enoughly complete.
+% This modular design encourages flexibility and supports experimentation with novel combinations and architectural variations.
 
 
 
@@ -137,15 +141,17 @@ This modular design encourages flexibility and supports experimentation with nov
 
 \subsection{Pass@K}
 
+\cite{Levi2024SimpleModelInferenceScalingLaws}
+
 \subsection{Majority@K}
 
 \cite{Wang2023SelfConsistency}
 
-\subsection{Exact Match (EM)}
+\subsection{Code-BLEU}
 
-\subsection{BLEU}
+\cite{Ren2020CodeBLEU}
 
-
+% \subsection{Exact Match (EM)}
 
 % \subsection{Accuracy}
 
@@ -160,6 +166,3 @@ This modular design encourages flexibility and supports experimentation with nov
 % \subsection{Hit Rate}
 
 % \subsection{Mean Reciprocal Rank (MRR)}
-
-
-
