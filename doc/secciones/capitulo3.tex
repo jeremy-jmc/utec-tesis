@@ -51,7 +51,7 @@ The resulting dataset, which we named "ChinaCrimeQACode", contains 5,000 questio
 
 \subsection{Model Training}
 
-We fine-tuned the Llama-3-8B Instruct model \cite{Grattafiori2024Llama3, Unsloth2024WhatModel} by implementing the techniques described in \cite{Pareja2024RecipesSFT}. For the fine-tuning process, we utilized Hugging Face Transformers alongside the Unsloth library to optimize computational resources and accelerate training. The entire fine-tuning procedure was completed in approximately 3 hours using a single NVIDIA H100 GPU with 80GB memory provided by Lightning AI.
+We fine-tuned the Llama-3.1-8B Instruct model \cite{Grattafiori2024Llama3, Unsloth2024WhatModel} by implementing the techniques described in \cite{Pareja2024RecipesSFT}. For the fine-tuning process, we utilized Hugging Face Transformers alongside the Unsloth library to optimize computational resources and accelerate training, completing the entire procedure in approximately 3 hours using a single NVIDIA H100 GPU with 80GB memory provided by Lightning AI. This model was chosen as it represents a balance between size (8B), data science coding capabilities \cite{Lai2022DS1000}, and compatibility with Unsloth for fast and efficient fine-tuning.
 
 \begin{table}[H]
 \centering

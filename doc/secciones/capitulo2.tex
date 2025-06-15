@@ -22,17 +22,13 @@ Another study from Google introduces Visual Chronicles \cite{Deng2025VisualChron
 
 \section{Large-Language Models for Coding-Tasks}
 
+Large language models such as Llama 3 \cite{Grattafiori2024Llama3} already display substantial, general-purpose coding, instruction-following and reasoning skills \cite{Grattafiori2024Llama3}. In addition, a wave of code-specialised models—e.g., Seed-Coder, OpenCodeReasoning, Qwen 2.5-Coder, NuminaMath-7B-TIR, and Code Llama—pushes state-of-the-art accuracy on competitive-programming, software-engineering benchmarks, and mathematical problem solving using Python code \cite{Seed2025SeedCoder, Ahmad2025OCRNVidia, Hui2024Qwen25Coder, Roziere2024CodeLlama, Moshkov2025AIMO2, Yin2024MuMathCode, Gou2024ToRA}. These models are constantly improved and frequently surpassed by even newer architectures, reflecting the rapid pace of progress in this area.
 
-\cite{Seed2025SeedCoder}, \cite{Ahmad2025OCRNVidia}, \cite{Hui2024Qwen25Coder}, \cite{Roziere2024CodeLlama}      % specialized for coding tasks
+Despite the rapid progress in LLMs for code generation, the availability of standardized benchmarks specifically tailored to data science tasks remains limited. Only a handful of recent datasets address this gap: for example, DS‑1000 \cite{Lai2022DS1000} defines 1,000 realistic Python data-analysis problems (with Pandas, NumPy, etc.) collected from StackOverflow, and DataSciBench \cite{Zhang2025DataSciBench} is a recently published comprehensive LLM benchmark covering diverse data-science tasks with an innovative framework of evaluation.
 
+In contrast, the text-to-SQL domain (closely related to data analysis) has more established benchmarks and model work. For example, \cite{Dominguez2024BlarSQL} demonstrated that fine-tuned Llama2 and Code Llama models can decompose database queries and achieve SQL accuracy comparable to GPT-4 on natural-language-to-SQL tasks. Similarly, Snowflake's Arctic-Text2SQL model \cite{Yao2025ArcticText2SQLR1}, trained with reinforcement learning and comprising 7B parameters, achieves state-of-the-art execution accuracy across six standard NL2SQL benchmarks, and currently holds the top single-model position on the BIRD leaderboard \cite{Li2023BirdSQL}.
 
-\cite{Grattafiori2024Llama3}        % recent latest models of medium size, trained for general capabilities, coding tasks and instruction following
-
-
-\cite{Dominguez2024BlarSQL}     % models specialized for SQL tasks
-\cite{Li2023BirdSQL}        % benchmark for SQL tasks
-\cite{Lai2022DS1000}   % dataset for data science coding tasks
-
+Most widely used Text2SQL benchmarks, such as BIRD and Spider, are limited to a single SQL dialect and lack support for geospatial operations, including buffer queries and interactions with polygon data types \cite{Li2023BirdSQL, Yu2019Spider}. To address these limitations, this thesis adopts a different approach: instead of relying on SQL, the LLM is used to generate Python code that primarily utilizes the `pandas` and `geopandas` libraries. This strategy avoids SQL dialect constraints and leverages the LLM's strengths in code generation.
 
 % \section{RAG Techniques for Complex Data}
 
