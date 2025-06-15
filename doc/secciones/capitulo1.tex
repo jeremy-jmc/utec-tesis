@@ -7,9 +7,6 @@ The spatio-temporal data is a type of data that contains information about the s
 This dual indexing enables the representation of complex relationships between spatial and temporal elements, allowing for a more comprehensive understanding of the data.
 
 The spatio-temporal data can be formalized as a tuple $ST = \{ (s_i, t_j, X_{ij} | s_i \in S , t_j \in T , X_{ij} \in \mathbb{R}^d )\}$, where $S$ is the spatial domain, $T$ is the temporal domain, and $X_{ij}$ signifies the observed attributes at location $s_i$ and time $t_j$.
- 
-
-
 
 
 %\section{Textual Graphs}
@@ -21,7 +18,6 @@ The spatio-temporal data can be formalized as a tuple $ST = \{ (s_i, t_j, X_{ij}
 %\subsection{Temporal Graphs}
 
 %\subsection{Spatial-Temporal Graphs}
-
 
 
 
@@ -62,23 +58,49 @@ The theoretical foundation of LLMs lies in probabilistic language modeling. Give
 
 \subsection{Supervised Fine-Tuning}
 
-% Supervised fine-tuning is a process where a pre-trained language model is further trained on a labeled dataset specific to a task. This step refines the model's weights to improve performance on the desired application. For instance, in the context of crime data chatbots, fine-tuning can help the model better understand domain-specific terminology and generate more accurate responses.
+% * SFT
+Supervised fine-tuning (SFT) of large language models (LLMs) is a technique used to adapt pre-trained models on large corpora to specific tasks, improving their performance and alignment with human preferences or task requirements \cite{Wang2023AligningLargeLanguageModels}. This process involves training the model on a labeled dataset, where each input is paired with a corresponding output.
+
+% * Instruction Tuning
+A common variant of SFT is instruction tuning, which trains the model on supervised datasets containing (instruction, output) pairs \cite{Wei2022FinetunedLMZeroShot}. This method improves the model’s zero-shot performance by shifting its behavior from next-token prediction to better understanding and following human directions \cite{Zhang2024InstructionTuningLLM}. 
+
+% ? TODO: Poner esto o no?: In the context of crime data, instruction tuning can help the model better interpret domain-specific terminology and generate more accurate, context-aware responses.
+% ! TODO: formula de next token prediction en LLMs
+
+% Supervised fine-tuning is a process where a pre-trained language model is further trained on a labeled dataset specific to a task. This step refines the model's weights to improve performance on the desired application. 
+% \cite{Mishra2022CrossTaskGeneralization}, \cite{Ouyang2022TrainingLMsIT}
 
 
 \subsection{LoRA (Low-Rank Adaptation)}
 
-% LoRA is a parameter-efficient fine-tuning technique that reduces the computational cost of adapting large language models. Instead of updating all model parameters, LoRA introduces low-rank matrices to the model's architecture, enabling task-specific adaptation with minimal resource usage. This makes it particularly useful for deploying LLMs in resource-constrained environments.
 
-\cite{Hu2021LoRA}
+LoRA \cite{Hu2021LoRA} is a fine-tuning method designed to efficiently adapt large language models (LLMs) by minimizing computational overhead. Instead of updating all model parameters—which can number in the hundreds of billions for modern LLMs—LoRA introduces trainable low-rank matrices into existing weight layers, such as attention or feed-forward layers. These matrices encode task-specific adjustments while keeping the pre-trained model weights unchanged, significantly reducing the number of parameters that need to be trained.
 
+Mathematically, LoRA approximates the weight update $\Delta W$ using a low-rank decomposition $\Delta W = A B$, where $A \in \mathbb{R}^{d \times r}$ and $B \in \mathbb{R}^{r \times k}$, with $r \ll \min(d,k)$. This approach greatly lowers memory and computational requirements, making it particularly suitable for fine-tuning on devices with limited resources.
+
+LoRA is highly modular and can be seamlessly integrated into transformer-based architectures without requiring structural modifications. It can also be combined with other optimization techniques, such as quantization or pruning, to further enhance efficiency. Studies have demonstrated that LoRA achieves performance comparable to or better than full fine-tuning across various tasks, while modifying less than 1% of the model's parameters.
+
+Extensions of LoRA, such as QLoRA (Quantized LoRA) and AdaLoRA (Adaptive LoRA), have further refined its capabilities. For instance, QLoRA enables fine-tuning on models quantized to 4 bits \cite{Dettmers2023QLoRA}, facilitating efficient deployment on consumer-grade hardware.
+
+Thanks to its efficiency and flexibility, LoRA has become a popular choice in open-source LLM projects, especially for scenarios with limited computational resources or strict privacy requirements.
+
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.29\textwidth]{images/lora.pdf}
+  \caption{LoRA}
+  \label{fig:reparam}
+\end{figure}
 
 \subsection{Tool Integrated Reasoning}
 
-\cite{Gou2024ToRA}
+Tool-integrated Reasoning Agents (ToRA) offer a conceptual framework for augmenting large language models (LLMs) by enabling them to utilize external tools during the reasoning process. Rather than relying solely on internal language generation, ToRA integrates natural language inference with symbolic computation or code execution, treating reasoning as a hybrid process. This approach is inspired by dual-process cognitive theories—System 1 (intuitive) and System 2 (analytical)—and positions the LLM as a decision-making controller that determines when and how to delegate tasks to tools such as symbolic solvers, code interpreters, or retrieval systems.
 
-\cite{Moshkov2025AIMO2}. \cite{Yin2024MuMathCode}, \cite{Li2024NuminaMath}
+This paradigm is exemplified by models like AIMO2 \cite{Moshkov2025AIMO2}, which propose modular agent architectures for tool interaction, and MuMathCode \cite{Yin2024MuMathCode}, which highlights the benefits of program synthesis and iterative self-correction for improving mathematical reasoning. ToRA adopts a similar methodology, leveraging training on tool-use trajectories and imitation learning to teach models how to incorporate intermediate tool outputs into reasoning workflows. Additionally, NuminaMath \cite{Li2024NuminaMath, Fleureau2024NuminaMath} introduces symbolic memory modules that align with ToRA’s goal of maintaining coherent multi-step reasoning through persistent access to verified tool outputs.
 
 % Tool Integrated Reasoning enhances the reasoning capabilities of language models by integrating external tools, such as APIs or specialized algorithms, into the generation process. In the context of crime data chatbots, this approach allows the model to query real-time crime databases or perform geospatial analysis to provide users with accurate and actionable information about potential dangers.
+
+
 
 
 \section{Prompting}
@@ -100,7 +122,7 @@ The following methods are some of the most common techniques and used in our wor
 
 \begin{itemize}
     \item \textbf{Zero-shot prompting}: Involves providing the model with a task description or question without any examples. The model is expected to generate a response based solely on its pre-existing knowledge and understanding of the task.
-    \item \textbf{Few-shot prompting}: As mentioned by \cite{fewshot2020}, this technique involves providing the model with a few examples of the desired output format or task. This helps the model understand the context and generate more accurate responses.
+    \item \textbf{Few-shot prompting}: As mentioned by \cite{gpt3Paper}, this technique involves providing the model with a few examples of the desired output format or task. This helps the model understand the context and generate more accurate responses.
     \item \textbf{Chain-of-thought prompting}: Firstly introduced by \cite{chainofthought2023}, encourages the model to generate intermediate reasoning steps before arriving at a final answer. This approach has been shown to improve performance on complex tasks, such as arithmetic reasoning and logical inference.
     % TODO: PAL https://www.promptingguide.ai/techniques/pal
 \end{itemize}
@@ -108,28 +130,19 @@ The following methods are some of the most common techniques and used in our wor
 
 
 
+% \section{Retrieval Augmented Generation (RAG)}
 
+% Retrieval-Augmented Generation (RAG), first introduced by \cite{RAG2021}, is a framework that combines the strengths of retrieval-based and generative approaches for question answering. Its core idea is to enhance the generative capabilities of language models by incorporating relevant information retrieved from external knowledge sources, rather than relying solely on parametric knowledge (i.e., information encoded in the model's weights).
 
-
-
-
-
-\section{Retrieval Augmented Generation (RAG)}
-
-Retrieval-Augmented Generation (RAG), first introduced by \cite{RAG2021}, is a framework that combines the strengths of retrieval-based and generative approaches for question answering. Its core idea is to enhance the generative capabilities of language models by incorporating relevant information retrieved from external knowledge sources, rather than relying solely on parametric knowledge (i.e., information encoded in the model's weights).
-
-The RAG architecture consists of two primary components: 
-\begin{itemize}
+% The RAG architecture consists of two primary components: 
+% \begin{itemize}
      
-    \item \textbf{Retriever}: This component retrieves relevant documents or sentences from a large corpus based on the input query. It typically employs models such as BM25 \cite{bm25Paper} or dense retrieval methods to identify the most relevant information. 
-    \item \textbf{Generator}: Once the retriever has collected the relevant documents, the generator—usually a transformer-based language model—takes them as input to produce a coherent and contextually appropriate response. The generator can be fine-tuned for specific tasks to further improve its performance. 
-\end{itemize}
+%     \item \textbf{Retriever}: This component retrieves relevant documents or sentences from a large corpus based on the input query. It typically employs models such as BM25 \cite{bm25Paper} or dense retrieval methods to identify the most relevant information. 
+%     \item \textbf{Generator}: Once the retriever has collected the relevant documents, the generator—usually a transformer-based language model—takes them as input to produce a coherent and contextually appropriate response. The generator can be fine-tuned for specific tasks to further improve its performance. 
+% \end{itemize}
 
-In recent years, RAG has gained considerable attention in the NLP community for its ability to generate high-quality responses. This has spurred the development of new techniques to improve both retrieval precision and generation quality. For instance, \cite{modularRAG2024} introduces a modular RAG framework that enables the integration of diverse components across different stages of the pipeline. These include techniques such as query expansion, reformulation, and transformation in the pre-retrieval phase, as well as the use of LLMs as judges in the post-retrieval phase to evaluate if the response is enoughly complete.
-This modular design encourages flexibility and supports experimentation with novel combinations and architectural variations.
-
-
-
+% In recent years, RAG has gained considerable attention in the NLP community for its ability to generate high-quality responses. This has spurred the development of new techniques to improve both retrieval precision and generation quality. For instance, \cite{modularRAG2024} introduces a modular RAG framework that enables the integration of diverse components across different stages of the pipeline. These include techniques such as query expansion, reformulation, and transformation in the pre-retrieval phase, as well as the use of LLMs as judges in the post-retrieval phase to evaluate if the response is enoughly complete.
+% This modular design encourages flexibility and supports experimentation with novel combinations and architectural variations.
 
 
 
@@ -137,15 +150,42 @@ This modular design encourages flexibility and supports experimentation with nov
 
 \subsection{Pass@K}
 
+Pass@k is a metric that evaluates the probability of a model generating a correct answer within the top-k responses. It is particularly useful for assessing the performance of language models in tasks where multiple answers can be generated, such as question answering or text generation \cite{Levi2024SimpleModelInferenceScalingLaws}. The metric is defined as:
+
+\begin{equation}
+    Pass@k = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(y_i \in \hat{y}_i^{(1:k)})
+\end{equation}
+
+where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the top-k responses, and 0 otherwise.
+
 \subsection{Majority@K}
 
-\cite{Wang2023SelfConsistency}
+Majority@k is a metric that evaluates if the group with the majority of the top-k generated answers is similar to the ground truth answer. It is particularly useful for assessing the performance of language models in tasks where multiple answers can be generated, such as question answering or text generation \cite{Wang2023SelfConsistency}. The metric is defined as:
+\begin{equation}
+    Majority@k = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(y_i \in \text{majority}(\hat{y}_i^{(1:k)}))
+\end{equation}
+where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the majority of the top-k responses, and 0 otherwise.
 
-\subsection{Exact Match (EM)}
 
-\subsection{BLEU}
+\subsection{Code-BLEU}
+
+Code-BLEU is a metric designed to evaluate the quality of code generation by comparing the generated code against a set of reference codes. It is an adaptation of the BLEU metric, which is commonly used for evaluating machine translation tasks. Code-BLEU incorporates specific features relevant to programming languages, such as syntax and structure, to provide a more accurate assessment of code quality \cite{Ren2020CodeBLEU}. The metric is defined as a linear combination of several components:
+
+\begin{equation}
+    CodeBLEU = \alpha \cdot BLEU + \beta \cdot BLEU_{weight} + \gamma \cdot Match_{ast} + \delta \cdot Match_{df}
+\end{equation}
+
+where \(BLEU\) is the standard BLEU score, \(BLEU_{weight}\) is a weighted version of the BLEU score that accounts for the importance of different n-grams, \(Match_{ast}\) measures the structural similarity between the generated code and the reference code using abstract syntax trees (ASTs), and \(Match_{df}\) evaluates the data flow similarity between the two codes. The coefficients \(\alpha\), \(\beta\), \(\gamma\), and \(\delta\) are hyperparameters that can be tuned to balance the contributions of each component. And the BLEU score is defined as:
+
+\begin{equation}
+    BLEU = BP \cdot \exp\left(\sum_{n=1}^{N} w_n \cdot \log p_n\right)
+\end{equation}
+where \(BP\) is the brevity penalty, \(w_n\) is the weight for n-grams of length \(n\), and \(p_n\) is the precision of n-grams in the generated code compared to the reference code.
 
 
+
+
+% \subsection{Exact Match (EM)}
 
 % \subsection{Accuracy}
 
@@ -160,6 +200,3 @@ This modular design encourages flexibility and supports experimentation with nov
 % \subsection{Hit Rate}
 
 % \subsection{Mean Reciprocal Rank (MRR)}
-
-
-
