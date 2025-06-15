@@ -84,6 +84,8 @@ Quantization & 4-bit (NF4, double quant) \\
 % We adopted the approach proposed by \cite{Fleureau2024NuminaMath}, Self-Consistency Tool-Integrated Reasoning (SC-TIR) to evaluate our fine tuned model
 For model evaluation, we adopted a comprehensive approach combining both automated and LLM-based assessment methods. Specifically, we used pass@k \cite{Levi2024SimpleModelInferenceScalingLaws} (with $k=16$), where correctness was determined using an LLM-as-a-judge \cite{Li2025LLMJudge} (Appendix~\ref{appendix:prompts}) using GPT-4.1, and CodeBLEU \cite{Ren2020CodeBLEU}, which provides a purely quantitative measure of code generation quality. Additionally, we calculated the error percentage across all generated code samples to assess overall robustness. Finally, we performed Tool Integrated Reasoning (TIR) \cite{Fleureau2024NuminaMath} evaluations, allowing a single retry per question to mitigate frequent inference errors such as ZeroDivisionError and IndexError, while maintaining evaluation efficiency.
 
+% TODO: poner que metodo de inferencia estamos usando, puede que sea greedy decoding
+
 % The model was trained using QLoRA \cite{Dettmers2023QLoRA} with a rank of 64, alpha of 16, and a dropout rate of 0.05. 
 
 % We employed a learning rate of 2e-4 with the AdamW optimizer and cosine learning rate scheduler with 100 warm-up steps. Training was performed for 3 epochs with a batch size of 16, using a maximum sequence length of 2048 tokens. To maintain training stability, we applied gradient clipping with a maximum norm of 1.0.
