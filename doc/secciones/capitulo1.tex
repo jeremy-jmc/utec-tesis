@@ -169,19 +169,21 @@ where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sam
 
 \subsection{Code-BLEU}
 
-Code-BLEU is a metric designed to evaluate the quality of code generation by comparing the generated code against a set of reference codes. It is an adaptation of the BLEU metric, which is commonly used for evaluating machine translation tasks. Code-BLEU incorporates specific features relevant to programming languages, such as syntax and structure, to provide a more accurate assessment of code quality \cite{Ren2020CodeBLEU}. The metric is defined as a linear combination of several components:
+CodeBLEU is a specialized metric designed to evaluate the quality of code generation by comparing machine-generated code against one or more reference implementations. It extends the traditional BLEU metric—commonly used in natural language processing for tasks such as machine translation—by incorporating programming-specific characteristics such as syntax, structure, and semantic correctness \cite{Ren2020CodeBLEU}. This makes CodeBLEU better aligned with the nuanced requirements of programming languages.
+
+The metric is formulated as a weighted linear combination of four complementary components:
+\begin{equation}
+    \text{CodeBLEU} = \alpha \cdot \text{BLEU} + \beta \cdot \text{BLEU}_{\text{weight}} + \gamma \cdot \text{Match}_{\text{AST}} + \delta \cdot \text{Match}_{\text{DF}}
+\end{equation}
+Here, \(\text{BLEU}\) is the standard BLEU score, \(\text{BLEU}_{\text{weight}}\) is a weighted variant that accounts for the relative importance of different n-grams, \(\text{Match}_{\text{AST}}\) measures syntactic similarity based on abstract syntax trees (ASTs), and \(\text{Match}_{\text{DF}}\) evaluates semantic similarity through data flow analysis. The coefficients \(\alpha\), \(\beta\), \(\gamma\), and \(\delta\) are tunable hyperparameters that balance the influence of each component.
+
+The BLEU component is computed as:
 
 \begin{equation}
-    CodeBLEU = \alpha \cdot BLEU + \beta \cdot BLEU_{weight} + \gamma \cdot Match_{ast} + \delta \cdot Match_{df}
+    \text{BLEU} = BP \cdot \exp\left(\sum_{n=1}^{N} w_n \cdot \log p_n\right)
 \end{equation}
 
-where \(BLEU\) is the standard BLEU score, \(BLEU_{weight}\) is a weighted version of the BLEU score that accounts for the importance of different n-grams, \(Match_{ast}\) measures the structural similarity between the generated code and the reference code using abstract syntax trees (ASTs), and \(Match_{df}\) evaluates the data flow similarity between the two codes. The coefficients \(\alpha\), \(\beta\), \(\gamma\), and \(\delta\) are hyperparameters that can be tuned to balance the contributions of each component. And the BLEU score is defined as:
-
-\begin{equation}
-    BLEU = BP \cdot \exp\left(\sum_{n=1}^{N} w_n \cdot \log p_n\right)
-\end{equation}
-where \(BP\) is the brevity penalty, \(w_n\) is the weight for n-grams of length \(n\), and \(p_n\) is the precision of n-grams in the generated code compared to the reference code.
-
+where \(BP\) is the brevity penalty, \(w_n\) denotes the weight assigned to n-grams of length \(n\), and \(p_n\) is the precision of those n-grams in the generated code relative to the reference code.
 
 
 
