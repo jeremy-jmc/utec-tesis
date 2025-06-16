@@ -78,7 +78,7 @@ LoRA \cite{Hu2021LoRA} is a fine-tuning method designed to efficiently adapt lar
 
 Mathematically, LoRA approximates the weight update $\Delta W$ using a low-rank decomposition $\Delta W = A B$, where $A \in \mathbb{R}^{d \times r}$ and $B \in \mathbb{R}^{r \times k}$, with $r \ll \min(d,k)$. This approach greatly lowers memory and computational requirements, making it particularly suitable for fine-tuning on devices with limited resources.
 
-LoRA is highly modular and can be seamlessly integrated into transformer-based architectures without requiring structural modifications. It can also be combined with other optimization techniques, such as quantization or pruning, to further enhance efficiency. Studies have demonstrated that LoRA achieves performance comparable to or better than full fine-tuning across various tasks, while modifying less than 1% of the model's parameters.
+LoRA is highly modular and can be seamlessly integrated into transformer-based architectures without requiring structural modifications. It can also be combined with other optimization techniques, such as quantization or pruning, to further enhance efficiency. Studies have demonstrated that LoRA achieves performance comparable to or better than full fine-tuning across various tasks, while modifying less than 1.% of the model's parameters.
 
 Extensions of LoRA, such as QLoRA (Quantized LoRA) and AdaLoRA (Adaptive LoRA), have further refined its capabilities. For instance, QLoRA enables fine-tuning on models quantized to 4 bits \cite{Dettmers2023QLoRA}, facilitating efficient deployment on consumer-grade hardware.
 
