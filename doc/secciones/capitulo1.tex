@@ -55,6 +55,10 @@ Notable examples of LLMs include OpenAI's GPT-3 \cite{gpt3Paper}, Google's BERT 
 
 The theoretical foundation of LLMs lies in probabilistic language modeling. Given a sequence of tokens \( x = (x_1, x_2, \dots, x_n) \), a language model aims to estimate either the joint probability \( P(x) \) or the conditional probability of the next token \( P(x_n \mid x_1, \dots, x_{n-1}) \). The model is trained to assign higher probabilities to sequences that are more likely to appear in natural language, based on patterns learned from large-scale datasets. This is made possible by the transformer's use of self-attention and feed-forward layers, which together capture complex dependencies across tokens. In particular, positional encodings and multi-head attention enable LLMs to model long-range relationships—something that earlier architectures like RNNs and LSTMs struggled to achieve effectively.
 
+\subsection{LLM decoding methods}
+
+\cite{Shi2024DecodingMethods}, \cite{Minaee2025LLMSurvey}
+% \cite{Lin2025EfficientInferenceLLM}
 
 \subsection{Supervised Fine-Tuning}
 
@@ -71,7 +75,7 @@ A common variant of SFT is instruction tuning, which trains the model on supervi
 % \cite{Mishra2022CrossTaskGeneralization}, \cite{Ouyang2022TrainingLMsIT}
 
 
-\subsection{LoRA (Low-Rank Adaptation)}
+\subsection{LoRA (Low-Rank Adaptation)}     % TODO: rename to Parameter-Efficient Fine-Tuning
 
 
 LoRA \cite{Hu2021LoRA} is a fine-tuning method designed to efficiently adapt large language models (LLMs) by minimizing computational overhead. Instead of updating all model parameters—which can number in the hundreds of billions for modern LLMs—LoRA introduces trainable low-rank matrices into existing weight layers, such as attention or feed-forward layers. These matrices encode task-specific adjustments while keeping the pre-trained model weights unchanged, significantly reducing the number of parameters that need to be trained.
