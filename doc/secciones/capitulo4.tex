@@ -9,7 +9,7 @@
 
 \begin{table}[h!]
 \centering
-\caption{Evaluation Metrics: Mean, Std, and Median}
+\caption{Evaluation Metrics finetuned LLaMA3: Mean, Std, and Median}
 % \resizebox{\textwidth}{!}
 {%
 \begin{tabular}{l|ccc}
@@ -25,6 +25,25 @@ code\_bleu@k  & 0.355 & 0.044 & 0.353 \\
 }
 \label{tab:metrics_generated}
 \end{table}
+
+\begin{table}[h!]
+\centering
+\caption{Evaluation Metrics for o4-mini: Mean, Std, and Median (New Data)}
+{%
+\begin{tabular}{l|ccc}
+\toprule
+\textbf{Metric} & \textbf{Mean} & \textbf{Std} & \textbf{Median} \\
+\midrule
+perc\_error@k     & 0.003 & 0.014 & 0.0   \\
+pass\_at@k        & 0.303 & 0.459 & 0.0   \\
+pass\_over\_k      & 0.063 & 0.175 & 0.0   \\
+code\_bleu@k      & 0.370 & 0.054 & 0.375 \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:metrics_new_data}
+\end{table}
+
 
 \section{Discussion}
 
