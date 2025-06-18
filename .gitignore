@@ -10,3 +10,4 @@ samples/
 *.synctex.gz
 *.toc
 main.pdf
+prompts/

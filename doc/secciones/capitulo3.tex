@@ -10,23 +10,28 @@ This section describes the procedures followed to curate and preprocess the data
 
 \subsection{Data sources}
 
-We leveraged the comprehensive China crime dataset published by \cite{Zhang2025CrimeDatasetChina}. The dataset underwent thorough cleaning procedures, including handling of missing values, consolidating category columns through LLM-based classification and standardization of date formats, with all text fields subsequently translated to English. To maintain analytical focus, we concentrated on the three provinces exhibiting the highest crime incidence during the 2017-2019 period: \textit{Jiangsu}, \textit{Guangdong}, and \textit{Zhejiang}. 
+We leveraged the comprehensive China crime dataset published by \cite{Zhang2025CrimeDatasetChina}. To provide geographic context, we integrated administrative boundary data for China \cite{GeoJSON2025China} and road network data from OpenStreetMap \cite{Vargas2021OSM}. This enabled proximity calculations between criminal incidents and nearby roads, a significant variable within our analytical framework. Full dataset columns details are provided in Appendix \ref{appendix:dataset}.
 
-The crime dataset was enhanced through integration with publicly available administrative boundary data for China \cite{GeoJSON2025China}, providing polygon-level geographic context. Additionally, we incorporated road network data from OpenStreetMap \cite{Vargas2021OSM} to enable crucial proximity calculations between criminal incidents and nearby roads, a significant variable within our analytical framework. Full dataset columns details are provided in Appendix \ref{appendix:dataset}.
+\subsection{Data sources cleaning and normalization}
+
+The dataset underwent thorough cleaning procedures, including handling of missing values, consolidating category columns through LLM-based classification, and standardization of date formats. All text fields were subsequently translated to English. To maintain analytical focus, we concentrated on the three provinces exhibiting the highest crime incidence during the 2017-2019 period: \textit{Jiangsu}, \textit{Guangdong}, and \textit{Zhejiang}.
 
 \subsection{Question-Answer generation}
 
-To develop our question-answer dataset, we first created 100 question templates (inspired by \cite{Dai2024QASTKG, Contractor2020QATourism}),  covering different types of inquiries including spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
+To develop our question-answer dataset, we first created 100 question templates (inspired by \cite{Dai2024QASTKG, Contractor2020QATourism}), covering different types of inquiries including spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
 
 We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75). These question categories are summarized in Table~\ref{tab:question_types}. Then, for each original question type, we selected random examples and developed Python code solutions manually. These hand-crafted solutions provided context for generating additional synthetic code answers using the DeepSeek V3 model with prompting (Appendix~\ref{appendix:prompts}) and nucleus-sampling \cite{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath} (top\_p set to 0.95), generating new reasoning paths and coding approaches.
 
-% temperature set to 0.6 and top_p set to 0.95
+\subsection{Dataset filtering}
 
-To ensure quality, we verified that all LLM-generated Python solutions executed correctly. When errors occurred, we resubmitted queries to the LLM until either receiving a working solution or reaching the maximum retry limit. Finally, we conducted manual reviews of all question-answer pairs to guarantee their quality.
+To ensure quality, we verified that all LLM-generated Python solutions executed correctly. When errors occurred, we resubmitted queries to the LLM until either receiving a working solution or reaching the maximum retry limit. After that, we dropped the questions with no valid code solutions (limit exceeded, code with errors, or no code generated). Finally, we conducted manual reviews of all question-answer pairs to guarantee their quality.
 
-The resulting dataset, which we named "ChinaCrimeQACode", contains 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \cite{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation.     % , and has been made publicly available
+\subsection{Dataset splitting}
+
+The resulting dataset, which we named "ChinaCrimeQACode", contains 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \cite{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation.
 
 % TODO: poner ejemplo de question-answer pair
+% TODO: Statistics of ChinaCrimesQA code dataset
 
 \begin{table}[hbtp]
 \centering
@@ -49,8 +54,11 @@ The resulting dataset, which we named "ChinaCrimeQACode", contains 5,000 questio
 
 % This review process involved verifying that the answers were accurate, relevant, and aligned with the corresponding questions. We also ensured that the answers were concise and clear, making them suitable for use in our visualization tool.
 
-\section{Model Training}
+\section{Model Fine-Tuning}
 
+
+% TODO: model selection
+% TODO: hyperparameters and quantization
 We fine-tuned the Llama-3.1-8B Instruct model \cite{Grattafiori2024Llama3, Unsloth2024WhatModel} by implementing the techniques described in \cite{Pareja2024RecipesSFT}. For the fine-tuning process, we utilized Hugging Face Transformers alongside the Unsloth library to optimize computational resources and accelerate training, completing the entire procedure in approximately 3 hours using a single NVIDIA H100 GPU with 80GB memory provided by Lightning AI. This model was chosen as it represents a balance between size (8B), data science coding capabilities \cite{Lai2022DS1000}, and compatibility with Unsloth for fast and efficient fine-tuning.
 
 \begin{table}[H]

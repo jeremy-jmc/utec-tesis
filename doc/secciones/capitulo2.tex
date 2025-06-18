@@ -72,11 +72,13 @@ In the context of crime data analysis, several visualization systems have been p
 Early tools like CrimeVis \cite{Silva2017CrimeVisAI}, focused on interactive exploration accross police districts (DPs) brushing-and-linking techniques. Later systems extended this groundwork by incorporating advanced feature engineering and machine learning techniques. CrimAnalyzer \cite{Garcia2021CrimAnalyzer} proposed a Non-negative Matrix Factorization (NMF) based technique to identify hostpots. Furthermore, CriPAV \cite{Garcia2022CriPAV} incorporates autoencoders to embed and cluster hotspots, facilitating the analysis of the relationship between crime and urban features.
 
 
+\cite{Garcia2020MiranteAV}
+
 % \cite{Garcia2021CrimAnalyzer} propose CrimAnalyzer, that relies on Non-negative Matrix Factorization (NMF) to identify hostpots.
 % \cite{Garcia2022CriPAV} propose CriPAV a visualization system to assist experts to figure out the relation between crime and urban features, using autoencoders to generate embeddings of hotspots to cluster them. 
 
 
-% TODO Include: \cite{Garcia2020MiranteAV} introduces Mirante, a crime mapping visualization system that allows pattern analysis in a street-level scale.
+% TODO Include:  introduces Mirante, a crime mapping visualization system that allows pattern analysis in a street-level scale.
 % \cite{Salah2022BigCDVis} 
 
 
@@ -85,15 +87,14 @@ Early tools like CrimeVis \cite{Silva2017CrimeVisAI}, focused on interactive exp
 
 \subsection{Early Rule-Based and Semantic Parsing Approaches}
 
-Eviza \cite{Setlur2016Eviza} convert natural language input to filters applied to visualizations. 
+Early rule-based and semantic parsing approaches to natural language interfaces for data visualization focused on mapping user queries to visualization specifications using predefined syntactic rules and probabilistic grammars. For example, Eviza \cite{Setlur2016Eviza} introduced a natural language interface for visual data analysis that leverages a probabilistic grammar-based approach with template-based autocompletion and a finite state machine to manage conversational context. This system enabled users—especially those inexperienced with database query languages like SQL—to interactively filter and manipulate visualizations, particularly on geographic datasets. However, these approaches faced challenges with complex or lengthy queries and certain grammatical constructs, in part due to the inherent ambiguity of natural language arising from syntactic and semantic variations between the user's mental model and the system's interpretation, highlighting the limitations of early rule-based methods.
 
-\cite{Setlur2016Eviza} introduces Eviza, a natural language interface for visual data analysis, leveraging a probabilistic grammar-based approach with predefined syntactic rules. The system incorporates a template-based autocompletion feature to provide users with contextual suggestions, enabling an interactive conversation with existing visualizations. Tested on geographic datasets, such as earthquake data in the US, the interface enhances user interaction by implementing language pragmatics through a finite state machine. However, Eviza faced challenges in recognizing all parts of long and complex queries and struggled with certain grammatical constructs, highlighting the need for more robust natural language processing techniques in visualization systems.
-
-\cite{Narechania2021NL4DV}
+Similarly, NL4DV \cite{Narechania2021NL4DV} provided a Python package for prototyping visualizations from natural language input, allowing users to specify high-level tasks over tabular data. It utilized established NLP toolkits (NLTK, Stanford CoreNLP, spaCy) to parse queries and generate chart specifications, abstracting implementation details from users. While effective for chart specification and exploratory data analysis, NL4DV was limited in its support for spatial operations, conversational feedback, and multi-turn interactions. Together, these systems illustrate the strengths and limitations of early rule-based and semantic parsing approaches, motivating the shift toward more robust, learning-based methods in subsequent research.
 
 \subsection{Neural and Machine Learning-Based Methods}
 
-\cite{Luo2022NL2Vis}
+\cite{Luo2022NL2Vis} introduces ncNet, an end-to-end Transformer-based model designed to convert natural language queries into Vega-Lite visualization specifications, similar to the approach used by NL4DV \cite{Narechania2021NL4DV}. The model accepts a natural language query $N$, a dataset $D$, and optionally a chart template $C$ as input, and generates a simplified Vega-Lite specification known as Vega-Zero. This simplification reduces the number of tokens required, enabling more efficient training and inference. Trained on the nvBench dataset and achieving a competitive performance of 79.6\% accuracy, ncNet demonstrates the potential of deep neural networks for supporting NL2Vis tasks.
+
 
 \cite{Liu2021ADVISor}
 
@@ -106,6 +107,12 @@ Early research on natural language interfaces for data visualization has explore
 \cite{Liu2024NLDriven} introduce a framework for controlling data visualizations through natural language. Their approach centers on two key components: a natural language-to-task translator and a visualization manipulation parser. The translator, based on a fine-tuned T5 model, maps user queries into a hierarchical structure of tasks, which are then interpreted to apply manipulation operations over existing visualizations.
 
 
+\subsection{LLM assisted Data Visualization}
+
+\cite{Choe2024EnhancingDataLiteracyLLMs}
+\cite{Zeng2024AdvancingMLLMChartQA}
+\cite{Sah2024GeneratingAnalyticsDataVizLLMs}
+\cite{Li2024LinkQ}
 
 % \section{KGQA Datasets}
 % ExplaGraphs, WebQSP, SceneGraphs
@@ -120,6 +127,5 @@ Early research on natural language interfaces for data visualization has explore
 
 
 % ? DL-based crime prediction encounters significant obstacles, such as concerns about fairness, accountability, transparency, interpretability, security, and privacy \cite{Ersoz2025CrimePredictionXAISurvey}.
-% ? Inexeperienced users have difficulties using database query languages like SQL to express their data needs \cite{Setlur2016Eviza}. 
-% ? Natural language can be ambiguous due to syntactic and semantic variations between the user's mental model and the system's mental model \cite{Setlur2016Eviza}.
+
 % ? Large reasoning models, suchas as Qwen-QwQ and DeepSeek-R1 have demostraded impressive stepwise reasoning capabilities over long sequences through large-scale reinforcement learning \cite{Wu2025AgenticReasoning}

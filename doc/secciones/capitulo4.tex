@@ -1,15 +1,18 @@
 \chapter{ EXPERIMENTS AND RESULTS}
 
-% \section{Protocolo de entrenamiento}
-% \subsection{Protocolo de experimentación}
+This chapter presents the outcomes derived from applying the methodology detailed in the preceding chapter. We begin by describing the experimental setup and specifying the hyperparameters employed. Next, we report the results from the evaluated models, covering both quantitative and qualitative analyses. Lastly, we discuss the significance of these findings and include case studies to demonstrate the practical relevance of our results.
 
 \section{Experimental setup}
 
+\section{Hyperparameter selection}
+
 \section{Quantitative Results}
+
+% TODO: TABLE 1 comparing Phi3-mini4k-instruct, Llama3-8B-Instruct, baseline and trained models along with Closed-Source models like GPT-4o-models, pass@k with k = 1 (with greedy decoding), 4, 16 (multinomial sampling)
 
 \begin{table}[h!]
 \centering
-\caption{Evaluation Metrics finetuned LLaMA3: Mean, Std, and Median}
+\caption{Evaluation Metrics finetuned LLaMA3: Mean, Std, and Median (Test Set)}
 % \resizebox{\textwidth}{!}
 {%
 \begin{tabular}{l|ccc}
@@ -28,7 +31,7 @@ code\_bleu@k  & 0.355 & 0.044 & 0.353 \\
 
 \begin{table}[h!]
 \centering
-\caption{Evaluation Metrics for o4-mini: Mean, Std, and Median (New Data)}
+\caption{Evaluation Metrics for o4-mini: Mean, Std, and Median (Test Set)}
 {%
 \begin{tabular}{l|ccc}
 \toprule
@@ -46,6 +49,7 @@ code\_bleu@k      & 0.370 & 0.054 & 0.375 \\
 
 
 \section{Discussion}
+
 \section{Qualitative Analysis}
 
 % \section{Discussion}
