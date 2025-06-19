@@ -20,6 +20,7 @@ Another study from Google introduces Visual Chronicles \cite{Deng2025VisualChron
 % \cite{Zhang2023GeoGPT}
 
 
+
 \section{Large-Language Models for Coding-Tasks}
 
 Large language models such as Llama 3 \cite{Grattafiori2024Llama3} already display substantial, general-purpose coding, instruction-following and reasoning skills \cite{Grattafiori2024Llama3}. In addition, a wave of code-specialised models—e.g., Seed-Coder, OpenCodeReasoning, Qwen 2.5-Coder, NuminaMath-7B-TIR, and Code Llama—pushes state-of-the-art accuracy on competitive-programming, software-engineering benchmarks, and mathematical problem solving using Python code \cite{Seed2025SeedCoder, Ahmad2025OCRNVidia, Hui2024Qwen25Coder, Roziere2024CodeLlama, Moshkov2025AIMO2, Yin2024MuMathCode, Gou2024ToRA}. These models are constantly improved and frequently surpassed by even newer architectures, reflecting the rapid pace of progress in this area.
@@ -67,12 +68,11 @@ More recently, large-scale initiatives have emerged in Asia. \cite{Zhang2025Crim
 
 \section{Crime-Data Visualization Tools}
 
-In the context of crime data analysis, several visualization systems have been proposed to support pattern recognition, hotspot identification, and urban context interpretation. These tools typically integrate geospatial data with interactive visual analytics techniques to assist expert users in understanding complex crime patterns.
+% In the context of crime data analysis, several visualization systems have been proposed to support pattern recognition, hotspot identification, and urban context interpretation. These tools typically integrate geospatial data with interactive visual analytics techniques to assist expert users in understanding complex crime patterns.
 
-Early tools like CrimeVis \cite{Silva2017CrimeVisAI}, focused on interactive exploration accross police districts (DPs) brushing-and-linking techniques. Later systems extended this groundwork by incorporating advanced feature engineering and machine learning techniques. CrimAnalyzer \cite{Garcia2021CrimAnalyzer} proposed a Non-negative Matrix Factorization (NMF) based technique to identify hostpots. Furthermore, CriPAV \cite{Garcia2022CriPAV} incorporates autoencoders to embed and cluster hotspots, facilitating the analysis of the relationship between crime and urban features.
+A range of visualization systems have been developed to support crime data analysis, each advancing the integration of geospatial analytics and interactive exploration. Early tools such as CrimeVis \cite{Silva2017CrimeVisAI} enabled users to interactively explore crime statistics across 138 police districts in Rio de Janeiro from 2003 to 2015, employing coordinated maps, parallel coordinates, and brushing-and-linking to correlate crime data with socio-economic indicators and evaluate the effects of public-safety policies. Building on this, Mirante \cite{Garcia2020MiranteAV} introduced a street-level discretization by aggregating incidents on nodes and edges of the road network, allowing for the identification of micro-scale hotspot seasonality through linked heatmaps, histograms, and temporal evolution views.
 
-
-\cite{Garcia2020MiranteAV}
+Subsequent systems have incorporated advanced analytical techniques to deepen insight into spatio-temporal crime patterns. CrimAnalyzer \cite{Garcia2021CrimAnalyzer} integrates visual analytics with Non-negative Matrix Factorization (NMF) to decompose crime tensors into intensity- and seasonality-based components, facilitating the detection of underlying trends. Extending this approach, CriPAV \cite{Garcia2022CriPAV} introduces a stochastic probability model to highlight locations with high likelihoods of crime occurrence and employs an autoencoder-based embedding (Hotspot2Vec) to map hotspot time series into a 2-D latent space, supporting similarity search and cluster exploration. Collectively, these systems illustrate the evolution from interactive, district-level exploration to sophisticated, model-driven hotspot analytics at finer spatial and temporal resolutions.
 
 % \cite{Garcia2021CrimAnalyzer} propose CrimAnalyzer, that relies on Non-negative Matrix Factorization (NMF) to identify hostpots.
 % \cite{Garcia2022CriPAV} propose CriPAV a visualization system to assist experts to figure out the relation between crime and urban features, using autoencoders to generate embeddings of hotspots to cluster them. 
@@ -87,45 +87,35 @@ Early tools like CrimeVis \cite{Silva2017CrimeVisAI}, focused on interactive exp
 
 \subsection{Early Rule-Based and Semantic Parsing Approaches}
 
-Early rule-based and semantic parsing approaches to natural language interfaces for data visualization focused on mapping user queries to visualization specifications using predefined syntactic rules and probabilistic grammars. For example, Eviza \cite{Setlur2016Eviza} introduced a natural language interface for visual data analysis that leverages a probabilistic grammar-based approach with template-based autocompletion and a finite state machine to manage conversational context. This system enabled users—especially those inexperienced with database query languages like SQL—to interactively filter and manipulate visualizations, particularly on geographic datasets. However, these approaches faced challenges with complex or lengthy queries and certain grammatical constructs, in part due to the inherent ambiguity of natural language arising from syntactic and semantic variations between the user's mental model and the system's interpretation, highlighting the limitations of early rule-based methods.
+Early rule-based and semantic parsing approaches to natural language interfaces for data visualization focused on mapping user queries to visualization specifications using predefined syntactic rules and probabilistic grammars. For example, Eviza \cite{Setlur2016Eviza} introduced a natural language interface for visual data analysis that leverages a probabilistic grammar-based approach with template-based autocompletion and a finite state machine to manage conversational context. This system enabled users, especially those inexperienced with database query languages like SQL, to interactively filter and manipulate visualizations, particularly on geographic datasets. However, these approaches faced challenges with complex or lengthy queries and certain grammatical constructs, in part due to the inherent ambiguity of natural language arising from syntactic and semantic variations between the user's mental model and the system's interpretation, highlighting the limitations of early rule-based methods.
 
 Similarly, NL4DV \cite{Narechania2021NL4DV} provided a Python package for prototyping visualizations from natural language input, allowing users to specify high-level tasks over tabular data. It utilized established NLP toolkits (NLTK, Stanford CoreNLP, spaCy) to parse queries and generate chart specifications, abstracting implementation details from users. While effective for chart specification and exploratory data analysis, NL4DV was limited in its support for spatial operations, conversational feedback, and multi-turn interactions. Together, these systems illustrate the strengths and limitations of early rule-based and semantic parsing approaches, motivating the shift toward more robust, learning-based methods in subsequent research.
 
 \subsection{Neural and Machine Learning-Based Methods}
 
-\cite{Luo2022NL2Vis} introduces ncNet, an end-to-end Transformer-based model designed to convert natural language queries into Vega-Lite visualization specifications, similar to the approach used by NL4DV \cite{Narechania2021NL4DV}. The model accepts a natural language query $N$, a dataset $D$, and optionally a chart template $C$ as input, and generates a simplified Vega-Lite specification known as Vega-Zero. This simplification reduces the number of tokens required, enabling more efficient training and inference. Trained on the nvBench dataset and achieving a competitive performance of 79.6\% accuracy, ncNet demonstrates the potential of deep neural networks for supporting NL2Vis tasks.
+Recent advances in neural and machine learning-based approaches have significantly improved the ability of systems to translate natural language queries into visualization specifications. For example, \cite{Luo2022NL2Vis} introduces ncNet, an end-to-end Transformer-based model that converts natural language queries into Vega-Lite visualization specifications. The model takes as input a natural language query $N$, a dataset $D$, and optionally a chart template $C$, and outputs a simplified Vega-Lite specification called Vega-Zero. This simplification reduces the token count, enabling more efficient training and inference. Trained on the nvBench dataset, ncNet achieves a competitive accuracy of 79.6\%, demonstrating the effectiveness of deep neural networks for NL2Vis tasks.
 
+Building on these advances, ADVISor \cite{Liu2021ADVISor} utilizes a trainable BERT-based \cite{bertPaper} pipeline to automatically generate relevant visualizations in response to open-domain questions over tabular data, outperforming NL4DV \cite{Narechania2021NL4DV} in both accuracy and user satisfaction. ADVISor is trained on a variant of the WikiSQL \cite{Zhong2017WikiSQL} question-answer dataset and employs a set of rules to map aggregation operations and attribute types to appropriate visualization types, which aids in effective model training and convergence. Nevertheless, this approach faces limitations when addressing questions that require multiple computational steps—such as comparison queries, those involving more than one primary attribute, or multi-step aggregation—due to the constraints of the underlying dataset. Furthermore, it does not explicitly address geospatial operations, which are essential for urban crime analysis.
 
-\cite{Liu2021ADVISor}
+Extending these developments, \cite{Sah2024GeneratingAnalyticsDataVizLLMs} enhances the NL4DV system \cite{Narechania2021NL4DV} by introducing a prompt-based method that leverages LLMs to generate analytic specifications from natural language queries over tabular data. Their approach produces specifications that identify relevant data attributes, infer analytic tasks, and recommend suitable visualizations. Through iterative prompt refinement and evaluation with GPT-4, they achieve approximately a 20\% improvement in overall accuracy compared to the original NL4DV pipeline on the NLVCorpus \cite{Srinivasan2021NLVCorpus}, although this comes at the cost of increased average response time—25 seconds versus the original NL4DV’s 3 seconds.
 
-\subsection{Natural Language-Driven Interaction with Existing Visualizations}
+% By integrating a closed-source LLM, the system also enables conversational interactions, allowing users to iteratively refine queries and receive updated visualizations as the conversation progresses. 
 
-\cite{Wu2024LLMVis}
+% \cite{Wu2024LLMVis} Early research on natural language interfaces for data visualization has explored how users can interact with visual content through conversational input.
 
-Early research on natural language interfaces for data visualization has explored how users can interact with visual content through conversational input.
+% \cite{Liu2024NLDriven} introduce a framework for controlling data visualizations through natural language. Their approach centers on two key components: a natural language-to-task translator and a visualization manipulation parser. The translator, based on a fine-tuned T5 model, maps user queries into a hierarchical structure of tasks, which are then interpreted to apply manipulation operations over existing visualizations.
 
-\cite{Liu2024NLDriven} introduce a framework for controlling data visualizations through natural language. Their approach centers on two key components: a natural language-to-task translator and a visualization manipulation parser. The translator, based on a fine-tuned T5 model, maps user queries into a hierarchical structure of tasks, which are then interpreted to apply manipulation operations over existing visualizations.
+% \subsection{LLM assisted Data Visualization and Interpretation}
+% \cite{Choe2024EnhancingDataLiteracyLLMs} \cite{Li2024LinkQ} \cite{Zeng2024AdvancingMLLMChartQA}
 
-
-\subsection{LLM assisted Data Visualization}
-
-\cite{Choe2024EnhancingDataLiteracyLLMs}
-\cite{Zeng2024AdvancingMLLMChartQA}
-\cite{Sah2024GeneratingAnalyticsDataVizLLMs}
-\cite{Li2024LinkQ}
 
 % \section{KGQA Datasets}
 % ExplaGraphs, WebQSP, SceneGraphs
 
-
 % \section{Question Answering on Knowledge Graphs}
 % \cite{Dai2024QASTKG}
 
-
 % \section{GNN-LLM}
 % \cite{He2024GRetriever}, \cite{Perozzi2024GraphToken}, \cite{Fatemi2023GraphEncoding}
-
-
-% ? DL-based crime prediction encounters significant obstacles, such as concerns about fairness, accountability, transparency, interpretability, security, and privacy \cite{Ersoz2025CrimePredictionXAISurvey}.
 
 % ? Large reasoning models, suchas as Qwen-QwQ and DeepSeek-R1 have demostraded impressive stepwise reasoning capabilities over long sequences through large-scale reinforcement learning \cite{Wu2025AgenticReasoning}
