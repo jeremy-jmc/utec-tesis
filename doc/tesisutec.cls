@@ -199,11 +199,7 @@
 \renewcommand{\chaptermark}[1]{\btypeout{\thechapter\space #1}\markboth{\@chapapp\ \thechapter\ #1}{\@chapapp\ \thechapter\ #1}}
 \renewcommand{\sectionmark}[1]{}
 \renewcommand{\subsectionmark}[1]{}
-\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
-\hbox{}
-\thispagestyle{empty}
-\newpage
-\if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\def\cleardoublepage{\clearpage} % Always just clear page, not double page
 \usepackage{amsmath,amsfonts,amssymb,amscd,amsthm,xspace}
 \theoremstyle{plain}
 \newtheorem{example}{Example}[chapter]
@@ -456,6 +452,10 @@
 %   \addtotoc{\bibname}
 %   \btypeout{\bibname}
 %   \@mainmatterfalse}
+% \endinput
+
+%%
+%% End of file `tesisutec.cls'.
 % \endinput
 
 %%
