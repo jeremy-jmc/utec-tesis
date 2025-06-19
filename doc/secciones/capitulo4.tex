@@ -50,6 +50,9 @@ code\_bleu@k      & 0.370 & 0.054 & 0.375 \\
 
 \section{Discussion}
 
+Based on the observed metrics, several conclusions emerge regarding the performance of the fine-tuned LLaMA3‑8B‑Instruct model versus the base o4‑mini. First, LLaMA3‑8B‑Instruct exhibits a higher perc\_error@k than o4‑mini; yet it significantly outperforms o4‑mini in both pass@k and pass\_over\_k. This indicates that, despite a slightly lower rate of successful compilation, the fine‑tuned model produces more precise and semantically relevant solutions. In contrast, o4‑mini’s better perc\_error@k can be misleading: it often compiles code that runs but fails to solve the problem correctly.
+
+This discrepancy is likely rooted in architectural and training differences. o4‑mini is believed to use a Mixture‑of‑Experts (MoE) setup with approximately 40B total parameters—only about 8B of which are active per inference—whereas LLaMA3‑8B‑Instruct is a dense model with all 8B parameters actively contributing . While MoE architectures provide access to a broader parameter pool, this capacity advantage does not automatically translate to superior domain-specific performance. In contrast, the fully fine‑tuned LLaMA model has internalized domain-specific patterns—such as those needed to manipulate crime data (locations, dates, crime types, etc.)—enabling it to generate more accurate and relevant code.
 \section{Qualitative Analysis}
 
 % \section{Discussion}
