@@ -78,13 +78,13 @@ A common variant of SFT is instruction tuning, which trains the model on supervi
 \subsection{LoRA (Low-Rank Adaptation)}     % TODO: rename to Parameter-Efficient Fine-Tuning
 
 
-LoRA \cite{Hu2021LoRA} is a fine-tuning method designed to efficiently adapt large language models (LLMs) by minimizing computational overhead. Instead of updating all model parameters—which can number in the hundreds of billions for modern LLMs—LoRA introduces trainable low-rank matrices into existing weight layers, such as attention or feed-forward layers. These matrices encode task-specific adjustments while keeping the pre-trained model weights unchanged, significantly reducing the number of parameters that need to be trained.
+LoRA \cite{Hu2021LoRA} is a fine-tuning method designed to efficiently adapt large language models (LLMs) by minimizing computational overhead. Instead of updating all model parameters, which can number in the hundreds of billions for modern LLMs, LoRA introduces trainable low-rank matrices into existing weight layers, such as attention or feed-forward layers. These matrices encode task-specific adjustments while keeping the pre-trained model weights unchanged, significantly reducing the number of parameters that need to be trained.
 
 Mathematically, LoRA approximates the weight update $\Delta W$ using a low-rank decomposition $\Delta W = A B$, where $A \in \mathbb{R}^{d \times r}$ and $B \in \mathbb{R}^{r \times k}$, with $r \ll \min(d,k)$. This approach greatly lowers memory and computational requirements, making it particularly suitable for fine-tuning on devices with limited resources.
 
 LoRA is highly modular and can be seamlessly integrated into transformer-based architectures without requiring structural modifications. It can also be combined with other optimization techniques, such as quantization or pruning, to further enhance efficiency. Studies have demonstrated that LoRA achieves performance comparable to or better than full fine-tuning across various tasks, while modifying less than 1.% of the model's parameters.
 
-Extensions of LoRA, such as QLoRA (Quantized LoRA) and AdaLoRA (Adaptive LoRA), have further refined its capabilities. For instance, QLoRA enables fine-tuning on models quantized to 4 bits \cite{Dettmers2023QLoRA}, facilitating efficient deployment on consumer-grade hardware.
+Extensions of LoRA, such as QLoRA (Quantized LoRA) and AdaLoRA (Adaptive LoRA) \cite{Dettmers2023QLoRA, Zhang2023AdaLora}, have further refined its capabilities. For instance, QLoRA enables fine-tuning on models quantized to 4 bits \cite{Dettmers2023QLoRA}, facilitating efficient deployment on consumer-grade hardware.
 
 Thanks to its efficiency and flexibility, LoRA has become a popular choice in open-source LLM projects, especially for scenarios with limited computational resources or strict privacy requirements.
 
@@ -126,7 +126,7 @@ The following methods are some of the most common techniques and used in our wor
 
 \begin{itemize}
     \item \textbf{Zero-shot prompting}: Involves providing the model with a task description or question without any examples. The model is expected to generate a response based solely on its pre-existing knowledge and understanding of the task.
-    \item \textbf{Few-shot prompting}: As mentioned by \cite{gpt3Paper}, this technique involves providing the model with a few examples of the desired output format or task. This helps the model understand the context and generate more accurate responses.
+    \item \textbf{Few-shot prompting}: As mentioned by \cite{gpt3Paper}, this technique involves providing the model with a few examples of the desired output format or task. This helps the model understand the context and generate more accurate responses. A related approach is "one-shot prompting," in which the model is given only a single example.
     \item \textbf{Chain-of-thought prompting}: Firstly introduced by \cite{chainofthought2023}, encourages the model to generate intermediate reasoning steps before arriving at a final answer. This approach has been shown to improve performance on complex tasks, such as arithmetic reasoning and logical inference.
     % TODO: PAL https://www.promptingguide.ai/techniques/pal
 \end{itemize}
@@ -173,7 +173,7 @@ where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sam
 
 \subsection{Code-BLEU}
 
-CodeBLEU is a specialized metric designed to evaluate the quality of code generation by comparing machine-generated code against one or more reference implementations. It extends the traditional BLEU metric—commonly used in natural language processing for tasks such as machine translation—by incorporating programming-specific characteristics such as syntax, structure, and semantic correctness \cite{Ren2020CodeBLEU}. This makes CodeBLEU better aligned with the nuanced requirements of programming languages.
+CodeBLEU is a specialized metric designed to evaluate the quality of code generation by comparing machine-generated code against one or more reference implementations. It extends the traditional BLEU metric \cite{Papineni2002BLEU}, commonly used in natural language processing for tasks such as machine translation—by incorporating programming-specific characteristics such as syntax, structure, and semantic correctness \cite{Ren2020CodeBLEU}. This makes CodeBLEU better aligned with the nuanced requirements of programming languages.
 
 The metric is formulated as a weighted linear combination of four complementary components:
 \begin{equation}

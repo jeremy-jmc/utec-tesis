@@ -285,9 +285,9 @@
     \begin{center}
       \setlength{\parskip}{0pt}
       \vspace{-1.5cm}
-      {\large \textbf{UNIVERSIDAD DE INGENIERÍA Y TECNOLOGÍA}\par}
+      {\large \textbf{UNIVERSITY OF ENGINEERING AND TECHNOLOGY}\par}
       \vspace{0.5cm}
-      {\large {CARRERA DE \deptname }\par}
+      {\large {DEGREE PROGRAM OF \deptname }\par}
       \vfill
      
       \href{https://www.utec.edu.pe}{\includegraphics[height=2.5cm]{images/logo_utec.png}}\\
@@ -295,17 +295,17 @@
       \vspace{0.5cm}
       {\Large \bf \@title \par}
       \vspace{1.5cm}
-      {\large \textbf{TRABAJO DE INVESTIGACIÓN}\par}
-      {\large Para optar el grado de \degreename  en \majorname \par}
+      {\large \textbf{RESEARCH WORK}\par}
+      {\large In partial fulfillment for the degree of \degreename\ in \majorname\par}
       \vfill
       \smallskip
       \vspace{0.5cm}
-      {\large \textbf{AUTOR(ES)}\par}
+      {\large \textbf{AUTHOR(S)}\par}
       {\large \authornames \par}
       \vspace{0.5cm}
 %      {\large \textbf{Código \studentid} \par}
       \vspace{0.5cm}
-      {\large \bf ASESOR(ES) \par}
+      {\large \bf ADVISOR(S) \par}
       \smallskip
       {\large \supname \par}
       \vfill
