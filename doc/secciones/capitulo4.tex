@@ -1,3 +1,25 @@
+\lstdefinestyle{pythoncode}{
+  language=Python,
+  basicstyle=\scriptsize\ttfamily,
+  backgroundcolor=\color{gray!5},
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!50!black},
+  stringstyle=\color{orange},
+  numberstyle=\tiny\color{gray},
+  numbers=left,
+  stepnumber=1,
+  numbersep=8pt,
+  frame=single,
+  breaklines=true,
+  captionpos=b,
+  showstringspaces=false,
+  tabsize=4
+}
+% Ajuste opcional del formato de captions
+\captionsetup[lstlisting]{font=small,labelfont=bf}
+
+
+
 \chapter{ EXPERIMENTS AND RESULTS}
 
 This chapter presents the outcomes derived from applying the methodology detailed in the preceding chapter. We begin by describing the experimental setup and specifying the hyperparameters employed. Next, we report the results from the evaluated models, covering both quantitative and qualitative analyses. Lastly, we discuss the significance of these findings and include case studies to demonstrate the practical relevance of our results.
@@ -67,17 +89,84 @@ This discrepancy is likely rooted in architectural and training differences. o4�
         \item \textbf{Justification:} The counterfactual methodology provides insights into a critical public policy question: “What would be the outcome if criminal activities in key urban hotspots were entirely prevented?” Leveraging generative AI for this estimation aids in prioritizing security resources and assessing the cost-effectiveness of targeted interventions without requiring real-world implementation. Additionally, Suzhou’s status as a highly developed city in Jiangsu makes it an ideal setting for studying predictive-preventive urban strategies.
         \item \textbf{Proposed questions:}
         \begin{itemize}
-            \item "How would securing the top 5 most dangerous streets in Suzhou affect the city’s overall crime rates?"
             \item "What percentage reduction in overall crime could be achieved if all night-time thefts in Suzhou during 2021 were prevented?"
             \item "If theft crime-category decreased by 10\% annually, in which year would Suzhou city record fewer than 500 such crimes?"
-            \item "If crime reporting increased by 15\% in Suzhou city, how would that affect the city's safety ranking in Jiangsu province?"
+            \item "Considering the top 10 of the safest all counties in Guangdong Province, How would this top 10 change if the crime reporting increased by 15\% in Zhongshan City in 2019?"
         \end{itemize}
-
-
-
-
 \end{itemize}
 
+\subsubsection{Case I.1:}
+\begin{itemize}
+    \item \textbf{Question:} "What percentage reduction in overall crime could be achieved if all night-time thefts in Guangdong Province during 2021 were prevented?"
+    \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below. 
+
+    \lstinputlisting[
+    style=pythoncode,    
+    label={lst:q1}
+    ]{codigos/q1.py}
+
+
+
+    \item \textbf{Model Response:} 
+    
+    \begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q1 Response, fontupper=\scriptsize]
+
+    "The province of Guangdong in China reported 1376 total crimes in 2019. Out of those, 633 crimes occurred at night. If all night-time crimes were prevented, the overall crime rate would decrease by 46.00\%. This is because 46.00\% of the total crimes in 2019 were night-time crimes."
+    \end{tcolorbox}
+
+\subsubsection{Case I.2:}
+\begin{itemize}
+    \item \textbf{Question:} "If theft crime-category decreased by 10\% annually, in which year would Guangdong Province record fewer than 500 such crimes?"
+    \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below. 
+\end{itemize}
+\subsubsection{Case I.3:}
+\begin{itemize}
+    \item \textbf{Question:} "Considering the top 10 of the safest all counties in Guangdong Province, How would this top 10 change if the crime reporting increased by 15\% in Zhongshan City in 2019?"
+    \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below.
+
+    \lstinputlisting[
+    style=pythoncode,    
+    label={lst:q3}
+    ]{codigos/q3.py}
+    
+    
+    \item \textbf{Model Response:} 
+\begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q3 Response, fontupper=\scriptsize]
+Based on the provided code outputs, the current top 10 safest counties in Guangdong Province for 2019 are:
+
+\begin{enumerate}
+  \item Bao'an District with 298 crimes
+  \item Dongguan City with 139 crimes
+  \item Baiyun District with 113 crimes
+  \item Zhongshan City with 80 crimes
+  \item Longgang District with 78 crimes
+  \item Panyu District with 62 crimes
+  \item Shunde District with 61 crimes
+  \item Chancheng District with 56 crimes
+  \item Nanshan District with 55 crimes
+  \item Haizhu District with 49 crimes
+\end{enumerate}
+
+If the crime reporting in Zhongshan City increased by 15\% in 2019, the new top 10 safest counties would be:
+
+\begin{enumerate}
+  \item Bao'an District with 298 crimes
+  \item Dongguan City with 139 crimes
+  \item Baiyun District with 113 crimes
+  \item Zhongshan City with 92 crimes (after 15\% increase)
+  \item Longgang District with 78 crimes
+  \item Panyu District with 62 crimes
+  \item Shunde District with 61 crimes
+  \item Chancheng District with 56 crimes
+  \item Nanshan District with 55 crimes
+  \item Haizhu District with 49 crimes
+\end{enumerate}
+
+The change in ranking is due to Zhongshan City moving from 4th to 4th place after the increase in crimes.
+\end{tcolorbox}
+
+    
+\end{itemize}
 
 \subsection{Case II:}
 
