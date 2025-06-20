@@ -81,23 +81,29 @@ This discrepancy is likely rooted in architectural and training differences. o4�
 
 \section{Case studies}
 
-\subsection{Case I: Counterfactual Evaluation of Targeted Interventions in High-Crime Zones of Suzhou (Jiangsu)}
+\subsection{Case I: Counterfactual Evaluation of Targeted Interventions in Crime Hotspots of Guangdong Province}
 
 \begin{itemize}
-    \item \textbf{Case summary:} This analysis examines the hypothetical effects of intensive police interventions targeting the most crime-prone streets in Suzhou, Jiangsu Province. The study is motivated by the growing interest in situational crime prevention strategies \cite{clarke1995situational}, which propose that altering or enhancing surveillance in urban areas can influence criminal behavior. 
-        \item \textbf{General Objective:} To evaluate the potential impact of securing the five most dangerous streets in Suzhou on the city’s overall crime rates, using data collected between 2020 and 2022.
-        \item \textbf{Justification:} The counterfactual methodology provides insights into a critical public policy question: “What would be the outcome if criminal activities in key urban hotspots were entirely prevented?” Leveraging generative AI for this estimation aids in prioritizing security resources and assessing the cost-effectiveness of targeted interventions without requiring real-world implementation. Additionally, Suzhou’s status as a highly developed city in Jiangsu makes it an ideal setting for studying predictive-preventive urban strategies.
+       \item \textbf{Case summary:} This study models what might happen if targeted interventions (e.g., CCTV, policing) in crime hotspot areas of Zhongshan (Guangdong Province) completely prevented certain crimes in 2019. Drawing on situational crime prevention literature, especially meta-analyses showing modest but significant crime reductions from CCTV, typically 16–20\% in property and vehicle crime settings, this case uses counterfactual modeling to simulate those interventions in Zhongshan.
+      \item \textbf{General Objective:} To simulate the following counterfactual scenarios using 2019 data:
+      \begin{enumerate}
+          \item Entire prevention of night-time thefts in Zhongshan and its effect on total crime.
+          \item A 20\% reduction in total crime at the central hotspot ([22.516998, 113.392723]) and its spatial impact on average crime in counties within a 70 km radius.
+          \item A 15\% increase in reported crime in Zhongshan and how that would alter the Top 10 safest county rankings in Guangdong Province.
+      \end{enumerate}
+      \item \textbf{Justification:} Meta-analyses consistently find CCTV leads to modest, significant reductions—around 16\% overall and ~20\% for property/vehicle crimes, and are more effective when actively monitored or combined with other interventions. Zhongshan, as a rapidly urbanizing city in Guangdong, offers a relevant setting to assess how targeted counterfactuals can inform policy on hotspot interventions and reporting practices.
+
         \item \textbf{Proposed questions:}
         \begin{itemize}
-            \item "What percentage reduction in overall crime could be achieved if all night-time thefts in Suzhou during 2021 were prevented?"
-            \item "If theft crime-category decreased by 10\% annually, in which year would Suzhou city record fewer than 500 such crimes?"
+            \item "What percentage reduction in overall crime could be achieved if all night-time thefts in Suzhou during 2019 were prevented?"
+            \item "How would the average crime in neighboring counties (within a 70 km radius of [22.516998, 113.392723]) change if crime at that central point were reduced by 20\%?"
             \item "Considering the top 10 of the safest all counties in Guangdong Province, How would this top 10 change if the crime reporting increased by 15\% in Zhongshan City in 2019?"
         \end{itemize}
 \end{itemize}
 
 \subsubsection{Case I.1:}
 \begin{itemize}
-    \item \textbf{Question:} "What percentage reduction in overall crime could be achieved if all night-time thefts in Guangdong Province during 2021 were prevented?"
+    \item \textbf{Question:} "What percentage reduction in overall crime could be achieved if all night-time thefts in Guangdong Province during 2019 were prevented?"
     \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below. 
 
     \lstinputlisting[
@@ -116,8 +122,26 @@ This discrepancy is likely rooted in architectural and training differences. o4�
 
 \subsubsection{Case I.2:}
 \begin{itemize}
-    \item \textbf{Question:} "If theft crime-category decreased by 10\% annually, in which year would Guangdong Province record fewer than 500 such crimes?"
+    \item \textbf{Question:} "How would the average crime in neighboring counties (within a 70 km radius of [22.516998, 113.392723]) change if crime at that central point were reduced by 20\%?"
     \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below. 
+
+
+    \lstinputlisting[
+    style=pythoncode,    
+    label={lst:q2}
+    ]{codigos/q2.py}
+
+  \item \textbf{Model Response:} 
+    
+
+    \begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q2 Response, fontupper=\scriptsize]
+    
+    The average crime rate in neighboring counties would decrease by 13.85\% if crime at the central point were reduced by 20\%. 
+
+    This is because the simulated reduced crime rate in neighboring counties decreased from 4874.79 to 4199.85.
+    
+    \end{tcolorbox}
+
 \end{itemize}
 \subsubsection{Case I.3:}
 \begin{itemize}
