@@ -63,7 +63,7 @@ To ensure quality, we verified that all LLM-generated Python solutions executed 
 
 \subsection{Dataset splitting}
 
-The resulting dataset, which we named "ChinaCrimeQACode", contains 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \citep{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split (Table~\ref{tab:dataset_split}) to facilitate robust model training and comprehensive evaluation.
+The resulting dataset, which we named "ChinaCrimeQACode", contains around 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \citep{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split (Table~\ref{tab:dataset_split}) to facilitate robust model training and comprehensive evaluation. The dataset is publicly available on HuggingFace for further research and development.
 % This review process involved verifying that the answers were accurate, relevant, and aligned with the corresponding questions. We also ensured that the answers were concise and clear, making them suitable for use in our visualization tool.
 
 \begin{table}[H]
@@ -84,6 +84,47 @@ test  & 1079 \\
 % TODO: poner ejemplo de question-answer pair
 
 \section{Prompt Structuration}
+Prompts were carefully designed to ensure the model understood the task requirements and could generate accurate code solutions.  
+We generate code solutions using a structured prompt (Figure~\ref{fig:prompt_structure}) that includes the following components:  
+(1) a system message that sets the context for the model,  
+(2) a dataset context where we provide each table description, including column names and types,  
+(3) a question that specifies the task to be performed,  
+(4) a critical-requirements section that outlines the specific constraints for code generation,  
+(5) an output-format section that prescribes the expected response structure, and  
+(6) an execution directive that instantiates the model to write the code solution.
+
+\medskip
+\noindent
+\textbf{Prompt design in detail.}  
+Figure~\ref{fig:prompt_structure} illustrates the layered architecture that guides the large-language model from high-level context to low-level implementation:
+
+\begin{enumerate}
+  \item \textbf{System Instruction:} Defines the agent’s role as an expert in geospatial crime analytics and explicitly enumerates the \emph{only} permitted libraries.  
+  This early scoping mitigates hallucinations and enforces deterministic, reproducible outputs.
+  
+  \item \textbf{Dataset Context:} Supplies declarative metadata for the three interconnected GeoDataFrames: \texttt{crimes\_df}, \texttt{streets\_df}, and \texttt{geometries\_df}.  
+  Column names, data types, and schema relations (e.g., point‐to‐line containment) are provided to prime schema awareness.
+  
+  \item \textbf{User Question:} A natural-language query that specifies the required spatio-temporal analysis.
+  
+  \item \textbf{Critical Requirements:} Lists fine-grained constraints the generated code must satisfy, including the function signature, CRS alignment checks, sanctioned libraries, and robust error handling.
+  
+  \item \textbf{Output Format:} Mandates that the response consist solely of a single \texttt{python} code block, disallowing any explanatory prose.  
+  This rigidity greatly simplifies downstream execution pipelines.
+  
+  \item \textbf{Execution Directive:} Issues an imperative \enquote{BEGIN CODING IMMEDIATELY} that forces the model to produce executable Python as its very first token, eliminating meta-commentary.
+\end{enumerate}
+
+These six layers funnel the model from overarching context to executable detail, effectively functioning as a self-contained software specification.  
+The complete version of the prompt is described in Appendix~\ref{appendix:prompts} for full transparency and reproducibility.
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.29\textwidth]{images/prompt.png}
+  \caption{Prompt Structure}
+  \label{fig:prompt_structure}
+\end{figure}
+
 
 \section{Model Fine-Tuning}
 
@@ -131,7 +172,9 @@ For model evaluation, we adopted a comprehensive approach combining both automat
 % For instruction tuning, we formatted our question-code pairs using a standard template that clearly specified the task context and expectations. Each question was prefaced with a system prompt indicating that the model should generate executable Python code to analyze crime data and answer the given question. 
 
 
-% \section{Visualization Tool}
+\section{Case Study Inference Workflow}
+
+% TODO: diagrama de flujo de la inferencia para estudios de caso
 
 \section{Resume}
 
