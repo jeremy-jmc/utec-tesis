@@ -10,7 +10,7 @@ This section describes the procedures followed to curate and preprocess the data
 
 \subsection{Data sources}
 
-We leveraged the comprehensive China crime dataset published by \cite{Zhang2025CrimeDatasetChina}. To provide geographic context, we integrated administrative boundary data for China \cite{GeoJSON2025China} and road network data from OpenStreetMap \cite{Vargas2021OSM}. This enabled proximity calculations between criminal incidents and nearby roads, a significant variable within our analytical framework. Full dataset columns details are provided in Appendix \ref{appendix:dataset}.
+We leveraged the comprehensive China crime dataset published by \cite{Zhang2025CrimeDatasetChina}. To provide geographic context, we integrated administrative boundary data for China \citep{GeoJSON2025China} and road network data from OpenStreetMap \citep{Vargas2021OSM}. This enabled proximity calculations between criminal incidents and nearby roads, a significant variable within our analytical framework. Full dataset columns details are provided in Appendix \ref{appendix:dataset}.
 
 \subsection{Data sources cleaning and normalization}
 
@@ -18,9 +18,9 @@ The dataset underwent thorough cleaning procedures, including handling of missin
 
 \subsection{Question-Answer generation}
 
-To develop our question-answer dataset, we first created 100 question templates (inspired by \cite{Dai2024QASTKG, Contractor2020QATourism}), covering different types of inquiries including spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
+To develop our question-answer dataset, we first created 100 question templates (inspired by \citep{Dai2024QASTKG, Contractor2020QATourism}), covering different types of inquiries including spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
 
-We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75) via few-shot prompting. These question categories are summarized in Table~\ref{tab:question_types}. Then, for each original question type, we selected random examples and developed Python code solutions manually. These hand-crafted solutions provided context for generating additional synthetic code answers using the DeepSeek V3 model with prompting (Appendix~\ref{appendix:prompts}) and nucleus-sampling \cite{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath} (top\_p set to 0.95), generating new reasoning paths and coding approaches.
+We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75) via few-shot prompting. These question categories are summarized in Table~\ref{tab:question_types}. Then, for each original question type, we selected random examples and developed Python code solutions manually. These hand-crafted solutions provided context for generating additional synthetic code answers using the DeepSeek V3 model with prompting (Appendix~\ref{appendix:prompts}) and nucleus-sampling \citep{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath} (top\_p set to 0.95), generating new reasoning paths and coding approaches.
 
 \subsection{Dataset filtering}
 
@@ -28,7 +28,7 @@ To ensure quality, we verified that all LLM-generated Python solutions executed 
 
 \subsection{Dataset splitting}
 
-The resulting dataset, which we named "ChinaCrimeQACode", contains 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \cite{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation.
+The resulting dataset, which we named "ChinaCrimeQACode", contains 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \citep{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation.
 
 % TODO: poner ejemplo de question-answer pair
 % TODO: Statistics of ChinaCrimesQA code dataset
@@ -59,7 +59,7 @@ The resulting dataset, which we named "ChinaCrimeQACode", contains 5,000 questio
 
 % TODO: model selection
 % TODO: hyperparameters and quantization
-We fine-tuned the Llama-3.1-8B Instruct model \cite{Grattafiori2024Llama3, Unsloth2024WhatModel} by implementing the techniques described in \cite{Pareja2024RecipesSFT}. For the fine-tuning process, we utilized Hugging Face Transformers alongside the Unsloth library to optimize computational resources and accelerate training, completing the entire procedure in approximately 3 hours using a single NVIDIA H100 GPU with 80GB memory provided by Lightning AI. This model was chosen as it represents a balance between size (8B), data science coding capabilities \cite{Lai2022DS1000}, and compatibility with Unsloth for fast and efficient fine-tuning.
+We fine-tuned the Llama-3.1-8B Instruct model \citep{Grattafiori2024Llama3, Unsloth2024WhatModel} by implementing the techniques described in \cite{Pareja2024RecipesSFT}. For the fine-tuning process, we utilized Hugging Face Transformers alongside the Unsloth library to optimize computational resources and accelerate training, completing the entire procedure in approximately 3 hours using a single NVIDIA H100 GPU with 80GB memory provided by Lightning AI. This model was chosen as it represents a balance between size (8B), data science coding capabilities \citep{Lai2022DS1000}, and compatibility with Unsloth for fast and efficient fine-tuning.
 
 \begin{table}[H]
 \centering
@@ -89,27 +89,29 @@ Quantization & 4-bit (NF4, double quant) \\
 The selection of key hyperparameters for training was guided by empirical observation and best practices in fine-tuning large language models:
 \begin{itemize}
     
-\item \textbf{Warmup Ratio:} We initially set the warmup ratio to 0.03; however, this led to instability during the early stages of training, with noticeable spikes in the loss. Increasing the warmup ratio to 0.1 significantly improved training stability, consistent with findings in transformer-based models such as RoBERTa, where extended warmup periods are known to facilitate smoother convergence \cite{liu2019robertarobustlyoptimizedbert}.
+\item \textbf{Warmup Ratio:} We initially set the warmup ratio to 0.03; however, this led to instability during the early stages of training, with noticeable spikes in the loss. Increasing the warmup ratio to 0.1 significantly improved training stability, consistent with findings in transformer-based models such as RoBERTa, where extended warmup periods are known to facilitate smoother convergence \citep{liu2019robertarobustlyoptimizedbert}.
 
-\item \textbf{Weight Decay:} To mitigate overfitting and enhance generalization, especially given the relatively small size of our dataset, we applied a weight decay of 0.01. This choice aligns with established practices in training deep neural networks on limited data, where appropriate regularization is crucial for model robustness \cite{brainacgan}.
+\item \textbf{Weight Decay:} To mitigate overfitting and enhance generalization, especially given the relatively small size of our dataset, we applied a weight decay of 0.01. This choice aligns with established practices in training deep neural networks on limited data, where appropriate regularization is crucial for model robustness \citep{brainacgan}.
 
-\item \textbf{Learning Rate:} The learning rate was initially set to 2e-3, but this configuration resulted in poor convergence during training. Considering that we employed LoRA for fine-tuning the LLaMA model, we reduced the learning rate to 7e-5. This lower rate aligns with commonly adopted values for adapting pre-trained large language models using parameter-efficient techniques, and it yielded significantly improved convergence behavior \cite{zhou2024automixqselfadjustingquantizationhigh}.
+\item \textbf{Learning Rate:} The learning rate was initially set to 2e-3, but this configuration resulted in poor convergence during training. Considering that we employed LoRA for fine-tuning the LLaMA model, we reduced the learning rate to 7e-5. This lower rate aligns with commonly adopted values for adapting pre-trained large language models using parameter-efficient techniques, and it yielded significantly improved convergence behavior \citep{zhou2024automixqselfadjustingquantizationhigh}.
 
 \end{itemize}
 
 \section{Model Evaluation}
 
-% We adopted the approach proposed by \cite{Fleureau2024NuminaMath}, Self-Consistency Tool-Integrated Reasoning (SC-TIR) to evaluate our fine tuned model
-For model evaluation, we adopted a comprehensive approach combining both automated and LLM-based assessment methods. Specifically, we used pass@k \cite{Levi2024SimpleModelInferenceScalingLaws} (with $k=16$ and multinomial sampling), where correctness was determined using an LLM-as-a-judge \cite{Li2025LLMJudge} (Appendix~\ref{appendix:prompts}) using GPT-4.1, and CodeBLEU \cite{Ren2020CodeBLEU}, which provides a purely quantitative measure of code generation quality. Additionally, we calculated the error percentage across all generated code samples to assess overall robustness. Finally, we performed Tool Integrated Reasoning (TIR) \cite{Fleureau2024NuminaMath} evaluations, allowing a single retry per question to mitigate frequent inference errors such as ZeroDivisionError and IndexError, while maintaining evaluation efficiency.
+% We adopted the approach proposed by \citep{Fleureau2024NuminaMath}, Self-Consistency Tool-Integrated Reasoning (SC-TIR) to evaluate our fine tuned model
+For model evaluation, we adopted a comprehensive approach combining both automated and LLM-based assessment methods. Specifically, we used pass@k \citep{Levi2024SimpleModelInferenceScalingLaws} (with $k=16$ and multinomial sampling), where correctness was determined using an LLM-as-a-judge \citep{Li2025LLMJudge} (Appendix~\ref{appendix:prompts}) using GPT-4.1, and CodeBLEU \citep{Ren2020CodeBLEU}, which provides a purely quantitative measure of code generation quality. Additionally, we calculated the error percentage across all generated code samples to assess overall robustness. Finally, we performed Tool Integrated Reasoning (TIR) \citep{Fleureau2024NuminaMath} evaluations, allowing a single retry per question to mitigate frequent inference errors such as ZeroDivisionError and IndexError, while maintaining evaluation efficiency.
 
 % TODO: poner que metodo de inferencia estamos usando, puede que sea greedy decoding
 
-% The model was trained using QLoRA \cite{Dettmers2023QLoRA} with a rank of 64, alpha of 16, and a dropout rate of 0.05. 
+% The model was trained using QLoRA \citep{Dettmers2023QLoRA} with a rank of 64, alpha of 16, and a dropout rate of 0.05. 
 
 % We employed a learning rate of 2e-4 with the AdamW optimizer and cosine learning rate scheduler with 100 warm-up steps. Training was performed for 3 epochs with a batch size of 16, using a maximum sequence length of 2048 tokens. To maintain training stability, we applied gradient clipping with a maximum norm of 1.0.
 
 % For instruction tuning, we formatted our question-code pairs using a standard template that clearly specified the task context and expectations. Each question was prefaced with a system prompt indicating that the model should generate executable Python code to analyze crime data and answer the given question. 
 
 
-\section{Visualization Tool}
+% \section{Visualization Tool}
+
+\section{Resume}
 

@@ -1,4 +1,4 @@
-\chapter{INTRODUCTION} 
+\chapter{CONTEXT AND MOTIVATION} 
 % ¿Cuál es el contexto del tema? Contextualice al lector, inicia con un párrafo que le genere interés por el tema.
 % ¿Cuál es el problema?
 % ¿Qué han hecho otros para resolver el problema?
@@ -9,48 +9,48 @@
 % \section{Presentación del tema de investigación}   % Antecedentes, problematica y justificacion
 \section{Introduction to the Research Topic} % TODO: Focus on social impact and problematic
 
-Urban crime persists as a critical social challenge, with the \emph{Global Organized Crime Index 2023} reporting that 83\,\% of the world’s population now lives in countries exhibiting high levels of criminality \cite{GlobalCrimeIndex2023}. % :contentReference[oaicite:0]{index=0} 
-Such criminality is rarely uniform within a city; instead, incidents concentrate at specific micro-places and times, creating dynamic “hot” and “cool” spots that evolve over days, weeks, and seasons \cite{Garcia2022CriPAV}.
-Yet many jurisdictions still struggle with incomplete or delayed reporting, obscuring timely understanding of local risk patterns \cite{NSSFCrimeReporting2023}. Consequently, both authorities and citizens require tools that transform raw spatio-temporal crime data into actionable insights capable of guiding preventive decisions in real time.
+Urban crime persists as a critical social challenge, with the \emph{Global Organized Crime Index 2023} reporting that 83\,\% of the world’s population now lives in countries exhibiting high levels of criminality \citep{GlobalCrimeIndex2023}.
+Such criminality is rarely uniform within a city; instead, incidents concentrate at specific micro-places and times, creating dynamic “hot” and “cool” spots that evolve over days, weeks, and seasons \citep{Garcia2022CriPAV}.
+Yet many jurisdictions still struggle with incomplete or delayed reporting, obscuring timely understanding of local risk patterns \citep{NSSFCrimeReporting2023}. Consequently, both authorities and citizens require tools that transform raw spatio-temporal crime data into actionable insights capable of guiding preventive decisions in real time.
 
 
-A wide range of visual-analytics systems has been proposed to meet this need \cite{Garcia2022CriPAV, Salah2022BigCDVis, Silva2017CrimeVisAI, Garcia2020MiranteAV, Garcia2021CrimAnalyzer}. Despite their analytical power, these dashboards often overwhelm non-experts, demand familiarity with multiple interaction widgets, and provide limited narrative guidance, hindering adoption outside specialist circles. In response to this, Natural-language interfaces (NLIs) have emerged to lower these usability barriers \cite{Setlur2016Eviza, Narechania2021NL4DV, Luo2022NL2Vis, Liu2021ADVISor, Sah2024GeneratingAnalyticsDataVizLLMs}. However, most NLI pipelines rely on template grammars or traditional semantic-parsing models and thus still struggle with ambiguity, underspecification, and multi-step analytical reasoning.
+A wide range of visual-analytics systems has been proposed to meet this need \citep{Garcia2022CriPAV, Salah2022BigCDVis, Silva2017CrimeVisAI, Garcia2020MiranteAV, Garcia2021CrimAnalyzer}. Despite their analytical power, these dashboards often overwhelm non-experts, demand familiarity with multiple interaction widgets, and provide limited narrative guidance, hindering adoption outside specialist circles. In response to this, Natural-language interfaces (NLIs) have emerged to lower these usability barriers \citep{Setlur2016Eviza, Narechania2021NL4DV, Luo2022NL2Vis, Liu2021ADVISor, Sah2024GeneratingAnalyticsDataVizLLMs}. However, most NLI pipelines rely on template grammars or traditional semantic-parsing models and thus still struggle with ambiguity, underspecification, and multi-step analytical reasoning.
  
 
-Recent advances in large language models (LLMs) suggest a transformative alternative. LLM-powered assistants can interpret free-form questions, decompose them into analytical sub-tasks, and generate both textual explanations and visualization specifications \cite{Zhang2024NLITabular}. Yet, to date, no end-to-end platform combines the conversational flexibility of LLMs with geovisual analytics for crime data, leaving a usability and situational-awareness gap precisely where citizens and frontline officers need rapid, contextual insights.
+Recent advances in large language models (LLMs) suggest a transformative alternative. LLM-powered assistants can interpret free-form questions, decompose them into analytical sub-tasks, and generate both textual explanations and visualization specifications \citep{Zhang2024NLITabular}. Yet, to date, no end-to-end platform combines the conversational flexibility of LLMs with geovisual analytics for crime data, leaving a usability and situational-awareness gap precisely where citizens and frontline officers need rapid, contextual insights.
 
 Adopting an LLM-driven chat interface for spatio-temporal crime data directly addresses this gap. First, natural dialogue eliminates steep learning curves by allowing users to express information needs e.g., “Which streets saw the largest increase in robberies last weekend in this city?” without mastering dashboard controls.  Second, the model can highlight relevant data used to answer questions, enabling users to validate insights and build trust in the system. By unifying conversational AI with visual responses, the proposed research seeks to democratize access to crime intelligence, bolster data-driven policing, and ultimately enhance public safety for both residents and visitors.
 
 
-% Data visualization is a powerful tool for data exploration and insight communication \cite{Liu2024NLDriven}.
+% Data visualization is a powerful tool for data exploration and insight communication \citep{Liu2024NLDriven}.
 
-% Robust and complete natural language interfaces is difficult to achieve, due to the language is often ambiguous and underspecified \cite{Setlur2019InferencingVisualAnalysis}, requiring extensive parsing and complex reasoning.
+% Robust and complete natural language interfaces is difficult to achieve, due to the language is often ambiguous and underspecified \citep{Setlur2019InferencingVisualAnalysis}, requiring extensive parsing and complex reasoning.
 
-% Question answering (QA) is a research area that combines research from various fields, such as Information Retrieval (IR), Information Extraction (IE), and Natural Language Processing (NLP) \cite{Liu2021ADVISor}.
+% Question answering (QA) is a research area that combines research from various fields, such as Information Retrieval (IR), Information Extraction (IE), and Natural Language Processing (NLP) \citep{Liu2021ADVISor}.
 
 % The majority of the existing research address tabular data that is not necessarily georeferenced, calling into question its adaptability to space-time scenarios such as crime phenomena
 
-% DL-based crime prediction encounters significant obstacles, such as concerns about fairness, accountability, transparency, interpretability, security, and privacy \cite{Ersoz2025CrimePredictionXAISurvey}.
+% DL-based crime prediction encounters significant obstacles, such as concerns about fairness, accountability, transparency, interpretability, security, and privacy \citep{Ersoz2025CrimePredictionXAISurvey}.
 
 % \section{Descripción de la situación problemática} % Planteamiento del problema
 \section{Description of the Problematic Situation}
 
 % * Paragraph 1 – General Context
-In many large cities, concerns about crime have become increasingly common, especially in areas frequently visited by tourists \cite{SopikoTevdoradze2024CrimeTourism}. Popular destinations are often associated with considerable levels of criminality, which can discourage visitors from exploring freely \cite{Machado2012CrimeRJ}. However, the impact of urban crime extends beyond tourists. Local residents, while more familiar with their surroundings, typically rely on personal experience, local news, and community word-of-mouth to decide which streets or neighborhoods to avoid. This informal awareness helps them navigate perceived danger zones, but it does not fully shield them from the risks that exist in their own cities.
+In many large cities, concerns about crime have become increasingly common, especially in areas frequently visited by tourists \citep{SopikoTevdoradze2024CrimeTourism}. Popular destinations are often associated with considerable levels of criminality, which can discourage visitors from exploring freely \citep{Machado2012CrimeRJ}. However, the impact of urban crime extends beyond tourists. Local residents, while more familiar with their surroundings, typically rely on personal experience, local news, and community word-of-mouth to decide which streets or neighborhoods to avoid. This informal awareness helps them navigate perceived danger zones, but it does not fully shield them from the risks that exist in their own cities.
 
 % Many popular tourist destinations are often associated with considerable crime rates, which can deter visitors and affect their willingness to explore these areas. Besides, big cities like New York and Chicago 
 % For instance, cities like New York, Los Angeles, and Chicago have been known to experience significant crime rates, particularly in certain neighborhoods. This can lead to a perception of danger among tourists and residents alike, ultimately affecting their willingness to explore these areas.  negatively impact local economies.
 
 % * Paragraph 2 – Impact and Limitations of Current Systems
-In response to these concerns, several visualization tools \cite{Garcia2022CriPAV, Salah2022BigCDVis, Silva2017CrimeVisAI, Garcia2020MiranteAV, Garcia2021CrimAnalyzer} have emerged to increase awareness, validate hypotheses, and support safer decision-making. However, these solutions are often difficult to use for non-expert users. They usually provide sophisticated analysis using robust feature engineering processes, restricting their accessibility to a broader audience. As a result, both citizens and authorities are left with insufficient support to anticipate risks or act proactively.
+In response to these concerns, several visualization tools \citep{Garcia2022CriPAV, Salah2022BigCDVis, Silva2017CrimeVisAI, Garcia2020MiranteAV, Garcia2021CrimAnalyzer} have emerged to increase awareness, validate hypotheses, and support safer decision-making. However, these solutions are often difficult to use for non-expert users. They usually provide sophisticated analysis using robust feature engineering processes, restricting their accessibility to a broader audience. As a result, both citizens and authorities are left with insufficient support to anticipate risks or act proactively.
 
 % * Paragraph 3 – Analytical Challenges
-A key challenge in crime prevention is the lack of accessible tools that help both citizens and authorities interpret complex crime data. While large volumes of data are publicly available \cite{Zhang2025CrimeDatasetChina, NYCDataset, ChicagoDataset}, they're often difficult to analyze without technical skills or time \cite{Zengli2020CrimePatterns}. Crime patterns constantly shift across time and space. Some areas may be riskier at night, others during weekends or certain seasons. Without tools that clearly communicate these dynamics in real time, people struggle to make safe decisions, and authorities face obstacles in allocating resources effectively.
+A key challenge in crime prevention is the lack of accessible tools that help both citizens and authorities interpret complex crime data. While large volumes of data are publicly available \citep{Zhang2025CrimeDatasetChina, NYCDataset, ChicagoDataset}, they're often difficult to analyze without technical skills or time \citep{Zengli2020CrimePatterns}. Crime patterns constantly shift across time and space. Some areas may be riskier at night, others during weekends or certain seasons. Without tools that clearly communicate these dynamics in real time, people struggle to make safe decisions, and authorities face obstacles in allocating resources effectively.
 
 % * Paragraph 4 – Gaps in SOTA Methods
-Although recent tools have improved the visual representation of crime data, they still present critical limitations in usability and applicability. Many platforms depend heavily on user expertise and offer mostly static or pre-defined visualizations that demand manual interpretation \cite{Garcia2022CriPAV}. This limits their value in dynamic, real-world scenarios where fast decisions are required. Without systems that deliver clear, real-time insights tailored to a user's context, both citizens and authorities remain underserved in their efforts to understand and respond to urban crime.
+Although recent tools have improved the visual representation of crime data, they still present critical limitations in usability and applicability. Many platforms depend heavily on user expertise and offer mostly static or pre-defined visualizations that demand manual interpretation \citep{Garcia2022CriPAV}. This limits their value in dynamic, real-world scenarios where fast decisions are required. Without systems that deliver clear, real-time insights tailored to a user's context, both citizens and authorities remain underserved in their efforts to understand and respond to urban crime.
 
-% TODO: Users may lack the knowledge or skills to interact with the visualization effectively. Without proper guidance or intuitive interaction design, users may struggle to fully leverage the interactive capabilities of the visualization. \cite{Liu2024NLDriven}
+% TODO: Users may lack the knowledge or skills to interact with the visualization effectively. Without proper guidance or intuitive interaction design, users may struggle to fully leverage the interactive capabilities of the visualization. \citep{Liu2024NLDriven}
 
 % \section{Formulación del problema} % Planteamiento del problema
 % \section{Problem Statement} % Statement of the problem
@@ -63,8 +63,8 @@ Although recent tools have improved the visual representation of crime data, the
 
 
 % ! Paragraph 2: Enabling Technology
-Large language models (LLMs) offer a human-centred interface for interacting with complex data \cite{Yang2024HumanAIInteraction, Pappula2023LLMsFC}. Unlike, web dashboards, GIS (Geographic Information System) software or specialized tools, LLM-powered chatbot lets users ask questions like ``Which streets saw the largest surge in robberies in the last month?'' and instantly receive concise explanations. In addition, open-source models alleviate many of the privacy concerns \cite{Temsah2025DeepSeek, Ersoz2025CrimePredictionXAISurvey} often associated with proprietary systems and can be more cost-effective \cite{Liu2024NLDriven}. 
-% Many research like \cite{Liu2024NLDriven} uses LLMs to assist in dataset constructions and training small LLMs, because it can be more cost-effective and data-privacy friendly.
+Large language models (LLMs) offer a human-centred interface for interacting with complex data \citep{Yang2024HumanAIInteraction, Pappula2023LLMsFC}. Unlike, web dashboards, GIS (Geographic Information System) software or specialized tools, LLM-powered chatbot lets users ask questions like ``Which streets saw the largest surge in robberies in the last month?'' and instantly receive concise explanations. In addition, open-source models alleviate many of the privacy concerns \citep{Temsah2025DeepSeek, Ersoz2025CrimePredictionXAISurvey} often associated with proprietary systems and can be more cost-effective \citep{Liu2024NLDriven}. 
+% Many research like \citep{Liu2024NLDriven} uses LLMs to assist in dataset constructions and training small LLMs, because it can be more cost-effective and data-privacy friendly.
 
 % LLMs have significantly enhanced chatbots and virtual assistants, enabling more contextually aware and human-like interactions across various domains 
 % With the advent of LLMs, there has been a growing in the interaction via chat to several tasks, like web-browsing, text summarization, question-answering, code generation, among others.
@@ -73,7 +73,7 @@ Large language models (LLMs) offer a human-centred interface for interacting wit
 Adopting an LLM-based conversational layer directly addresses the two principal weaknesses of current crime-analytics platforms: usability and applicability. First, a chat interface removes the steep learning curves of existing tools. Second, by supporting rapid, iterative exploration of temporal windows, geographic areas and crime types, it delivers immediate insights when users need them.
 
 % ! Paragraph 4: Anticipated Impact & Wider Significance 
-In this study, we aim to enhance crime-prevention efforts and raise awareness about the risks associated with routes used by tourists and residents by developing an intuitive chat interface. This interface will allow users to interact with crime data, presenting both textual summaries and dynamic visual feedback, to facilitate informed decision-making. Additionally, the work establishes a foundation for future investigations into the application of LLMs to more sophisticated crime-analysis tasks. % , such as prediction, topological analysis, and clustering | leveraging in the CoT process
+In this study, we aim to enhance crime-prevention efforts and raise awareness about the risks associated with routes used by tourists and residents by developing a chat interface. This interface will allow users to interact with crime data, presenting textual summaries, to facilitate informed decision-making. Additionally, the work establishes a foundation for future investigations into the application of LLMs to more sophisticated crime-analysis tasks. % , such as prediction, topological analysis, and clustering | leveraging in the CoT process | an intuitive |  both and dynamic visual feedback
 
 % \section{Objetivos de investigación}   % Objetivos
 % \section{Scope and Limitations / Constraints} % Scope and expected benefits
@@ -85,10 +85,11 @@ To develop an chat-based system that leverages LLMs to enhance crime prevention 
 
 \subsection{Specific Objectives}
 \begin{itemize}
-    \item Design and implement a chat-based interface that allows users to query crime data and receive both textual and visual feedback.
+    \item Design and implement a chat-based interface that allows users to query crime data and receive textual responses, based on code execution.
+    % both textual and visual feedback.
     \item Create a question-answering dataset specifically tailored for crime data.
-    \item Address privacy and security concerns by focusing on the use of open-source LLMs as alternative solutions to proprietary models \cite{Temsah2025DeepSeek, Ersoz2025CrimePredictionXAISurvey}. 
-    \item Implement and agent-based system that utilizes LLMs to process and analyze spatio-temporal crime data, providing insights and recommendations to users.
+    \item Address privacy and security concerns by focusing on the use of open-source LLMs as alternative solutions to proprietary models \citep{Temsah2025DeepSeek, Ersoz2025CrimePredictionXAISurvey}. 
+    % \item Implement and agent-based system that utilizes LLMs to process and analyze spatio-temporal crime data, providing insights and recommendations to users.
     % \item Lay the groundwork for future research on advanced LLM-based analyses, such as prediction, topological analysis, and clustering.
 \end{itemize}
 

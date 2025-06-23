@@ -13,7 +13,10 @@
 %%\selectlanguage{spanish}
 %% Paquetes
 \usepackage[utf8]{inputenc}
-\usepackage[square, numbers, comma, sort&compress]{natbib}
+\usepackage[authoryear,square]{natbib}
+% \usepackage[square,authoryear,sort]{natbib}  % Cambiar esta línea
+% \bibpunct[, ]{[}{]}{;}{a}{,}{,}  % Agregar esta línea después de usepackage natbib
+% \setcitestyle{square,aysep={,}} % Configure citation style to use square brackets
 % Libreria de idioma
 \usepackage[english]{babel}
 % Libreria para posicionamiento
@@ -80,8 +83,8 @@
 \mainmatter
 \pagestyle{fancy}
 
-% \input{secciones/resumen}
-% \input{secciones/abstract} 
+\input{secciones/abstract} 
+\input{secciones/resumen}
 \input{secciones/introduccion}
 \input{secciones/capitulo1}
 \input{secciones/capitulo2}
@@ -94,10 +97,10 @@
 %% ============================================================================
 \renewcommand{\bibname}{\hfill\Large\bf{BIBLIOGRAPHY}\hfill}
 
-\bibliographystyle{IEEEtran} % Estableciendo el estilo de citas IEEEtram.
+\bibliographystyle{plainnat} % Cambia a plainnat para autor-año
 
 \bibliography{referencias} % Recibe las referencias de IEEE
 
 \input{secciones/anexos}
 
-\end{document}  
+\end{document}
