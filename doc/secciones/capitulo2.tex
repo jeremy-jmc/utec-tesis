@@ -1,6 +1,9 @@
 \chapter{ STATE OF THE ART}
 
-% TODO: introduction
+This chapter reviews the most relevant developments across four intersecting areas that inform the design of intelligent systems for urban crime analysis: (1) large language models for urban reasoning, (2) LLMs applied to code generation and data analysis, (3) publicly available crime datasets, and (4) visual analytics tools for crime exploration. These domains form the technological and methodological basis for this research.
+
+% We highlight how recent progress in LLM capabilities—such as spatial reasoning, instruction following, and multimodal integration—has enabled new forms of interactive analysis for complex urban phenomena. At the same time, the growing availability of open crime datasets and advances in geospatial visualization tools have paved the way for more accessible and interpretable crime intelligence platforms.
+
 
 \section{Large-Language Models for Urban Scenarios}
 
@@ -85,7 +88,13 @@ Collectively, these systems illustrate the evolution from interactive, district-
 % \citep{Salah2022BigCDVis} 
 
 
+\section{Summary}
 
+This chapter explores how large language models and geospatial technologies are reshaping urban analytics. From forecasting urban trends with spatio-temporal prompts to coordinating specialized models via agentic workflows, recent systems demonstrate how LLMs can operate effectively across complex, multimodal urban data.
+
+It also highlights the growing use of LLMs for code generation in data science and geospatial tasks, emphasizing the need for Python-based pipelines when SQL falls short. Finally, it reviews key crime datasets and visual analytics tools, showing how open data and interactive platforms can be use to uncover crime patterns.
+
+% ! MISC
 % \section{NLP in Data Visualization}
 
 % \subsection{Early Rule-Based and Semantic Parsing Approaches}
@@ -101,8 +110,6 @@ Collectively, these systems illustrate the evolution from interactive, district-
 % Building on these advances, ADVISor \citep{Liu2021ADVISor} utilizes a trainable BERT-based \citep{bertPaper} pipeline to automatically generate relevant visualizations in response to open-domain questions over tabular data, outperforming NL4DV \citep{Narechania2021NL4DV} in both accuracy and user satisfaction. ADVISor is trained on a variant of the WikiSQL \citep{Zhong2017WikiSQL} question-answer dataset and employs a set of rules to map aggregation operations and attribute types to appropriate visualization types, which aids in effective model training and convergence. Nevertheless, this approach faces limitations when addressing questions that require multiple computational steps, such as comparison queries, those involving more than one primary attribute, or multi-step aggregation, due to the constraints of the underlying dataset. Furthermore, it does not explicitly address geospatial operations, which are essential for urban crime analysis.
 
 % Extending these developments, \citep{Sah2024GeneratingAnalyticsDataVizLLMs} enhances the NL4DV system \citep{Narechania2021NL4DV} by introducing a prompt-based method that leverages LLMs to generate analytic specifications from natural language queries over tabular data. Their approach produces specifications that identify relevant data attributes, infer analytic tasks, and recommend suitable visualizations. Through iterative prompt refinement and evaluation with GPT-4, they achieve approximately a 20\% improvement in overall accuracy compared to the original NL4DV pipeline on the NLVCorpus \citep{Srinivasan2021NLVCorpus}, although this comes at the cost of increased average response time of 25 seconds versus the original NL4DV’s 3 seconds.
-
-\section{Summary}
 
 % By integrating a closed-source LLM, the system also enables conversational interactions, allowing users to iteratively refine queries and receive updated visualizations as the conversation progresses. 
 
