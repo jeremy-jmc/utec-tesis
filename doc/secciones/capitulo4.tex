@@ -95,23 +95,19 @@ This discrepancy is likely rooted in architectural and training differences. o4�
 
 \subsection{Case I: Counterfactual Evaluation of Targeted Interventions in Crime Hotspots of Guangdong Province}
 
-\begin{itemize}
-       \item \textbf{Case summary:} This study models what might happen if targeted interventions (e.g., CCTV, policing) in crime hotspot areas of Zhongshan (Guangdong Province) completely prevented certain crimes in 2019. Drawing on situational crime prevention literature, especially meta-analyses showing modest but significant crime reductions from CCTV, typically 16–20\% in property and vehicle crime settings, this case uses counterfactual modeling to simulate those interventions in Zhongshan.
-      \item \textbf{General Objective:} To simulate the following counterfactual scenarios using 2019 data:
-      \begin{enumerate}
-          \item Entire prevention of night-time thefts in Zhongshan and its effect on total crime.
-          \item A 20\% reduction in total crime at the central hotspot ([22.516998, 113.392723]) and its spatial impact on average crime in counties within a 70 km radius.
-          \item A 15\% increase in reported crime in Zhongshan and how that would alter the Top 10 safest county rankings in Guangdong Province.
-      \end{enumerate}
-      \item \textbf{Justification:} Meta-analyses consistently find CCTV leads to modest, significant reductions—around 16\% overall and ~20\% for property/vehicle crimes, and are more effective when actively monitored or combined with other interventions. Zhongshan, as a rapidly urbanizing city in Guangdong, offers a relevant setting to assess how targeted counterfactuals can inform policy on hotspot interventions and reporting practices.
+Zhongshan is a prefecture-level city in Guangdong province with a population of approximately 4.4 million as of 2020 that has pursued aggressive data-driven policing strategies. According to official reports, Zhongshan experienced notable crime declines in recent years. Mid-2020 figures indicated a 37\% drop in serious violent crimes and a 46\% drop in theft and robbery cases compared to the previous year \cite{Zhongshan2020}. This context of active crime prevention underscores the importance of analyzing Zhongshan's crime data to understand underlying patterns and inform future policies.
 
-        \item \textbf{Proposed questions:}
-        \begin{itemize}
-            \item "What percentage reduction in overall crime could be achieved if all night-time thefts in Suzhou during 2019 were prevented?"
-            \item "How would the average crime in neighboring counties (within a 70 km radius of [22.516998, 113.392723]) change if crime at that central point were reduced by 20\%?"
-            \item "Considering the top 10 of the safest all counties in Guangdong Province, How would this top 10 change if the crime reporting increased by 15\% in Zhongshan City in 2019?"
-        \end{itemize}
-\end{itemize}
+Spatio-temporal crime analysis serves as a key tool for modern law enforcement. By mapping incident locations and times, analysts can identify hotspots and temporal trends that guide resource allocation. Early studies such as the STAC program demonstrated that outlining incident boundaries and measuring crime counts in specific areas can reveal concentration patterns for tactical decisions. More recently, forecasting models have been shown to enhance public safety by predicting future crime distributions and trends \cite{Li2024UrbanGPT}. Together, these approaches illustrate how comprehensive analysis of crime datasets can support both forensic investigations and strategic planning.
+
+Counterfactual modeling extends this analysis by posing hypothetical scenarios that explore alternative outcomes. Counterfactual analysis allows decision-makers to compare actual outcomes with those that would have occurred under alternate conditions \cite{CONSTANTINOU201641}. In forensic or public safety settings, this means estimating the effect of interventions that did not actually happen. Analysts might examine how overall crime rates would change if a particular category of incidents had been prevented. By modeling such scenarios, such as removing all night-time thefts from the record, researchers can infer the causal impact of those incidents. These hypothetical comparisons provide insight into the potential efficacy of different policies or data reporting practices without requiring real-world experimentation \cite{CONSTANTINOU201641}.
+
+In this case study, we propose leveraging a fine-tuned large language model (LLM) as an interactive reasoning tool over Zhongshan's spatio-temporal crime data. Recent work has shown that integrating LLMs with geographic information systems enables natural-language querying of spatial data \cite{William2025}. An LLM can be connected to a GIS so that users can ask plain-language questions about maps and patterns, with the model translating these queries into actionable insights \cite{William2025}. This approach bridges textual and spatial information, expediting analysis and discovery in spatial datasets \cite{William2025}. A fine-tuned LLM could therefore generate and reason about complex questions regarding the Zhongshan crime dataset, acting as a digital assistant that translates data-driven scenarios into understandable explanations.
+\noindent In the following sections, we present three counterfactual questions for the LLM to address:
+\begin{enumerate}
+  \item What percentage reduction in overall crime could be achieved if all night-time thefts in Zhongshan during 2019 were prevented?
+  \item How would the average crime in neighboring counties (within a 70~km radius of [22.516998, 113.392723]) change if crime at that central hotspot were reduced by 20\%?
+  \item How would the top 10 safest counties in Guangdong change if crime reporting increased by 15\% in Zhongshan during 2019?
+\end{enumerate}
 
 \subsubsection{Case I.1:}
 \begin{itemize}
