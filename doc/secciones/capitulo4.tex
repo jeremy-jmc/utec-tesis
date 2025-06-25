@@ -22,9 +22,7 @@
 
 \chapter{ EXPERIMENTS AND RESULTS}
 
-This chapter presents the outcomes derived from applying the methodology detailed in the preceding chapter. We begin by describing the experimental setup and specifying the hyperparameters employed. Next, we report the results from the evaluated models, covering both quantitative and qualitative analyses. Lastly, we discuss the significance of these findings and include case studies to demonstrate the practical relevance of our results.
-
-\section{Experimental setup}
+This chapter presents the outcomes derived from applying the methodology detailed in the preceding chapter. We begin by specifying the hyperparameters employed durint the training phase. Next, we report the results from the evaluated models, covering both quantitative and qualitative analyses. Lastly, we discuss the significance of these findings and include case studies to demonstrate the practical relevance of our results.
 
 \section{Hyperparameters}
 
@@ -39,6 +37,31 @@ The selection of key hyperparameters for training was guided by empirical observ
 \item \textbf{Learning Rate:} The learning rate was initially set to 2e-3, but this configuration resulted in poor convergence during training. Considering that we employed LoRA for fine-tuning the LLaMA model, we reduced the learning rate to 7e-5. This lower rate aligns with commonly adopted values for adapting pre-trained large language models using parameter-efficient techniques, and it yielded significantly improved convergence behavior \citep{zhou2024automixqselfadjustingquantizationhigh}.
 
 \end{itemize}}
+
+\begin{table}[H]
+\centering
+\caption{Fine-tuning Hyperparameters for ChinaCrimeQACode}
+\label{tab:hyperparameters}
+\begin{tabular}{ll}
+\toprule
+\textbf{Hyperparameter} & \textbf{Value} \\
+\midrule
+LoRA rank ($r$) & 64 \\
+LoRA alpha & 16 \\
+LoRA dropout & 0.0 \\
+Batch size (per device) & 32 \\
+Gradient accumulation steps & 4 \\
+Max sequence length & 3,200 tokens \\
+Training epochs & 7 \\
+Learning rate & 7e-5 \\
+Optimizer & \texttt{adamw\_torch\_fused} \\
+Scheduler & \texttt{linear} \\
+Warmup ratio & 0.1 \\
+Weight decay & 0.01 \\
+Quantization & 4-bit (NF4, double quant) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{Quantitative Results}
 

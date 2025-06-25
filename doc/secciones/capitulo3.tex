@@ -20,7 +20,7 @@ The dataset underwent thorough cleaning procedures, including handling of missin
 
 To develop our question-answer dataset, we first created 100 question templates (inspired by \citep{Dai2024QASTKG, Contractor2020QATourism}), covering different types of inquiries including spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
 
-We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75) via few-shot prompting (see Table~\ref{tab:question_type_counts}). These question categories are summarized in Table~\ref{tab:question_types}. Then, for each original question type, we selected random examples and developed Python code solutions manually. These hand-crafted solutions provided context for generating additional synthetic code answers using the DeepSeek V3 model with prompting (Appendix~\ref{appendix:prompts}) and nucleus-sampling \citep{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath} (top\_p set to 0.95), generating new reasoning paths and coding approaches.
+We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75) via few-shot prompting (see Table~\ref{tab:question_type_counts}, see prompt in Listings \ref{prompt:question_rephrasing} and \ref{prompt:question_augmentation}). These question categories are summarized in Table~\ref{tab:question_types}. Then, for each original question type, we selected random examples and developed Python code solutions manually. These hand-crafted solutions provided context for generating additional synthetic code answers using the DeepSeek V3 model with prompting (Listing~\ref{prompt:code_generation}) and nucleus-sampling \citep{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath} (top\_p set to 0.95), generating new reasoning paths and coding approaches.
 
 
 \begin{table}[H]
@@ -63,100 +63,71 @@ To ensure quality, we verified that all LLM-generated Python solutions executed 
 
 \subsection{Dataset splitting}
 
-The resulting dataset, which we named "ChinaCrimeQACode", contains around 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \citep{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split (Table~\ref{tab:dataset_split}) to facilitate robust model training and comprehensive evaluation. The dataset is publicly available on HuggingFace for further research and development.
+The resulting dataset, which we named "ChinaCrimeQACode", contains around 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \citep{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation. The dataset is publicly available on HuggingFace for further research and development.  %  (Table~\ref{tab:dataset_split})
 % This review process involved verifying that the answers were accurate, relevant, and aligned with the corresponding questions. We also ensured that the answers were concise and clear, making them suitable for use in our visualization tool.
 
-\begin{table}[H]
-\centering
-\begin{tabular}{lr}
-\hline
-\textbf{Split} & \textbf{Count} \\
-\hline
-train & 4513 \\
-test  & 1079 \\
-\hline
-\end{tabular}
-\caption{Dataset split distribution.}
-\label{tab:dataset_split}
-\end{table}
+% \begin{table}[H]
+% \centering
+% \begin{tabular}{lr}
+% \hline
+% \textbf{Split} & \textbf{Count} \\
+% \hline
+% train & 4513 \\
+% test  & 1079 \\
+% \hline
+% \end{tabular}
+% \caption{Dataset split distribution.}
+% \label{tab:dataset_split}
+% \end{table}
 
 
 % TODO: poner ejemplo de question-answer pair
 
 \section{Prompt Structuration}
-Prompts were carefully designed to ensure the model understood the task requirements and could generate accurate code solutions.  
-We generate code solutions using a structured prompt (Figure~\ref{fig:prompt_structure}) that includes the following components:  
-(1) a system message that sets the context for the model,  
-(2) a dataset context where we provide each table description, including column names and types,  
-(3) a question that specifies the task to be performed,  
-(4) a critical-requirements section that outlines the specific constraints for code generation,  
-(5) an output-format section that prescribes the expected response structure, and  
-(6) an execution directive that instantiates the model to write the code solution.
 
-\medskip
-\noindent
-\textbf{Prompt design in detail.}  
-Figure~\ref{fig:prompt_structure} illustrates the layered architecture that guides the large-language model from high-level context to low-level implementation:
+All prompts were carefully designed to ensure the model understood the task requirements and could generate accurate code solutions. We describe below the structure of the prompts used both for answer generation and model training, highlighting how each layer of context helps to elicit precise and functional responses from the model. Full prompt examples are included in Appendix~\ref{appendix:prompts} for transparency and reproducibility.
 
-\begin{enumerate}
-  \item \textbf{System Instruction:} Defines the agent’s role as an expert in geospatial crime analytics and explicitly enumerates the \emph{only} permitted libraries.  
-  This early scoping mitigates hallucinations and enforces deterministic, reproducible outputs.
-  
-  \item \textbf{Dataset Context:} Supplies declarative metadata for the three interconnected GeoDataFrames: \texttt{crimes\_df}, \texttt{streets\_df}, and \texttt{geometries\_df}.  
-  Column names, data types, and schema relations (e.g., point‐to‐line containment) are provided to prime schema awareness.
-  
-  \item \textbf{User Question:} A natural-language query that specifies the required spatio-temporal analysis.
-  
-  \item \textbf{Critical Requirements:} Lists fine-grained constraints the generated code must satisfy, including the function signature, CRS alignment checks, sanctioned libraries, and robust error handling.
-  
-  \item \textbf{Output Format:} Mandates that the response consist solely of a single \texttt{python} code block, disallowing any explanatory prose.  
-  This rigidity greatly simplifies downstream execution pipelines.
-  
-  \item \textbf{Execution Directive:} Issues an imperative \enquote{BEGIN CODING IMMEDIATELY} that forces the model to produce executable Python as its very first token, eliminating meta-commentary.
-\end{enumerate}
+\subsection{Answer generation prompt}
 
-These six layers funnel the model from overarching context to executable detail, effectively functioning as a self-contained software specification.  
-The complete version of the prompt is described in Appendix~\ref{appendix:prompts} for full transparency and reproducibility.
+The answer generation prompt (Figure~\ref{fig:answer_generation_prompt_structure}) follows a layered structure designed to guide the DeepSeekV3 model through a rich, contextualized reasoning process. This prompt was used to create high-quality reference answers (i.e., ground truth) for training purposes.
+
+At the top level, the \textbf{System Instructions} define the model’s role and restrict its scope of reasoning, ensuring consistency and relevance across generations. The \textbf{User Prompt} provides several critical components. First, the \textit{Dataset Context} introduces the \textit{Dataset Specification} of the three core dataframes: \texttt{crimes\_df}, \texttt{streets\_df}, and \texttt{geometries\_df}. This is followed by one-shot \textit{Reference Material}, offering prior examples (reference question and code) to scaffold the model’s behavior. Next, the prompt includes the target \textit{User Question}, which the model must answer, and a \textit{Detailed Task Description} outlining specific rules depending on whether the question is a rephrased or altered version of a known query.
+
+Complementing this context, the \textbf{Dataset Specification} explicitly lists the column names, sample rows, data types, and semantic descriptions of each field. This encourages schema awareness and reduces ambiguity during code generation. Finally, an \textbf{Output Format} section prescribes the XML response schema to enforce structured and machine-readable outputs.
 
 \begin{figure}[hbtp]
   \centering
-  \includegraphics[width=0.29\textwidth]{images/prompt.png}
-  \caption{Prompt Structure}
-  \label{fig:prompt_structure}
+  \includegraphics[width=0.65\textwidth]{images/answer_gen.png}
+  \caption{Answer generation prompt structure}
+  \label{fig:answer_generation_prompt_structure}
+\end{figure}
+
+
+\subsection{Training prompt structure}
+
+For training, we employed a refined prompt format optimized for model fine-tuning and aligned with code generation best practices. The training prompt (Figure~\ref{fig:training_prompt_structure}) shares a similar foundational structure with the answer generation prompt but introduces stricter output constraints and excludes any example-based reasoning components.
+
+At the top, the \textbf{System Instructions} define the model’s role as a geospatial crime analytics expert and enumerate the only allowed libraries. This early specification helps reduce hallucinations and ensures that generated solutions remain deterministic and reproducible.
+
+The \textbf{Dataset Context} provides declarative metadata for the three key GeoDataFrames: \texttt{crimes\_df}, \texttt{streets\_df}, and \texttt{geometries\_df}, as well as their schema relations (e.g., spatial containment and joins). Unlike the answer generation prompt, the training prompt does \emph{not} include any one-shot reference material (i.e., no example question or sample code). This omission is intentional: it enforces that the model generalizes from the dataset schema and task formulation alone, without mimicking prior examples.
+
+The \textbf{User Question} poses the target query in natural language. It is followed by a \textbf{Critical Requirements} block, which specifies strict constraints such as valid function signatures, use of allowed libraries, CRS alignment, and robust error handling.
+
+The \textbf{Output Format} mandates that the response must be a single Python code block—excluding any natural language explanations or comments,thereby enabling seamless integration into downstream execution pipelines. Finally, the \textbf{Execution Directive} explicitly commands the model to begin coding immediately, ensuring a focused, code-only output from the first token.
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.3\textwidth]{images/prompt.png}
+  \caption{Training prompt structure}
+  \label{fig:training_prompt_structure}
 \end{figure}
 
 
 \section{Model Fine-Tuning}
 
-
-% TODO: model selection
-% TODO: hyperparameters and quantization
 We fine-tuned the Llama-3.1-8B Instruct model \citep{Grattafiori2024Llama3, Unsloth2024WhatModel} by implementing the techniques described in \cite{Pareja2024RecipesSFT}. For the fine-tuning process, we utilized Hugging Face Transformers alongside the Unsloth library to optimize computational resources and accelerate training, completing the entire procedure in approximately 3 hours using a single NVIDIA H100 GPU with 80GB memory provided by Lightning AI. This model was chosen as it represents a balance between size (8B), data science coding capabilities \citep{Lai2022DS1000}, and compatibility with Unsloth for fast and efficient fine-tuning.
 
-\begin{table}[H]
-\centering
-\caption{Fine-tuning Hyperparameters for ChinaCrimeQACode}
-\label{tab:hyperparameters}
-\begin{tabular}{ll}
-\toprule
-\textbf{Hyperparameter} & \textbf{Value} \\
-\midrule
-LoRA rank ($r$) & 64 \\
-LoRA alpha & 16 \\
-LoRA dropout & 0.0 \\
-Batch size (per device) & 32 \\
-Gradient accumulation steps & 4 \\
-Max sequence length & 3,200 tokens \\
-Training epochs & 7 \\
-Learning rate & 7e-5 \\
-Optimizer & \texttt{adamw\_torch\_fused} \\
-Scheduler & \texttt{linear} \\
-Warmup ratio & 0.1 \\
-Weight decay & 0.01 \\
-Quantization & 4-bit (NF4, double quant) \\
-\bottomrule
-\end{tabular}
-\end{table}
+
 
 \section{Model Evaluation}
 
@@ -172,12 +143,20 @@ For model evaluation, we adopted a comprehensive approach combining both automat
 % For instruction tuning, we formatted our question-code pairs using a standard template that clearly specified the task context and expectations. Each question was prefaced with a system prompt indicating that the model should generate executable Python code to analyze crime data and answer the given question. 
 
 
-\section{Case Study Inference Workflow}
+\section{Inference Workflow}
 
-% TODO: diagrama de flujo de la inferencia para estudios de caso
+This section describes the inference pipeline implemented for our case studies, detailing the process from user query to final response. As illustrated in Figure~\ref{fig:inference_pipeline}, the workflow consists of several key stages: first, the user query is processed by a fine-tuned Llama3-8B model, which generates multiple code solutions. Each code snippet is executed to produce corresponding outputs. Finally, a Llama3-8B-Base model performs summarization of these results to create the final response presented to the user.
+%  This architecture enables robust and accurate responses to complex geospatial crime analytics queries.
 
-\section{Resume}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{images/inference_pipeline.drawio.png}
+  \caption{Chat inference pipeline}
+  \label{fig:inference_pipeline}
+\end{figure}
 
-This section provides a detailed overview of the methodology ...
+% \section{Resume}
 
-The section continues by detailing ...
+% This section provides a detailed overview of the methodology ...
+
+% The section continues by detailing ...

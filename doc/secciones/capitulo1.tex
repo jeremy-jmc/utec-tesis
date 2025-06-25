@@ -163,13 +163,13 @@ Pass@k is a metric that evaluates the probability of a model generating a correc
 
 where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the top-k responses, and 0 otherwise.
 
-\subsection{Majority@K}
+% \subsection{Majority@K}
 
-Majority@k is a metric that evaluates if the group with the majority of the top-k generated answers is similar to the ground truth answer. It is particularly useful for assessing the performance of language models in tasks where multiple answers can be generated, such as question answering or text generation \citep{Wang2023SelfConsistency}. The metric is defined as:
-\begin{equation}
-    Majority@k = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(y_i \in \text{majority}(\hat{y}_i^{(1:k)}))
-\end{equation}
-where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the majority of the top-k responses, and 0 otherwise.
+% Majority@k is a metric that evaluates if the group with the majority of the top-k generated answers is similar to the ground truth answer. It is particularly useful for assessing the performance of language models in tasks where multiple answers can be generated, such as question answering or text generation \citep{Wang2023SelfConsistency}. The metric is defined as:
+% \begin{equation}
+%     Majority@k = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(y_i \in \text{majority}(\hat{y}_i^{(1:k)}))
+% \end{equation}
+% where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the majority of the top-k responses, and 0 otherwise.
 
 
 \subsection{Code-BLEU}
