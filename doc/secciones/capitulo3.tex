@@ -1,7 +1,16 @@
 \chapter{ METHODOLOGY}
 
 \noindent
-In this chapter, we present the methodological framework adopted for our study. We detail the processes of data preparation, question-answer generation, model training, and evaluation, as well as the development of the visualization tool. Each section outlines the specific steps and techniques employed to ensure the reliability and reproducibility of our results.
+In this chapter, we present the methodological framework adopted for our study (Figure \ref{fig:methodology_overview}). We detail the processes of data preparation, question-answer generation, model training, and evaluation, as well as the development of the visualization tool. Each section outlines the specific steps and techniques employed to ensure the reliability and reproducibility of our results.
+
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=\textwidth]{images/metodologia.png}
+  \caption{Methodology overview}
+  \label{fig:methodology_overview}
+\end{figure}
+
 
 \section{Dataset preparation}
 
@@ -155,8 +164,6 @@ This section describes the inference pipeline implemented for our case studies, 
   \label{fig:inference_pipeline}
 \end{figure}
 
-% \section{Resume}
+\section{Resume}
 
-% This section provides a detailed overview of the methodology ...
-
-% The section continues by detailing ...
+This methodology chapter presented a comprehensive framework for crime data analysis through natural language queries. Beginning with dataset preparation using Chinese crime data, administrative boundaries, and road networks, we detailed the data cleaning process and focused on three high-crime provinces. We then described our question-answer dataset creation through template-based generation, augmentation techniques, and code synthesis using DeepSeek V3. Our prompt engineering utilized structured contexts for both answer generation and model training. We fine-tuned the Llama-3.1-8B model using Unsloth for computational efficiency, and employed multiple evaluation metrics including pass@k and CodeBLEU. Finally, we outlined our inference workflow that leverages multiple code solutions to provide accurate responses to user queries about crime analytics.
