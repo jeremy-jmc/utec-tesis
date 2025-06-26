@@ -118,13 +118,13 @@ This discrepancy is likely rooted in architectural and training differences. o4�
 
 \subsection{Case I: Counterfactual Evaluation of Targeted Interventions in Crime Hotspots of Guangdong Province}
 
-Zhongshan is a prefecture-level city in Guangdong province with a population of approximately 4.4 million as of 2020 that has pursued aggressive data-driven policing strategies. According to official reports, Zhongshan experienced notable crime declines in recent years. Mid-2020 figures indicated a 37\% drop in serious violent crimes and a 46\% drop in theft and robbery cases compared to the previous year \cite{Zhongshan2020}. This context of active crime prevention underscores the importance of analyzing Zhongshan's crime data to understand underlying patterns and inform future policies.
+Zhongshan, a city in Guangdong with around 4.4 million residents (2020), has implemented data-driven policing strategies. Official reports show crime reductions, with a 37\% drop in serious violence and 46\% in theft and robbery by mid-2020 \cite{Zhongshan2020}, highlighting the value of analyzing its crime data for policymaking.
 
-Spatio-temporal crime analysis serves as a key tool for modern law enforcement. By mapping incident locations and times, analysts can identify hotspots and temporal trends that guide resource allocation. Early studies such as the STAC program demonstrated that outlining incident boundaries and measuring crime counts in specific areas can reveal concentration patterns for tactical decisions. More recently, forecasting models have been shown to enhance public safety by predicting future crime distributions and trends \cite{Li2024UrbanGPT}. Together, these approaches illustrate how comprehensive analysis of crime datasets can support both forensic investigations and strategic planning.
+Spatio-temporal crime analysis enables law enforcement to identify hotspots and trends by mapping incident time and location. Tools like STAC and recent forecasting models have demonstrated how such insights improve tactical responses and public safety planning \cite{Li2024UrbanGPT}.
 
-Counterfactual modeling extends this analysis by posing hypothetical scenarios that explore alternative outcomes. Counterfactual analysis allows decision-makers to compare actual outcomes with those that would have occurred under alternate conditions \cite{CONSTANTINOU201641}. In forensic or public safety settings, this means estimating the effect of interventions that did not actually happen. Analysts might examine how overall crime rates would change if a particular category of incidents had been prevented. By modeling such scenarios, such as removing all night-time thefts from the record, researchers can infer the causal impact of those incidents. These hypothetical comparisons provide insight into the potential efficacy of different policies or data reporting practices without requiring real-world experimentation \cite{CONSTANTINOU201641}.
+Counterfactual modeling complements this by evaluating “what-if” scenarios—e.g., estimating the impact if certain crimes, like night-time thefts, had not occurred. This approach offers a way to assess the potential effectiveness of interventions without real-world trials \cite{CONSTANTINOU201641}.
 
-In this case study, we propose leveraging a fine-tuned large language model (LLM) as an interactive reasoning tool over Zhongshan's spatio-temporal crime data. Recent work has shown that integrating LLMs with geographic information systems enables natural-language querying of spatial data \cite{William2025}. An LLM can be connected to a GIS so that users can ask plain-language questions about maps and patterns, with the model translating these queries into actionable insights \cite{William2025}. This approach bridges textual and spatial information, expediting analysis and discovery in spatial datasets \cite{William2025}. A fine-tuned LLM could therefore generate and reason about complex questions regarding the Zhongshan crime dataset, acting as a digital assistant that translates data-driven scenarios into understandable explanations.
+This study proposes a fine-tuned LLM as an assistant for querying Zhongshan’s crime data. Linked with GIS, the model can process natural-language questions and generate actionable insights, facilitating spatial reasoning and data interpretation \cite{William2025}.
 \noindent In the following sections, we present three counterfactual questions for the LLM to address:
 \begin{enumerate}
   \item What percentage reduction in overall crime could be achieved if all night-time thefts in Zhongshan during 2019 were prevented?
@@ -132,7 +132,7 @@ In this case study, we propose leveraging a fine-tuned large language model (LLM
   \item How would the top 10 safest counties in Guangdong change if crime reporting increased by 15\% in Zhongshan during 2019?
 \end{enumerate}
 
-\subsubsection{Case I.1:}
+\subsubsection{Question I.1:}
 \begin{itemize}
     \item \textbf{Question:} "What percentage reduction in overall crime could be achieved if all night-time thefts in Guangdong Province during 2019 were prevented?"
     \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below. 
@@ -151,7 +151,7 @@ In this case study, we propose leveraging a fine-tuned large language model (LLM
     "The province of Guangdong in China reported 1376 total crimes in 2019. Out of those, 633 crimes occurred at night. If all night-time crimes were prevented, the overall crime rate would decrease by 46.00\%. This is because 46.00\% of the total crimes in 2019 were night-time crimes."
     \end{tcolorbox}
 
-\subsubsection{Case I.2:}
+\subsubsection{Question I.2:}
 \begin{itemize}
     \item \textbf{Question:} "How would the average crime in neighboring counties (within a 70 km radius of [22.516998, 113.392723]) change if crime at that central point were reduced by 20\%?"
     \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below. 
@@ -174,7 +174,7 @@ In this case study, we propose leveraging a fine-tuned large language model (LLM
     \end{tcolorbox}
 
 \end{itemize}
-\subsubsection{Case I.3:}
+\subsubsection{Question I.3:}
 \begin{itemize}
     \item \textbf{Question:} "Considering the top 10 of the safest all counties in Guangdong Province, How would this top 10 change if the crime reporting increased by 15\% in Zhongshan City in 2019?"
     \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below.
