@@ -2,19 +2,32 @@
 
 \section{Conclusions}
 
+
+
+
 \section{Limitations and Future Work}
 
-\begin{itemize}
-    \item \textbf{Dataset Improvements:} 
-    \begin{itemize}
-        \item Expand the range area to Brazil and NY (and possibly Lima). 
-        \item Use the LLM-as-a-judge in the dataset construction phase.
-        \item Scale the dataset to 10K records.
-    \end{itemize}
-    \item \textbf{Model Improvements:}
-    \begin{itemize}
-        \item Relate the output of the model with the visualization feedback.
-        \item Use the model as a part of Agentic pipeline
-        \item Reducing the token usage requesting only the function solve and not the full import of the libraries.
-    \end{itemize}
-\end{itemize}
+During our experiments with the finetuned model, we identified several significant limitations in both the model and the dataset. Addressing these limitations is essential for enhancing the model's performance and usability. For example, when queries include coordinates (latitude and longitude) in a format different from the dataset's standard ('[lat, long]'), the model consistently fails to provide accurate or approximate answers. Additionally, the model struggles with queries that contain misspellings or alternative names for specific information, such as locations or types of crimes, that differ from those in the dataset. For instance, when asked "How many crimes occurred in Guangdong?" instead of "How many crimes occurred in Guangdong Province?", the model is unable to produce a correct response.
+
+To address these challenges, future work will focus on enhancing both the dataset and the model. For the dataset, we propose expanding its geographical coverage to include regions such as Brazil, New York, and potentially Lima, thereby improving the model's generalizability across diverse contexts. Additionally, incorporating a "LLM-as-a-judge" mechanism during the dataset construction phase, by verifying whether the model's outputs for paraphrased or altered questions align with the original, could enhance label reliability and consistency. Scaling the dataset to at least 10,000 records is another priority, as this would provide a richer training environment and enable the model to generalize more effectively across a broader range of queries.
+
+On the modeling side, we aim to enhance the alignment between the model’s textual outputs and the visual feedback provided to users. This can be achieved by integrating a visualization tool capable of displaying maps and landmarks related to the model's predictions, offering users a more intuitive understanding of the model’s reasoning process. Additionally, incorporating the model into an agentic pipeline, where it collaborates with external tools or agents, could significantly improve its ability to handle complex, multi-step queries in real-world applications. Furthermore, introducing a preprocessing step before the model generates responses, where a smaller model identifies the key points of the question and refines it by replacing these key points with corresponding values from the dataset, could enhance the model's accuracy and relevance in addressing user queries.
+
+%\item Reducing the token usage requesting only the function solve and not the full import of the libraries.
+%\section{Limitations and Future Work}
+
+%During our experiments with the finetuned model, we identified several significant limitations in both the model and the dataset. Addressing these limitations is essential for enhancing the model's performance and usability. For example, when queries include coordinates (latitude and longitude) in a format different from the dataset's standard ('[lat, long]'), the model consistently fails to provide accurate or approximate answers. Additionally, the model struggles with queries that contain misspellings or alternative names for specific information, such as locations or types of crimes, that differ from those in the dataset. For instance, when asked "How many crimes occurred in Guangdong?" instead of "How many crimes occurred in Guangdong Province?", the model is unable to produce a correct response.
+
+%\begin{itemize}
+ %   \item \textbf{Dataset Improvements:} 
+  %  \begin{itemize}
+   %     \item Expand the range area to Brazil and NY (and possibly Lima). 
+    %    \item Use the LLM-as-a-judge in the dataset construction phase.
+     %   \item Scale the dataset to 10K records.
+    %\end{itemize}
+    %\item \textbf{Model Improvements:}
+    %\begin{itemize}
+     %   \item Relate the output of the model with the visualization feedback.
+     %   \item Use the model as a part of Agentic pipeline
+    %\end{itemize}
+%\end{itemize}
