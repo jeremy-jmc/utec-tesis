@@ -1,6 +1,6 @@
 \lstdefinestyle{pythoncode}{
   language=Python,
-  basicstyle=\scriptsize\ttfamily,
+  basicstyle=\tiny\ttfamily,
   backgroundcolor=\color{gray!5},
   keywordstyle=\color{blue},
   commentstyle=\color{green!50!black},
@@ -13,7 +13,9 @@
   breaklines=true,
   captionpos=b,
   showstringspaces=false,
-  tabsize=4
+  tabsize=4,
+  baselinestretch=0.8,
+  lineskip=-1pt
 }
 % Ajuste opcional del formato de captions
 \captionsetup[lstlisting]{font=small,labelfont=bf}
@@ -22,21 +24,20 @@
 
 \chapter{ EXPERIMENTS AND RESULTS}
 
-This chapter presents the outcomes derived from applying the methodology detailed in the preceding chapter. We begin by specifying the hyperparameters employed durint the training phase. Next, we report the results from the evaluated models, covering both quantitative and qualitative analyses. Lastly, we discuss the significance of these findings and include case studies to demonstrate the practical relevance of our results.
+This chapter presents the outcomes derived from applying the methodology detailed in the preceding chapter. We begin by specifying the hyperparameters employed during the training phase. Next, we report the results from the evaluated models, covering both quantitative and qualitative analyses. Lastly, we discuss the significance of these findings and include case studies to demonstrate the practical relevance of our results.
 
 \section{Hyperparameters}
 
 
 The selection of key hyperparameters for training was guided by empirical observation and best practices in fine-tuning large language models:
+
 \begin{itemize}
-    
-\item \textbf{Warmup Ratio:} We initially set the warmup ratio to 0.03; however, this led to instability during the early stages of training, with noticeable spikes in the loss. Increasing the warmup ratio to 0.1 significantly improved training stability, consistent with findings in transformer-based models such as RoBERTa, where extended warmup periods are known to facilitate smoother convergence \citep{liu2019robertarobustlyoptimizedbert}.
+  \item \textbf{Warmup Ratio:} We initially set the warmup ratio to 0.03; however, this led to instability during the early stages of training, with noticeable spikes in the loss. Increasing the warmup ratio to 0.1 significantly improved training stability, consistent with findings in transformer-based models such as RoBERTa, where extended warmup periods are known to facilitate smoother convergence \citep{liu2019robertarobustlyoptimizedbert}.
+  \item \textbf{Weight Decay:} To mitigate overfitting and enhance generalization, especially given the relatively small size of our dataset, we applied a weight decay of 0.01. This choice aligns with established practices in training deep neural networks on limited data, where appropriate regularization is crucial for model robustness \citep{brainacgan}.
+  \item \textbf{Learning Rate:} The learning rate was initially set to 2e-3, but this configuration resulted in poor convergence during training. Considering that we employed LoRA for fine-tuning the LLaMA model, we reduced the learning rate to 7e-5. This lower rate aligns with commonly adopted values for adapting pre-trained large language models using parameter-efficient techniques, and it yielded significantly improved convergence behavior \citep{zhou2024automixqselfadjustingquantizationhigh}.
+\end{itemize}
 
-\item \textbf{Weight Decay:} To mitigate overfitting and enhance generalization, especially given the relatively small size of our dataset, we applied a weight decay of 0.01. This choice aligns with established practices in training deep neural networks on limited data, where appropriate regularization is crucial for model robustness \citep{brainacgan}.
-
-\item \textbf{Learning Rate:} The learning rate was initially set to 2e-3, but this configuration resulted in poor convergence during training. Considering that we employed LoRA for fine-tuning the LLaMA model, we reduced the learning rate to 7e-5. This lower rate aligns with commonly adopted values for adapting pre-trained large language models using parameter-efficient techniques, and it yielded significantly improved convergence behavior \citep{zhou2024automixqselfadjustingquantizationhigh}.
-
-\end{itemize}}
+The other hyperparameters (such as LoRa range and batch size) were chosen according to hardware limitations. Full detail in Table \ref{tab:hyperparameters}.
 
 \begin{table}[H]
 \centering
@@ -65,8 +66,6 @@ Quantization & 4-bit (NF4, double quant) \\
 
 \section{Quantitative Results}
 
-% TODO: TABLE 1 comparing Phi3-mini4k-instruct, Llama3-8B-Instruct, baseline and trained models along with Closed-Source models like GPT-4o-models, pass@k with k = 1 (with greedy decoding), 4, 16 (multinomial sampling)
-
 \begin{table}[h!]
 \centering
 \caption{Comparison of Evaluation Metrics: Fine-tuned LLaMA3 vs. o4-mini (Test Set)}
@@ -87,17 +86,13 @@ code\_bleu@k      & 0.355 & 0.044 & 0.353 & 0.370 & 0.054 & 0.375 \\
 \label{tab:combined_metrics}
 \end{table}
 
-
-\section{Discussion}
-
-Based on the observed metrics, several conclusions emerge regarding the performance of the fine-tuned LLaMA3‑8B‑Instruct model versus the base o4‑mini. First, LLaMA3‑8B‑Instruct exhibits a higher perc\_error@k than o4‑mini; yet it significantly outperforms o4‑mini in both pass@k and pass\_over\_k. This indicates that, despite a slightly lower rate of successful compilation, the fine‑tuned model produces more precise and semantically relevant solutions. In contrast, o4‑mini’s better perc\_error@k can be misleading: it often compiles code that runs but fails to solve the problem correctly.
+Based on the observed metrics in Table \ref{tab:combined_metrics}, several conclusions emerge regarding the performance of the fine-tuned LLaMA3‑8B‑Instruct model versus the base o4‑mini. First, LLaMA3‑8B‑Instruct exhibits a higher perc\_error@k than o4‑mini; yet it significantly outperforms o4‑mini in both pass@k and pass\_over\_k. This indicates that, despite a slightly lower rate of successful compilation, the fine‑tuned model produces more precise and semantically relevant solutions. In contrast, o4‑mini's better perc\_error@k can be misleading: it often compiles code that runs but fails to solve the problem correctly.
 
 This discrepancy is likely rooted in architectural and training differences. o4‑mini is believed to use a Mixture‑of‑Experts (MoE) setup with approximately 40B total parameters—only about 8B of which are active per inference—whereas LLaMA3‑8B‑Instruct is a dense model with all 8B parameters actively contributing . While MoE architectures provide access to a broader parameter pool, this capacity advantage does not automatically translate to superior domain-specific performance. In contrast, the fully fine‑tuned LLaMA model has internalized domain-specific patterns—such as those needed to manipulate crime data (locations, dates, crime types, etc.)—enabling it to generate more accurate and relevant code.
+
 \section{Qualitative Analysis}
 
-% \section{Discussion}
-
-\section{Case studies}
+We conducted through 2 case studies to illustrate the practical applications of our fine-tuned model in real-world scenarios. The first case focuses on counterfactual evaluation of targeted interventions in crime hotspots, while the second explores geospatial queries related to crime data.
 
 \subsection{Case I: Counterfactual Evaluation of Targeted Interventions in Crime Hotspots of Guangdong Province}
 
@@ -108,129 +103,105 @@ Spatio-temporal crime analysis enables law enforcement to identify hotspots and 
 Counterfactual modeling complements this by evaluating “what-if” scenarios—e.g., estimating the impact if certain crimes, like night-time thefts, had not occurred. This approach offers a way to assess the potential effectiveness of interventions without real-world trials \cite{CONSTANTINOU201641}.
 
 This study proposes a fine-tuned LLM as an assistant for querying Zhongshan’s crime data. Linked with GIS, the model can process natural-language questions and generate actionable insights, facilitating spatial reasoning and data interpretation \cite{William2025}.
+
 \noindent In the following sections, we present three counterfactual questions for the LLM to address:
+
 \begin{enumerate}
   \item What percentage reduction in overall crime could be achieved if all night-time thefts in Zhongshan during 2019 were prevented?
   \item How would the average crime in neighboring counties (within a 70~km radius of [22.516998, 113.392723]) change if crime at that central hotspot were reduced by 20\%?
   \item How would the top 10 safest counties in Guangdong change if crime reporting increased by 15\% in Zhongshan during 2019?
 \end{enumerate}
 
-\subsubsection{Question I.1:}
+\noindent\textbf{Question I.1:}
 \begin{itemize}
     \item \textbf{Question:} "What percentage reduction in overall crime could be achieved if all night-time thefts in Guangdong Province during 2019 were prevented?"
-    \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below. 
-
-    \lstinputlisting[
-    style=pythoncode,    
-    label={lst:q1}
-    ]{codigos/q1.py}
-
-
-
-    \item \textbf{Model Response:} 
     
-    \begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q1 Response, fontupper=\scriptsize]
-
-    "The province of Guangdong in China reported 1376 total crimes in 2019. Out of those, 633 crimes occurred at night. If all night-time crimes were prevented, the overall crime rate would decrease by 46.00\%. This is because 46.00\% of the total crimes in 2019 were night-time crimes."
-    \end{tcolorbox}
-
-\subsubsection{Question I.2:}
-\begin{itemize}
-    \item \textbf{Question:} "How would the average crime in neighboring counties (within a 70 km radius of [22.516998, 113.392723]) change if crime at that central point were reduced by 20\%?"
     \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below. 
+    \lstinputlisting[style=pythoncode, label={lst:q1}]{codigos/q1.py}
 
+    \item \textbf{Model Response:}     
+    \begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q1 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
+    The province of Guangdong in China reported 1376 total crimes in 2019. Out of those, 633 crimes occurred at night. If all night-time crimes were prevented, the overall crime rate would decrease by 46.00\%. This is because 46.00\% of the total crimes in 2019 were night-time crimes.
+    \end{tcolorbox}
+\end{itemize}
 
-    \lstinputlisting[
-    style=pythoncode,    
-    label={lst:q2}
-    ]{codigos/q2.py}
+\noindent\textbf{Question I.2:}
+\begin{itemize}
+  \item \textbf{Question:} "How would the average crime in neighboring counties (within a 70 km radius of [22.516998, 113.392723]) change if crime at that central point were reduced by 20\%?"
+  
+  \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below. 
+  \lstinputlisting[style=pythoncode, label={lst:q2}]{codigos/q2.py}
 
   \item \textbf{Model Response:} 
-    
-
-    \begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q2 Response, fontupper=\scriptsize]
-    
-    The average crime rate in neighboring counties would decrease by 13.85\% if crime at the central point were reduced by 20\%. 
-
-    This is because the simulated reduced crime rate in neighboring counties decreased from 4874.79 to 4199.85.
-    
+  \begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q2 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
+    The average crime rate in neighboring counties would decrease by 13.85\% if crime at the central point were reduced by 20\%. This is because the simulated reduced crime rate in neighboring counties decreased from 4874.79 to 4199.85.
     \end{tcolorbox}
 
 \end{itemize}
-\subsubsection{Question I.3:}
+
+\noindent\textbf{Question I.3:}
 \begin{itemize}
-    \item \textbf{Question:} "Considering the top 10 of the safest all counties in Guangdong Province, How would this top 10 change if the crime reporting increased by 15\% in Zhongshan City in 2019?"
-    \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below.
+  \item \textbf{Question:} "Considering the top 10 of the safest all counties in Guangdong Province, How would this top 10 change if the crime reporting increased by 15\% in Zhongshan City in 2019?"
+  
+  \item \textbf{Model Code Generation:} One of the six code generations that were made by the model is shown below.
+  \lstinputlisting[style=pythoncode, label={lst:q3}]{codigos/q3.py}
+      
+  \item \textbf{Model Response:} 
+  \begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q3 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
+  Based on the provided code outputs, the current top 10 safest counties in Guangdong Province for 2019 are:
 
-    \lstinputlisting[
-    style=pythoncode,    
-    label={lst:q3}
-    ]{codigos/q3.py}
-    
-    
-    \item \textbf{Model Response:} 
-\begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q3 Response, fontupper=\scriptsize]
-Based on the provided code outputs, the current top 10 safest counties in Guangdong Province for 2019 are:
+  1. Bao'an District with 298 crimes
 
-\begin{enumerate}
-  \item Bao'an District with 298 crimes
-  \item Dongguan City with 139 crimes
-  \item Baiyun District with 113 crimes
-  \item Zhongshan City with 80 crimes
-  \item Longgang District with 78 crimes
-  \item Panyu District with 62 crimes
-  \item Shunde District with 61 crimes
-  \item Chancheng District with 56 crimes
-  \item Nanshan District with 55 crimes
-  \item Haizhu District with 49 crimes
-\end{enumerate}
+  2. Dongguan City with 139 crimes
+  
+  3. Baiyun District with 113 crimes
+  
+  4. Zhongshan City with 80 crimes
+  
+  5. Longgang District with 78 crimes
+  
+  6. Panyu District with 62 crimes
+  
+  7. Shunde District with 61 crimes
+  
+  8. Chancheng District with 56 crimes
+  
+  9. Nanshan District with 55 crimes
+  
+  10. Haizhu District with 49 crimes
 
-If the crime reporting in Zhongshan City increased by 15\% in 2019, the new top 10 safest counties would be:
+  If the crime reporting in Zhongshan City increased by 15\% in 2019, the new top 10 safest counties would be:
 
-\begin{enumerate}
-  \item Bao'an District with 298 crimes
-  \item Dongguan City with 139 crimes
-  \item Baiyun District with 113 crimes
-  \item Zhongshan City with 92 crimes (after 15\% increase)
-  \item Longgang District with 78 crimes
-  \item Panyu District with 62 crimes
-  \item Shunde District with 61 crimes
-  \item Chancheng District with 56 crimes
-  \item Nanshan District with 55 crimes
-  \item Haizhu District with 49 crimes
-\end{enumerate}
+  1. Bao'an District with 298 crimes
 
-The change in ranking is due to Zhongshan City moving from 4th to 4th place after the increase in crimes.
-\end{tcolorbox}
+  2. Dongguan City with 139 crimes
 
-    
+  3. Baiyun District with 113 crimes
+
+  4. Zhongshan City with 92 crimes (after 15\% increase)
+
+  5. Longgang District with 78 crimes
+
+  6. Panyu District with 62 crimes
+
+  7. Shunde District with 61 crimes
+
+  8. Chancheng District with 56 crimes
+
+  9. Nanshan District with 55 crimes
+
+  10. Haizhu District with 49 crimes
+
+  The change in ranking is due to Zhongshan City moving from 4th to 4th place after the increase in crimes.
+  \end{tcolorbox}
+
+      
 \end{itemize}
 
-\subsection{Case II: Geospatial Queries}
+% TODO: conclusion de este caso de estudio
 
+% \subsection{Case II: Geospatial Queries}
 
-% \chapter{MARCO METODOLÓGICO}
-
-% Inicie aquí el texto, utilizando sangría de 1.25 cm. en el primer
-% párrafo. Continúe el segundo párrafo.
-
-% Continúe el segundo párrafo
-
-% \section{Primer subtítulo}
-
-% En la actualidad, las unidades de información hacen frente a muchos cambios
-% debido a los avances tecnológicos, explosión informativa, nuevos recursos y
-% soportes, por lo cual se implementan servicios innovadores que les permitan a
-% sus usuarios tener acceso a muchas fuentes de información. Para asegurar el
-% acceso y uso de los servicios los usuarios requieren poseer una serie de
-% habilidades que les permitan identificar, recuperar, manejar, discernir,
-% organizar, utilizar y comunicar la información de manera eficaz para la toma de
-% decisiones.
-
-% Entre las causas se pueden considerar la falta de tiempo asignado al taller,
-% las limitaciones en cuanto a laboratorios, el poco personal, la falta de una
-% correcta selección de los contenidos, así como, una calificación que asegure el
-% cumplimiento de los objetivos.
 
 \section{Resume}
 
