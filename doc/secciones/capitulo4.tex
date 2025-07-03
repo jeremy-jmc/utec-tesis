@@ -68,18 +68,18 @@ Quantization & 4-bit (NF4, double quant) \\
 
 \begin{table}[H]
 \centering
-\caption{Comparison of Evaluation Metrics: Fine-tuned LLaMA3 vs.\ o4-mini (Test Set)}
+\caption{Comparison of Evaluation Metrics: Fine-tuned LLaMA3, o4-mini, and DeepSeek-Chat (Test Set)}
 {%
-\begin{tabular}{l|ccc|ccc}
+\begin{tabular}{l|ccc|ccc|ccc}
 \toprule
-\textbf{Metric} & \multicolumn{3}{c|}{\textbf{Fine-tuned LLaMA3}} & \multicolumn{3}{c}{\textbf{o4-mini}} \\
-\cmidrule(lr){2-4} \cmidrule(lr){5-7}
- & \textbf{Mean} & \textbf{Std} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{Median} \\
+\textbf{Metric} & \multicolumn{3}{c|}{\textbf{Fine-tuned LLaMA3}} & \multicolumn{3}{c|}{\textbf{o4-mini}} & \multicolumn{3}{c}{\textbf{DeepSeek-Chat}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
+ & \textbf{Mean} & \textbf{Std} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{Median} \\
 \midrule
-perc\_error@k\,($\downarrow$)  & 0.233 & 0.299 & 0.125 & 0.003 & 0.014 & 0.000 \\
-pass@k\,($\uparrow$)           & 0.742 & 0.437 & 1.000 & 0.303 & 0.459 & 0.000 \\
-pass\_over\_k\,($\uparrow$)     & 0.460 & 0.410 & 0.406 & 0.063 & 0.175 & 0.000 \\
-code\_bleu@k\,($\uparrow$)     & 0.355 & 0.044 & 0.353 & 0.370 & 0.054 & 0.375 \\
+perc\_error@k\,($\downarrow$)  & 0.233 & 0.299 & 0.125 & 0.003 & 0.014 & 0.000 & 0.025 & 0.060 & 0.000 \\
+pass@k\,($\uparrow$)           & 0.742 & 0.437 & 1.000 & 0.303 & 0.459 & 0.000 & 0.202 & 0.401 & 0.000 \\
+pass\_over\_k\,($\uparrow$)     & 0.460 & 0.410 & 0.406 & 0.063 & 0.175 & 0.000 & 0.051 & 0.161 & 0.000 \\
+code\_bleu@k\,($\uparrow$)     & 0.355 & 0.044 & 0.353 & 0.370 & 0.054 & 0.375 & 0.372 & 0.061 & 0.379 \\
 \bottomrule
 \end{tabular}
 }
@@ -110,7 +110,7 @@ To validate our fine-tuned LLM's capability as an analytical assistant for crime
 
 \noindent \textbf{Scenario 1: Night-time Crime Prevention Impact Analysis}
 
-We posed the question: "What percentage reduction in overall crime could be achieved if all night-time thefts in Guangdong Province during 2019 were prevented?" This scenario evaluates the potential impact of enhanced nighttime patrol strategies or improved lighting infrastructure.
+We posed the question: "What percentage reduction in overall crime could be achieved if all night-time crimes in Guangdong Province during 2019 were prevented?" This scenario evaluates the potential impact of enhanced nighttime patrol strategies or improved lighting infrastructure.
 
 The model's analytical approach demonstrates sophisticated understanding of temporal crime patterns. As shown in Listing \ref{lst:q1}, the generated code correctly filters crimes by province and year, implements proper time-based categorization (defining night-time as 6 PM to 6 AM), and calculates the proportional impact of targeted interventions.
 
@@ -122,6 +122,29 @@ The model's analytical approach demonstrates sophisticated understanding of temp
 
 The analysis revealed that Guangdong Province recorded 1,376 total crimes in 2019, with 633 occurring during nighttime hours. The model concluded that preventing all night-time crimes would achieve a 46.00\% reduction in overall crime rates, indicating that nearly half of all criminal activity occurs during vulnerable nighttime periods.
 
+
+\noindent \textbf{Scenario 1 - Questions Reformulation and Responses}
+
+\begin{table}[H]
+\centering
+\caption{Scenario 1 Questions Reformulation and Responses}
+\label{tab:questions_responses}
+\begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{Question} & \textbf{Response} \\
+\hline
+If all night-time crimes in Guangdong Province were completely prevented in 2019, what percentage drop in overall crime would result? & The province of Guangdong in China reported 1376 total crimes in 2019. If all nighttime crimes were eliminated, the crime rate would decrease by 46.00\%. This is because one of the outputs directly states that the percentage decrease in total crime if all nighttime crimes were eliminated is 46.00\%.. \\
+\hline
+What would be the estimated percentage decrease in total crime in Guangdong Province during 2019 if night-time crimes had been entirely eliminated? & The correct approach is to calculate the percentage of nighttime crimes in relation to total crimes and then use that percentage to estimate the decrease. In this case, the percentage of nighttime crimes in 2019 ranged from 31.57\% to 46.00\% across the different outputs.
+
+Using the highest percentage (46.00\%), if all nighttime crimes were eradicated, the estimated percentage decrease in total crime would be 46.00\% because 46.00\% of the crimes in 2019 occurred at night. \\
+\hline
+How much could the overall crime rate in Guangdong Province for 2019 be reduced, in percentage terms, if all night-time crimes were prevented? & The correct total number of crimes in Guangdong Province for 2019 is 1376, with 957 daytime crimes and 419 nighttime crimes. If all night-time crimes were eliminated, the crime rate would decrease by 46.00\% (because the night-time crimes account for 30.45\% of the total crimes). \\
+\hline
+\end{tabular}
+\end{table}
+
+The model's responses consistently identify a 46\% reduction in total crime if nighttime incidents were eliminated, which aligns with the original data. However, subtle issues undermine reliability: Answer 1 uses vague phrasing (“one of the outputs”) that reduces clarity; Answer 2 introduces an unsupported “31.57\% to 46\%” range, creating confusion; and Answer 3 incorrectly reports nighttime crime as 419 instead of 633, leading to an internally inconsistent breakdown. Overall, while the central metric was correctly identified in each case, the responses vary in clarity and factual consistency, highlighting the importance of using metrics like accuracy, relevancy, and truthfulness when evaluating LLM outputs
 
 
 \noindent \textbf{Scenario 2: Spatial Crime Diffusion Effects}
@@ -139,6 +162,28 @@ The model's implementation, presented in Listing \ref{lst:q2}, demonstrates inte
 The analysis predicted that a 20\% crime reduction at the central hotspot would generate a 13.85\% decrease in average crime rates across neighboring counties. This finding suggests significant spatial spillover effects, where targeted interventions in high-crime areas can produce measurable benefits in surrounding regions.
 
 
+\noindent \textbf{Scenario 2 - Questions Reformulation and Responses}
+\begin{table}[H]
+\centering
+\caption{Scenario 2 Questions Reformulation and Responses}
+\label{tab:questions_responses_2}
+\begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{Question} & \textbf{Response} \\
+\hline
+What effect would a 20\% reduction in crime at [22.516998, 113.392723] have on the average crime rate in surrounding counties within a 70 km radius? & The current average crime rate in counties within a 70 km radius of the given location is 206.18 crimes per county. If crime rates in that area decreased by 20\%, the new average crime rate would be 164.95 crimes per county. \\
+\hline
+If crime at the central point [22.516998, 113.392723] decreased by 20\%, how would this influence the average crime in neighboring counties located within 70 km? & The average crime rate in neighboring counties would decrease by 13.85\% if crime at the central point were reduced by 20\%. \\
+\hline
+How might a 20\% drop in crime at [22.516998, 113.392723] impact the average level of crime in counties situated within a 70 km radius? & 
+The current average crime rate in counties within a 70 km radius of [22.516998, 113.392723] is 206.18 crimes per county. If crime rates in that location decreased by 20\%, the new average crime rate would be 164.95 crimes per county. 
+
+This is because the current average crime rate of 206.18 crimes per county decreased by 20.00\%. \\
+\hline
+\end{tabular}
+\end{table}
+
+The model's responses are inconsistent in how they handle the core metric. Two answers present a clear, mathematically coherent scenario: a 20\% reduction from an average of 206.18 crimes per county to roughly 164.95, matching an absolute drop of 41.23 incidents, which aligns with a 20\% reduction (Answer 1 and 3). However, Answer 2 deviates by directly stating a 13.85\% decrease, aligning with the original statement about spatial spillover—but fails to link this to actual crime counts, creating confusion about whether it's relative or absolute. The inconsistency stems from mixing absolute count reduction (41.23 incidents) with relative spillover percentage (13.85\%). Clarity suffers as neither explanation bridges the two interpretations: one focuses on raw crime numbers, the other on proportional impact, but neither integrates both.
 
 
 \noindent \textbf{Scenario 3: Reporting Rate Impact on Safety Rankings}
@@ -197,6 +242,28 @@ The model's approach, illustrated in Listing \ref{lst:q3}, systematically ranks 
   The change in ranking is due to Zhongshan City moving from 4th to 4th place after the increase in crimes.
 \end{tcolorbox}
 
+
+\noindent \textbf{Scenario 3 - Questions Reformulation and Responses}
+
+\begin{table}[H]
+\centering
+\caption{Scenario 3 Questions Reformulation and Responses}
+\label{tab:questions_responses_3}
+\begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{Question} & \textbf{Response} \\
+\hline
+How would a 15\% increase in crime reporting in Zhongshan City during 2019 impact the rankings of the top 10 safest counties in Guangdong Province? & Zhongshan City would remain in 4th place despite the increase in reported crimes. \\
+\hline
+If crime reporting in Zhongshan City had increased by 15\% in 2019, what impact would that have on the ranking of the top 10 safest counties in Guangdong Province? &The code calculates the adjusted crime counts for each county with a 15\% increase but encounters errors when trying to analyze Zhongshan City's data (which is 0 crimes in all cases). As a result, the adjusted rankings remain identical to the original rankings.. \\
+\hline
+In the context of the top 10 safest counties in Guangdong Province, what changes would occur in the rankings if Zhongshan City's crime reports rose by 15\% in 2019? & Not possible to answer. \\
+\hline
+\end{tabular}
+\end{table}
+The model's Scenario 3 responses exhibit varied relevance and task completion: only the first answer correctly states that Zhongshan would stay fourth after a 15\% crime increase, directly addressing the ranking impact, while the second and third responses either fabricate data errors or refuse to answer, thus failing task completion.
+
+
 \noindent \textbf{Analytical Implications and Future Potential}
 
 These case studies demonstrate the model's practical utility despite the quantitative metrics presented in Table \ref{tab:combined_metrics}. While our fine-tuned LLaMA3 model shows room for improvement in compilation success rates, the generated code consistently exhibits interesting capabilities in data filtering, temporal analysis, geospatial processing, and statistical simulation—all essential for crime data analysis.
@@ -204,6 +271,13 @@ These case studies demonstrate the model's practical utility despite the quantit
 The qualitative analysis reveals that even with current limitations, the model successfully transforms complex criminological questions into executable analytical workflows with contextually appropriate interpretations. This bridges the gap between technical analysis and policy-relevant insights, enabling law enforcement agencies to make informed decisions about resource allocation and intervention strategies.
 
 These promising results suggest that with continued refinement—particularly through expanded domain-specific datasets and targeted improvements to reduce compilation errors—our approach could become a valuable tool for evidence-based policing initiatives. The counterfactual analysis framework validates the potential of fine-tuned LLMs for supporting data-driven decision-making in public safety contexts, especially in regions where technological resources for crime analysis may be limited.
+
+
+
+\section{Reformulation of Scenarios questions} 
+
+
+
 
 
 \section{Resume}
