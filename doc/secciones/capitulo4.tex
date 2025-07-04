@@ -69,21 +69,21 @@ Quantization & 4-bit (NF4, double quant) \\
 \begin{table}[H]
 \centering
 \caption{Comparison of Evaluation Metrics: Fine-tuned LLaMA3, o4-mini, and DeepSeek-Chat (Test Set)}
-{%
+\label{tab:combined_metrics}
+\setlength{\tabcolsep}{3.5pt}
+\small
 \begin{tabular}{l|ccc|ccc|ccc}
 \toprule
 \textbf{Metric} & \multicolumn{3}{c|}{\textbf{Fine-tuned LLaMA3}} & \multicolumn{3}{c|}{\textbf{o4-mini}} & \multicolumn{3}{c}{\textbf{DeepSeek-Chat}} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
  & \textbf{Mean} & \textbf{Std} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{Median} \\
 \midrule
-perc\_error@k\,($\downarrow$)  & 0.233 & 0.299 & 0.125 & 0.003 & 0.014 & 0.000 & 0.025 & 0.060 & 0.000 \\
-pass@k\,($\uparrow$)           & 0.742 & 0.437 & 1.000 & 0.303 & 0.459 & 0.000 & 0.202 & 0.401 & 0.000 \\
-pass\_over\_k\,($\uparrow$)     & 0.460 & 0.410 & 0.406 & 0.063 & 0.175 & 0.000 & 0.051 & 0.161 & 0.000 \\
-code\_bleu@k\,($\uparrow$)     & 0.355 & 0.044 & 0.353 & 0.370 & 0.054 & 0.375 & 0.372 & 0.061 & 0.379 \\
+perc\_error@k\,($\downarrow$)  & 0.233 & 0.299 & 0.125 & \textbf{0.003} & \textbf{0.014} & \textbf{0.000} & 0.025 & 0.060 & \textbf{0.000} \\
+pass@k\,($\uparrow$)           & \textbf{0.742} & \textbf{0.437} & \textbf{1.000} & 0.303 & 0.459 & 0.000 & 0.202 & 0.401 & 0.000 \\
+pass\_over\_k\,($\uparrow$)     & \textbf{0.460} & \textbf{0.410} & \textbf{0.406} & 0.063 & 0.175 & 0.000 & 0.051 & 0.161 & 0.000 \\
+code\_bleu@k\,($\uparrow$)     & 0.355 & 0.044 & 0.353 & 0.370 & 0.054 & 0.375 & \textbf{0.372} & \textbf{0.061} & \textbf{0.379} \\
 \bottomrule
 \end{tabular}
-}
-\label{tab:combined_metrics}
 \end{table}
 
 Based on the observed metrics in Table \ref{tab:combined_metrics}, several conclusions emerge regarding the performance of the fine-tuned LLaMA3‑8B‑Instruct model versus the base o4‑mini. First, LLaMA3‑8B‑Instruct exhibits a higher perc\_error@k than o4‑mini; yet it significantly outperforms o4‑mini in both pass@k and pass\_over\_k. This indicates that, despite a slightly lower rate of successful compilation, the fine‑tuned model produces more precise and semantically relevant solutions. In contrast, o4‑mini's better perc\_error@k can be misleading: it often compiles code that runs but fails to solve the problem correctly.
@@ -280,6 +280,6 @@ These promising results suggest that with continued refinement—particularly th
 
 
 
-\section{Resume}
+\section{Final considerations}
 
 This chapter evaluated our fine-tuned LLaMA3-8B-Instruct model for crime data analysis, demonstrating that despite higher compilation error rates compared to o4-mini (perc\_error@k: 0.233 vs 0.003), the model significantly outperformed in solution accuracy (pass@k: 0.742 vs 0.303), indicating superior semantic understanding of crime-related queries. Through three scenarios analyzing Guangdong Province crime data, we validated the model's practical utility for evidence-based policing, revealing that night-time crime prevention could reduce overall crime by 46\%, spatial interventions produce significant spillover effects (13.85\% reduction in neighboring areas), and safety rankings remain stable despite improved reporting rates. The results confirm that fine-tuned LLMs can effectively bridge technical data analysis with policy-relevant insights, though expanding the domain-specific dataset remains crucial for reducing compilation errors and enhancing generalization across varied crime patterns.
