@@ -13,9 +13,18 @@ Recent advances show that LLMs are increasingly being adapted to address urban c
 
 Complementing this, \cite{Jiang2024UrbanLLM} leverage the agentic capabilities of LLMs to decompose urban-related queries into structured sub-tasks (e.g., forecasting, anomaly detection, POI recommendation, etc). This approach, termed UrbanLLM, assigns each sub-task to a specialised model from a curated model zoo, and integrates the results into a unified response.
 
-Recent research from Google has explored the use of foundation models for geospatial reasoning \citep{2025GoogleGeospatialReasoning}. It introduces an agentic workflow powered by Gemini to assist users in tasks such as visualizing pre and post disaster scenarios or conducting damage assessments. Their approach integrates diverse modalities: maps, weather data, and satellite imagery, and highlights the need for foundation models capable of aligning heterogeneous spatial information. Alongside UrbanGPT's forecasting capabilities and UrbanLLM's model orchestration, this work exemplifies the broader movement toward multimodal LLM-based systems designed to address complex urban challenges at scale.
+Recent research from Google has explored the use of foundation models for geospatial reasoning \citep{2025GoogleGeospatialReasoning}. It introduces an agentic workflow powered by Gemini to assist users in tasks such as visualizing pre and post disaster scenarios or conducting damage assessments. Their approach integrates diverse modalities: maps, weather data, and satellite imagery, and highlights the need for foundation models capable of aligning heterogeneous spatial information (Figure \ref{fig:geospatial_reasoning}). Alongside UrbanGPT's forecasting capabilities and UrbanLLM's model orchestration, this work exemplifies the broader movement toward multimodal LLM-based systems designed to address complex urban challenges at scale.
 
 Another study from Google introduces Visual Chronicles \citep{Deng2025VisualChronicles}, a multimodal LLM-based system designed to identify and describe frequently occurring visual changes across urban environments using a dataset provided by Google Street View imagery. It leverages a vast collection of geolocated, timestamped images to identify trends without requiring labeled training data. To overcome the limitations of MLLMs in processing such massive datasets, the authors design a scalable pipeline that enables efficient retrieval, comparison, and semantic analysis of visual patterns across both space and time.
+
+\begin{figure}[hbtp]
+  \centering
+  \includegraphics[width=0.95\textwidth]{images/geospatial_reasoning.png}
+  \caption{Geospatial Reasoning by Google Research}
+  \label{fig:geospatial_reasoning}
+\end{figure}
+
+
 % \citep{Deng2025VisualChronicles} highlight the system's ability to uncover temporal patterns using MLLMs, capitalizing on their open-ended semantic understanding capabilities. Given that the datasets are several orders of magnitude too large for an MLLM to process as context, the system employs innovative techniques to manage and analyze the data effectively.
 
 % There are more LLMs on Urban Applications: See UrbanLLM paper
