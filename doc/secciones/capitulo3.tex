@@ -116,6 +116,11 @@ Complementing this context, the \textbf{Dataset Specification} explicitly lists 
 \end{figure}
 
 
+\section{Training & evaluation}
+
+This section describes the training and evaluation processes for our fine-tuned Llama-3.1-8B model, detailing the techniques used for supervised fine-tuning, the evaluation metrics employed, and the overall performance of the model.
+
+
 \subsection{Training prompt structure}
 
 For training, we employed a refined prompt format optimized for model fine-tuning and aligned with code generation best practices. The training prompt (Figure~\ref{fig:training_prompt_structure}) shares a similar foundational structure with the answer generation prompt but introduces stricter output constraints and excludes any example-based reasoning components.
@@ -136,9 +141,6 @@ The \textbf{Output Format} mandates that the response must be a single Python co
 \end{figure}
 
 
-\section{Training & evaluation}
-
-This section describes the training and evaluation processes for our fine-tuned Llama-3.1-8B model, detailing the techniques used for supervised fine-tuning, the evaluation metrics employed, and the overall performance of the model.
 
 \subsection{Model Fine-Tuning}
 
