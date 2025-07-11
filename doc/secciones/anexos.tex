@@ -14,9 +14,9 @@
 
 \begin{table}[H]
 \centering
-\caption{Dataset Description: \texttt{crimes\_df} – Crime Records}
+\scriptsize
 \begin{tabular}{|l|l|p{8cm}|}
-\hline
+  \hline
 \textbf{Column} & \textbf{Type} & \textbf{Description} \\
 \hline
 case\_type & string & Category of the crime incident (e.g., theft, assault). \\
@@ -31,36 +31,39 @@ street\_name & string & Name of the street where the incident occurred. \\
 geometry & geospatial point & Geographic point of the incident. \\
 \hline
 \end{tabular}
+\caption{Dataset Description: \texttt{crimes\_df} – Crime Records}
 \end{table}
 
 
 \begin{table}[H]
 \centering
-\caption{Dataset Description: \texttt{streets\_df} – Street Network}
+\scriptsize
 \begin{tabular}{|l|l|p{8cm}|}
-\hline
-\textbf{Column} & \textbf{Type} & \textbf{Description} \\
+  \hline
+  \textbf{Column} & \textbf{Type} & \textbf{Description} \\
 \hline
 street\_name & string & Official name of the street (can be linked to \texttt{crimes\_df.street\_name}). \\
 geometry & line polygon & Geometric representation of the street. \\
 incident\_province & string & Province where the street is located. \\
 \hline
 \end{tabular}
+\caption{Dataset Description: \texttt{streets\_df} – Street Network}
 \end{table}
 
 
 \begin{table}[H]
 \centering
-\caption{Dataset Description: \texttt{geometries\_df} – Administrative Boundaries}
+\scriptsize
 \begin{tabular}{|l|l|p{8cm}|}
-\hline
-\textbf{Column} & \textbf{Type} & \textbf{Description} \\
-\hline
+  \hline
+  \textbf{Column} & \textbf{Type} & \textbf{Description} \\
+  \hline
 name & string & Name of the administrative region. \\
 geometry & polygon & Boundary geometry of the region. \\
 geom\_type & string & Administrative level (e.g., province, city, county). \\
 \hline
 \end{tabular}
+\caption{Dataset Description: \texttt{geometries\_df} – Administrative Boundaries}
 \end{table}
 
 
