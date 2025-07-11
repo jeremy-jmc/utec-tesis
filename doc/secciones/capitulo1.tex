@@ -59,9 +59,22 @@ The theoretical foundation of LLMs lies in probabilistic language modeling. Give
 
 % TODO: complete this subsection
 \subsection{LLM decoding methods}
+<<<<<<< HEAD
+% , \citep{Minaee2025LLMSurvey}, 
+
+After a language model has estimated the probability distribution for the next token, a \emph{decoding method} is required to turn those probabilities into actual text \citep{Shi2024DecodingMethods}. In practice, three classical strategies are widely used:
+
+\begin{itemize}
+    \item \textbf{Greedy search}: selects the single most probable token at every step. It is fast and deterministic but can produce repetitive or less diverse text.
+    \item \textbf{Beam search}: keeps the \(k\) best partial sequences (beams) at each step and expands them in parallel, usually yielding more coherent results than greedy search at the cost of extra computation.
+    \item \textbf{Multinomial sampling}: samples a token according to its probability (often with a temperature, top-\(k\), or top-\(p\) filter), encouraging diversity and creativity in the generated text \citep{Qin2025DynamicWidthSpeculativeBeamDecoding}.
+\end{itemize}
+
+=======
 
 
  \citep{Shi2024DecodingMethods}, \citep{Minaee2025LLMSurvey}, \citep{Qin2025DynamicWidthSpeculativeBeamDecoding}
+>>>>>>> 6489cb6b0a526d8282e1e5312652d149c12d0d6c
 
 \subsection{Supervised Fine-Tuning}
 
@@ -173,9 +186,9 @@ Pass@k is a metric that evaluates the probability of a model generating a correc
 where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the top-k responses, and 0 otherwise.
 
 
-\subsection{$Pass^K$}
+\subsection{Pass\textasciicircum k}
 
-$Pass^K$ is a metric designed to evaluate the likelihood of a model generating a correct answer across all \(k\) responses. This metric is particularly useful for assessing the consistency and reliability of model performance in scenarios where multiple outputs are generated.
+Pass\textasciicircum k is a metric designed to evaluate the likelihood of a model generating a correct answer across all \(k\) responses. This metric is particularly useful for assessing the consistency and reliability of model performance in scenarios where multiple outputs are generated.
 
 \begin{equation}
     Pass^{K} = (\frac{c}{n})^{K}
