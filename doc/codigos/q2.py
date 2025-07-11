@@ -1,4 +1,7 @@
+import pandas as pd
 import numpy as np
+import geopandas as gpd
+from datetime import datetime
 import shapely.geometry
 import os
 from datetime import datetime
@@ -8,39 +11,31 @@ from shapely.geometry import Point
 
 def solve(crimes_df: gpd.GeoDataFrame, streets_df: gpd.GeoDataFrame, geometries_df: gpd.GeoDataFrame) -> None:
     
-    # Define the central point
-    central_point = Point(113.392723, 22.516998)
+    # Define the target coordinates
+    target_lat = 22.516998
+    target_lon = 113.392723
     
-    # Calculate the 70 km radius
-    radius = 70 * 1000  # Convert km to meters
-    buffer = central_point.buffer(radius)
+    # Create a point geometry for the target location
+    target_point = Point(target_lon, target_lat)
     
-    # Get neighboring counties
-    neighboring_counties = geometries_df[
-        geometries_df.geometry.intersects(buffer)
-    ].geom_type.unique()
-    
-    print(f"Neighboring counties: {neighboring_counties}")
+    # Calculate the 70 km radius buffer
+    buffer = target_point.buffer(70e3)
     
     # Filter crimes within the buffer
-    crimes_in_buffer = crimes_df[
+    crimes_in_area = crimes_df[
         crimes_df.geometry.within(buffer)
     ].copy()
     
-    print(f"Total crimes in buffer: {len(crimes_in_buffer)}")
+    # Get the current crime count
+    current_crimes = len(crimes_in_area)
     
-    # Calculate current average crime rate
-    current_avg = crimes_in_buffer['case_type'].value_counts().mean()
-    print(f"Current average crime rate: {current_avg:.2f}")
+    # Calculate the new crime count with 20% reduction
+    new_crimes = current_crimes * 0.8
     
-    # Simulate 20% reduction
-    reduced_crimes = crimes_in_buffer.sample(frac=0.8)
-    reduced_avg = reduced_crimes['case_type'].value_counts().mean()
-    print(f"Simulated reduced crime rate: {reduced_avg:.2f}")
+    # Calculate the percentage change
+    percentage_change = (current_crimes - new_crimes) / current_crimes * 100
     
-    # Calculate percentage change
-    change = ((current_avg - reduced_avg) / current_avg) * 100
-    print(f"Percentage change: {change:.2f}%")
-    
-    # Print final result
-    print(f"The average crime rate in neighboring counties would decrease by {change:.2f}% if crime at the central point were reduced by 20%.")"]
+    # Print the results
+    print(f"Current crime count in the 70 km radius: {current_crimes}")
+    print(f"New crime count with 20% reduction: {new_crimes:.0f}")
+    print(f"Percentage change: {percentage_change:.2f}%")

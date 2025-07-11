@@ -171,15 +171,15 @@ Pass@k is a metric that evaluates the probability of a model generating a correc
 where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the top-k responses, and 0 otherwise.
 
 
-\subsection{Pass^K}
+\subsection{$Pass^K$}
 
-Pass^K is a metric that evaluates the probability of a model generating a correct answer within the top-k responses, but it is specifically designed to account for the number of correct answers in the top-k set. It is particularly useful for assessing the performance of language models in tasks where multiple answers can be generated, such as question answering or text generation \citep{Levi2024SimpleModelInferenceScalingLaws}. The metric is defined as:
+$Pass^K$ is a metric designed to evaluate the likelihood of a model generating a correct answer across all \(k\) responses. This metric is particularly useful for assessing the consistency and reliability of model performance in scenarios where multiple outputs are generated.
 
 \begin{equation}
-    Pass^{K} = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(y_i \in \hat{y}_i^{(1:k)})
+    Pass^{K} = (\frac{c}{n})^{K}
 \end{equation}
 
-where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sample \(i\), and \(\hat{y}_i^{(1:k)}\) is the set of the top-k generated answers for sample \(i\). The indicator function \(\mathbb{I}\) returns 1 if the ground truth answer is in the top-k responses, and 0 otherwise.
+where \(c\) is the number of correct answers in the top-k responses, and \(n\) is the total number of responses generated for each sample. This formulation allows for a more nuanced evaluation of model performance, particularly in cases where the distribution of correct answers may vary across different samples.
 
 % \subsection{Majority@K}
 

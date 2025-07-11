@@ -69,14 +69,9 @@ Quantization & 4-bit (NF4, double quant) \\
 
 \begin{table}[hbtp]
 \centering
-<<<<<<< HEAD
-\caption{Comparison of Evaluation Metrics: Fine-tuned LLaMA3, o4-mini, and DeepSeek-Chat (Test Set)}
-\resizebox{\textwidth}{!}{%
-=======
 \label{tab:combined_metrics}
 \setlength{\tabcolsep}{3.5pt}
 \small
->>>>>>> 299a0e6bd51244f9f8253cb75cb37ee127951099
 \begin{tabular}{l|ccc|ccc|ccc}
 \toprule
 \textbf{Metric} & \multicolumn{3}{c|}{\textbf{Fine-tuned LLaMA3}} & \multicolumn{3}{c|}{\textbf{o4-mini}} & \multicolumn{3}{c}{\textbf{DeepSeek-Chat}} \\
@@ -163,10 +158,10 @@ The model's implementation, presented in Listing \ref{lst:q2}, demonstrates inte
 \lstinputlisting[style=pythoncode, label={lst:q2}]{codigos/q2.py}
 
 \begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q2 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
-  The average crime rate in neighboring counties would decrease by 13.85\% if crime at the central point were reduced by 20\%. This is because the simulated reduced crime rate in neighboring counties decreased from 4874.79 to 4199.85.
+  The average crime rates in neighboring counties within a 70 km radius would decrease by 20\% if crime rates at the central point decreased by 20\%. This is because the projected crime count after the decrease in the neighboring counties is 8175, which is 20\% lower than the current count of 10219.
 \end{tcolorbox}
 
-The analysis predicted that a 20\% crime reduction at the central hotspot would generate a 13.85\% decrease in average crime rates across neighboring counties. This finding suggests significant spatial spillover effects, where targeted interventions in high-crime areas can produce measurable benefits in surrounding regions.
+This result indicates a direct spatial spillover effect: a 20\% reduction in crime at the central location leads to an equivalent 20\% decrease in the average crime rate of neighboring counties. Specifically, the model predicts a drop in total crimes from 10219 to 8175, a reduction of 2,044 incidents, demonstrating a proportional relationship between crime reduction at the central point and its surrounding areas.
 
 
 \noindent \textbf{Scenario 2 - Questions Reformulation and Responses}
@@ -269,6 +264,7 @@ In the context of the top 10 safest counties in Guangdong Province, what changes
 \hline
 \end{tabular}
 \caption{Scenario 3 Questions Reformulation and Responses}
+
 \end{table}
 
 The model's Scenario 3 responses exhibit varied relevance and task completion: only the first answer correctly states that Zhongshan would stay fourth after a 15\% crime increase, directly addressing the ranking impact, while the second and third responses either fabricate data errors or refuse to answer, thus failing task completion.
