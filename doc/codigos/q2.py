@@ -3,39 +3,43 @@ import numpy as np
 import geopandas as gpd
 from datetime import datetime
 import shapely.geometry
-import os
-from datetime import datetime
 import pandas as pd
 import geopandas as gpd
+from datetime import datetime
+import os
 from shapely.geometry import Point
+import numpy as np
 
 def solve(crimes_df: gpd.GeoDataFrame, streets_df: gpd.GeoDataFrame, geometries_df: gpd.GeoDataFrame) -> None:
     
-    # Define the target coordinates
-    target_lat = 22.516998
-    target_lon = 113.392723
+    # Define the target point
+    target_point = Point(113.392723, 22.516998)
     
-    # Create a point geometry for the target location
-    target_point = Point(target_lon, target_lat)
+    # Calculate the 70 km radius
+    radius = 70 * 1000  # Convert km to meters
+    buffer = target_point.buffer(radius)
     
-    # Calculate the 70 km radius buffer
-    buffer = target_point.buffer(70e3)
+    # Filter crimes within the radius
+    crimes_in_radius = crimes_df[crimes_df.geometry.within(buffer)]
+    print(f"Found {len(crimes_in_radius)} crimes within the 70 km radius")
     
-    # Filter crimes within the buffer
-    crimes_in_area = crimes_df[
-        crimes_df.geometry.within(buffer)
-    ].copy()
+    # Get unique counties
+    counties = crimes_in_radius['incident_county'].unique()
+    print(f"Counties within the radius: {counties}")
     
-    # Get the current crime count
-    current_crimes = len(crimes_in_area)
+    # Count crimes per county
+    crime_counts = crimes_in_radius['incident_county'].value_counts()
+    print("Crime counts per county:")
+    print(crime_counts)
     
-    # Calculate the new crime count with 20% reduction
-    new_crimes = current_crimes * 0.8
+    # Calculate the 20% reduction
+    reduced_counts = crime_counts * 0.8
     
     # Calculate the percentage change
-    percentage_change = (current_crimes - new_crimes) / current_crimes * 100
+    percentage_change = (crime_counts - reduced_counts) / crime_counts * 100
     
     # Print the results
-    print(f"Current crime count in the 70 km radius: {current_crimes}")
-    print(f"New crime count with 20% reduction: {new_crimes:.0f}")
+    print("Results:")
+    print(f"Original crime counts: {crime_counts}")
+    print(f"Reduced crime counts (20%): {reduced_counts}")
     print(f"Percentage change: {percentage_change:.2f}%")
