@@ -164,7 +164,7 @@ The model's implementation, presented in Listing \ref{lst:q2}, demonstrates inte
 \lstinputlisting[style=pythoncode, label={lst:q2}]{codigos/q2.py}
 
 \begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q2 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
-  The average crime rates in neighboring counties within a 70 km radius would decrease by 20\% if crime rates at the central point decreased by 20\%. This is because the projected crime count after the decrease in the neighboring counties is 8175, which is 20\% lower than the current count of 10219.
+  The current total number of crimes in the area is 68,247. If crime in that area were reduced by 20\%, the new total would be approximately 54,598. This means about 13,649 crimes would be reduced.
 \end{tcolorbox}
 
 This result indicates a direct spatial spillover effect: a 20\% reduction in crime at the central location leads to an equivalent 20\% decrease in the average crime rate of neighboring counties. Specifically, the model predicts a drop in total crimes from 10219 to 8175, a reduction of 2,044 incidents, demonstrating a proportional relationship between crime reduction at the central point and its surrounding areas.
@@ -178,12 +178,12 @@ This result indicates a direct spatial spillover effect: a 20\% reduction in cri
 \hline
 \textbf{Question} & \textbf{Response} \\
 \hline
-What effect would a 20\% reduction in crime at [22.516998, 113.392723] have on the average crime rate in surrounding counties within a 70 km radius? & The current average crime rate in counties within a 70 km radius of the given location is 206.18 crimes per county. If crime rates in that area decreased by 20\%, the new average crime rate would be 164.95 crimes per county. \\
+What impact would a 20\% reduction in crime at [22.516998, 113.392723] have on the combined crime count for all counties within a 70 km radius? & The current total crime count in the 70 km radius is 68,247. If there's a 20\% reduction in crime, the new total crime count would be 54,598. This reduction would affect all 331 counties within the 70 km radius. \\
 \hline
-If crime at the central point [22.516998, 113.392723] decreased by 20\%, how would this influence the average crime in neighboring counties located within 70 km? & The average crime rate in neighboring counties would decrease by 13.85\% if crime at the central point were reduced by 20\%. \\
+ By how much would the total crimes across all counties within 70 km of [22.516998, 113.392723] decrease if crime in that zone dropped by 20\%? & The average crime rate in neighboring counties would decrease by 13.85\% if crime at the central point were reduced by 20\%. \\
 \hline
-How might a 20\% drop in crime at [22.516998, 113.392723] impact the average level of crime in counties situated within a 70 km radius? & 
-The current average crime rate in counties within a 70 km radius of [22.516998, 113.392723] is 206.18 crimes per county. If crime rates in that location decreased by 20\%, the new average crime rate would be 164.95 crimes per county. 
+What would be the decrease in overall crime across all counties within 70 km of [22.516998, 113.392723] if crime at that central point fell by 20\%? & 
+The crime count within 70 km of the specified location is currently 68,247. If crime at that central point decreased by 20\%, it would drop to 54,598. This means there would be a 20\% decrease in crime.
 
 This is because the current average crime rate of 206.18 crimes per county decreased by 20.00\%. \\
 \hline
