@@ -1,7 +1,7 @@
 \chapter{ METHODOLOGY}
 
 \noindent
-In this chapter, we present the methodological framework adopted for our study (Figure \ref{fig:methodology_overview}). We detail the processes of data preparation, question-answer generation, model training, and evaluation. Each section outlines the specific steps and techniques employed to ensure the reproducibility of our results. For transparency, all prompts used in this research are included in the Appendix.
+In this chapter, we present the methodological framework adopted for our study (Figure \ref{fig:methodology_overview}). We detail the processes of data preparation, question-code generation, model training, and evaluation. Each section outlines the specific steps and techniques employed to ensure the reproducibility of our results. For transparency, all prompts used in this research are included in the Appendix.
 
 % TODO: specify that the dataset is question-code pairs
 
@@ -9,7 +9,7 @@ In this chapter, we present the methodological framework adopted for our study (
   \centering
   \includegraphics[width=\textwidth]{images/metodologiaExtended.png}
   \captionsetup{justification=raggedright,singlelinecheck=false}
-  \caption{Methodology overview: First, we prepare the crime data by cleaning and normalizing the dataset, incorporating geographic boundaries and OpenStreetMap data. Next, we generate question-answer pairs using an open source LLM. Then, we fine-tune a Llama-3.1-8B model on these pairs. Finally, we evaluate the model's performance and implement an inference pipeline to conduct a case study.}
+  \caption{Methodology overview: First, we prepare the crime data by cleaning and normalizing the dataset, incorporating geographic boundaries and OpenStreetMap data. Next, we generate question-code pairs using an open source LLM. Then, we fine-tune a Llama-3.1-8B model on these pairs. Finally, we evaluate the model's performance and implement an inference pipeline to conduct a case study.}
   \label{fig:methodology_overview}
 \end{figure}
 
@@ -30,16 +30,14 @@ The dataset underwent a comprehensive cleaning process to ensure consistency. Fi
 
 \section{Question-Answer dataset generation}
 
-% TODO: improve introduction
 % We develop a synthetic dataset named "ChinaCrimesQACode" that contains question-code pairs for crime data analysis. 
-This section describes the methodology used to generate the question-answer pairs for our synthetic dataset. We detail how we designed the prompts to elicit accurate and functional code solutions from the DeepSeek V3 model, which serves as the backbone for generating answers to user queries.
+This section describes the methodology used to generate the question-code pairs for our synthetic dataset. We detail how we designed the prompts to elicit accurate and functional code solutions from the DeepSeek V3 model, which serves as the backbone for generating answers to user queries.
 
 \subsection{Question generation}
 
 First, we created 100 question templates (inspired by \citep{Dai2024QASTKG, Contractor2020QATourism}), covering different types of inquiries including spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
 
-We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75) via few-shot prompting (see prompts in Listings \ref{prompt:question_rephrasing} and \ref{prompt:question_augmentation})
-. These question categories are summarized in Table~\ref{tab:question_types}. % see Table~\ref{tab:question_type_counts}, 
+We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75) via few-shot prompting (see prompts in Listings \ref{prompt:question_rephrasing} and \ref{prompt:question_augmentation}). These question categories are summarized in Table~\ref{tab:question_types}. % see Table~\ref{tab:question_type_counts}, 
 
 % \begin{table}[H]
 % \centering
@@ -98,9 +96,9 @@ With this prompt (adaptable to both paraphrased and altered questions), we execu
 
 \subsection{Dataset curation and splitting}
 
-To ensure quality, we verified that all LLM-generated Python solutions executed correctly. After that, we dropped the questions with no valid code solutions (limit exceeded, code with errors, or no code generated). Finally, we conducted manual reviews of all question-answer pairs to guarantee their quality.
+To ensure quality, we verified that all LLM-generated Python solutions executed correctly. After that, we dropped the questions with no valid code solutions (limit exceeded, code with errors, or no code generated). Finally, we conducted manual reviews of all question-code pairs to guarantee their quality.
 
-The resulting dataset, which we named "ChinaCrimesQACode", contains around 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \citep{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation. The dataset is publicly available on HuggingFace for further research and development.  %  (Table~\ref{tab:dataset_split})
+The resulting dataset, which we named ``ChinaCrimesQACode'', contains around 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \citep{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation. The dataset is publicly available on HuggingFace for further research and development.  %  (Table~\ref{tab:dataset_split})
 % This review process involved verifying that the answers were accurate, relevant, and aligned with the corresponding questions. We also ensured that the answers were concise and clear, making them suitable for use in our visualization tool.
 
 % \begin{table}[H]
@@ -118,11 +116,11 @@ The resulting dataset, which we named "ChinaCrimesQACode", contains around 5,000
 % \end{table}
 
 
-% TODO: poner ejemplo de question-answer pair
+% TODO: poner ejemplo de question-code pair
 
 % \section{Dataset generation}
 
-% This section describes the methodology used to generate the question-answer pairs for our dataset, focusing on the structured prompts and the code generation process. We detail how we designed the prompts to elicit accurate and functional code solutions from the DeepSeek V3 model, which serves as the backbone for generating answers to user queries.
+% This section describes the methodology used to generate the question-code pairs for our dataset, focusing on the structured prompts and the code generation process. We detail how we designed the prompts to elicit accurate and functional code solutions from the DeepSeek V3 model, which serves as the backbone for generating answers to user queries.
 
 % \subsection{Prompt Structuration}
 
@@ -166,7 +164,6 @@ We fine-tuned the Llama-3.1-8B Instruct model \citep{Grattafiori2024Llama3, Unsl
 % We adopted the approach proposed by \citep{Fleureau2024NuminaMath}, Self-Consistency Tool-Integrated Reasoning (SC-TIR) to evaluate our fine tuned model
 For model evaluation, we adopted a comprehensive approach combining both automated and LLM-based assessment methods. Specifically, we used Pass@k \citep{Levi2024SimpleModelInferenceScalingLaws} (with $k=16$ and multinomial sampling), where correctness was determined using an LLM-as-a-judge \citep{Li2025LLMJudge} (Appendix~\ref{appendix:prompts}) using GPT-4.1, and CodeBLEU \citep{Ren2020CodeBLEU}, which provides a purely quantitative measure of code generation quality. Additionally, we calculated the error percentage across all generated code samples to assess overall robustness. Finally, we performed Tool Integrated Reasoning (TIR) \citep{Fleureau2024NuminaMath} evaluations, allowing a single retry per question to mitigate frequent inference errors such as ZeroDivisionError and IndexError, while maintaining evaluation efficiency.
 
-% TODO: poner que metodo de inferencia estamos usando, puede que sea greedy decoding
 
 % The model was trained using QLoRA \citep{Dettmers2023QLoRA} with a rank of 64, alpha of 16, and a dropout rate of 0.05. 
 
@@ -189,4 +186,4 @@ This section describes the inference pipeline implemented for our case studies, 
 
 \section{Summary}
 
-This methodology chapter presented a comprehensive framework for crime data analysis through natural language queries. Beginning with dataset preparation using Chinese crime data, administrative boundaries, and road networks, we detailed the data cleaning process and focused on three high-crime provinces. We then described our question-answer dataset creation through template-based generation, augmentation techniques, and code generation using DeepSeek V3. Our prompt engineering utilized structured contexts for both answer generation and model training. We fine-tuned the Llama-3.1-8B model using Unsloth for computational efficiency, and employed multiple evaluation metrics including pass@k and CodeBLEU. Finally, we outlined our inference workflow that leverages multiple code solutions to provide accurate responses to user queries about crime analytics.
+This methodology chapter presented a comprehensive framework for crime data analysis through natural language queries. Beginning with dataset preparation using Chinese crime data, administrative boundaries, and road networks, we detailed the data cleaning process and focused on three high-crime provinces. We then described our question-code dataset creation through template-based generation, augmentation techniques, and code generation using DeepSeek V3. Our prompt engineering utilized structured contexts for both answer generation and model training. We fine-tuned the Llama-3.1-8B model using Unsloth for computational efficiency, and employed multiple evaluation metrics including pass@k and CodeBLEU. Finally, we outlined our inference workflow that leverages multiple code solutions to provide accurate responses to user queries about crime analytics.

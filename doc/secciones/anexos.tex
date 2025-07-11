@@ -5,12 +5,10 @@
 % \par Los algoritmos desarrollados .....
 \appendix
 \renewcommand{\thesection}{A.\arabic{section}}
-
-
 \section{Dataset specification}
 \label{appendix:dataset}
 
-
+The data consists of three interconnected geographical datasets that contain crime incidents, street networks, and administrative boundaries. These tables specify the structure, data types, and relationships between the datasets that form the foundation of the spatial and temporal analyses conducted throughout this research.
 
 \begin{table}[H]
 \centering
@@ -66,7 +64,6 @@ geom\_type & string & Administrative level (e.g., province, city, county). \\
 \caption{Dataset Description: \texttt{geometries\_df} – Administrative Boundaries}
 \end{table}
 
-
 % Later in your document, you can reference this appendix with:
 % As shown in Appendix~\ref{appendix:dataset}, the dataset...
 \lstdefinelanguage{prompt}{
@@ -93,6 +90,8 @@ captionpos=b
 \clearpage
 \section{Prompts}
 \label{appendix:prompts}
+
+The prompts shown below were carefully designed to guide the AI systems in performing various tasks, from question augmentation to code generation and evaluation. By providing these prompts in full detail, we enable others to replicate our methods and verify our findings. Additionally, these prompts serve as a reference for those seeking to build upon or extend our approach in future studies.
 
 % * Question Augmentation
 \begin{lstlisting}[style=customprompt,caption={Prompt for generating reworded question paraphrases},label={prompt:question_rephrasing}]

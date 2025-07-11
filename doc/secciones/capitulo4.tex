@@ -34,7 +34,7 @@ The selection of key hyperparameters for training was guided by empirical observ
 \begin{itemize}
   \item \textbf{Warmup Ratio:} We initially set the warmup ratio to 0.03; however, this led to instability during the early stages of training, with noticeable spikes in the loss. Increasing the warmup ratio to 0.1 significantly improved training stability, consistent with findings in transformer-based models such as RoBERTa, where extended warmup periods are known to facilitate smoother convergence \citep{liu2019robertarobustlyoptimizedbert}.
   \item \textbf{Weight Decay:} To mitigate overfitting and enhance generalization, especially given the relatively small size of our dataset, we applied a weight decay of 0.01. This choice aligns with established practices in training deep neural networks on limited data, where appropriate regularization is crucial for model robustness \citep{brainacgan}.
-  \item \textbf{Learning Rate:} The learning rate was initially set to 2e-3, but this configuration resulted in poor convergence during training. Considering that we employed LoRA for fine-tuning the LLaMA model, we reduced the learning rate to 7e-5. This lower rate aligns with commonly adopted values for adapting pre-trained large language models using parameter-efficient techniques, and it yielded significantly improved convergence behavior \citep{zhou2024automixqselfadjustingquantizationhigh}.
+  \item \textbf{Learning Rate:} The learning rate was initially set to 2e-3, but this configuration resulted in poor convergence during training. Considering that we employed LoRA for fine-tuning the Llama model, we reduced the learning rate to 7e-5. This lower rate aligns with commonly adopted values for adapting pre-trained large language models using parameter-efficient techniques, and it yielded significantly improved convergence behavior \citep{zhou2024automixqselfadjustingquantizationhigh}.
 \end{itemize}
 
 The other hyperparameters (such as LoRa range and batch size) were chosen according to hardware limitations. Full detail in Table \ref{tab:hyperparameters}.
@@ -74,7 +74,7 @@ Quantization & 4-bit (NF4, double quant) \\
 \small
 \begin{tabular}{l|ccc|ccc|ccc}
 \toprule
-\textbf{Metric} & \multicolumn{3}{c|}{\textbf{Fine-tuned LLaMA3}} & \multicolumn{3}{c|}{\textbf{o4-mini}} & \multicolumn{3}{c}{\textbf{DeepSeek-Chat}} \\
+\textbf{Metric} & \multicolumn{3}{c|}{\textbf{Fine-tuned Llama3}} & \multicolumn{3}{c|}{\textbf{o4-mini}} & \multicolumn{3}{c}{\textbf{DeepSeekV3}} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
  & \textbf{Mean} & \textbf{Std} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{Median} \\
  \midrule
@@ -84,16 +84,22 @@ Pass\textasciicircum k\,($\uparrow$)     & \textbf{0.460} & \textbf{0.410} & \te
 CodeBLEU@k\,($\uparrow$)     & 0.355 & 0.044 & 0.353 & 0.370 & 0.054 & 0.375 & \textbf{0.372} & \textbf{0.061} & \textbf{0.379} \\
 \bottomrule
 \end{tabular}
-\caption{Comparison of Evaluation Metrics: Fine-tuned LLaMA3, o4-mini, and DeepSeek-Chat (Test Set)}
+\caption{Comparison of Evaluation Metrics: Fine-tuned Llama3, o4-mini, and DeepSeekV3 (Test Set)}
 \end{table}
 
-Based on the observed metrics in Table \ref{tab:combined_metrics}, several conclusions emerge regarding the performance of the fine-tuned LLaMA3‑8B‑Instruct model versus the base o4‑mini. First, LLaMA3‑8B‑Instruct exhibits a higher perc\_error@k than o4‑mini; yet it significantly outperforms o4‑mini in both pass@k and pass\_over\_k. This indicates that, despite a slightly lower rate of successful compilation, the fine‑tuned model produces more precise and semantically relevant solutions. In contrast, o4‑mini's better perc\_error@k can be misleading: it often compiles code that runs but fails to solve the problem correctly.
+Based on the results shown in Table~\ref{tab:combined_metrics}, we can draw some conclusions about the zero-shot performance of the fine-tuned LLaMA3‑8B‑Instruct model compared to the base o4‑mini and DeepSeekV3. First, LLaMA3‑8B‑Instruct has a higher Percent Error@k than both o4‑mini and DeepSeekV3. However, it performs much better in Pass@k and Pass\textasciicircum k, meaning that even if some of its outputs don’t compile correctly, it still gives more accurate and meaningful answers. On the other hand, o4‑mini shows a very low Percent Error@k, but this can be misleading—it often produces code that runs but does not solve the problem.
 
-These findings indicate that broadening and diversifying the crime-domain dataset is essential: a richer corpus will surface edge cases, lower the 0.233 → 0.003 perc\_error@k gap, and lift pass@k beyond its current 0.742 vs 0.303 advantage. We selected o4-mini because its balance of accuracy, cost, and speed makes it a practical deployment benchmark, yet without domain-specific fine-tuning it still trails the task-specific precision achieved by LLaMA3-8B-Instruct, demonstrating the decisive value of targeted data and adaptation.
+DeepSeekV3 sits in the middle. It has a lower Percent Error@k than LLaMA3 and is close to o4‑mini, but its pass rates are still much lower than LLaMA3. This suggests that while DeepSeekV3 can write code that looks good and runs, it doesn't always solve the task properly. Interestingly, it gets the highest CodeBLEU@k score (0.372), which means it produces well-written code, even if the logic is not fully correct. This higher CodeBLEU score might be attributed to the fact that our dataset was derived from this model's outputs, potentially creating stylistic similarities that favor DeepSeekV3 in this particular metric without translating to better task performance.
 
-% Building on the results, we conclude that expanding and diversifying the crime‑domain dataset is imperative: a broader corpus will expose edge cases, reduce perc\_error@k, and allow the model to generalize across varied spatio‑temporal crime patterns, ultimately driving all key metrics upward. We chose o4‑mini as our baseline because its favorable trade‑off among accuracy, computational efficiency, and cost makes it a realistic benchmark for real‑world deployment, yet the current evaluation clearly shows that without domain‑specific fine‑tuning it cannot match the task‑specific precision of LLaMA3‑8B‑Instruct, underscoring the decisive impact of targeted data and adaptation.
+These results show that having a larger and more diverse dataset in the crime domain is very important. A better dataset can help reduce the high error rate (from 0.233 to something closer to 0.003) and improve the success rate (Pass@k) beyond the current 0.742 vs. 0.303 (o4‑mini) and 0.202 (DeepSeekV3). We chose o4‑mini and DeepSeekV3 as a comparison point because it is fast and affordable, but without fine-tuning for our specific domain, it cannot match the performance of the finetuned LLaMA3‑8B‑Instruct.
 
-% This discrepancy is likely rooted in architectural and training differences. o4‑mini is believed to use a Mixture‑of‑Experts (MoE) setup with approximately 40B total parameters—only about 8B of which are active per inference—whereas LLaMA3‑8B‑Instruct is a dense model with all 8B parameters actively contributing . While MoE architectures provide access to a broader parameter pool, this capacity advantage does not automatically translate to superior domain-specific performance. In contrast, the fully fine‑tuned LLaMA model has internalized domain-specific patterns—such as those needed to manipulate crime data (locations, dates, crime types, etc.)—enabling it to generate more accurate and relevant code.
+% Based on the observed metrics in Table \ref{tab:combined_metrics}, several conclusions emerge regarding the performance of the fine-tuned Llama3‑8B‑Instruct model versus the base o4‑mini. First, Llama3‑8B‑Instruct exhibits a higher Percent Error@k than o4‑mini and DeepSeekV3; yet it significantly outperforms o4‑mini in both Pass@k and Pass\textasciicircum k. This indicates that, despite a slightly lower rate of successful compilation, the fine‑tuned model produces more precise and semantically relevant solutions. In contrast, o4‑mini's better Percent Error@k can be misleading: it often compiles code that runs but fails to solve the problem correctly.
+
+% These findings indicate that broadening and diversifying the crime-domain dataset is essential: a richer corpus will surface edge cases, lower the 0.233 → 0.003 Percent Error@k gap, and lift Pass@k beyond its current 0.742 vs 0.303 advantage. We selected o4-mini because its balance of accuracy, cost, and speed makes it a practical deployment benchmark, yet without domain-specific fine-tuning it still trails the task-specific precision achieved by Llama3-8B-Instruct, demonstrating the decisive value of targeted data and adaptation.
+
+% Building on the results, we conclude that expanding and diversifying the crime‑domain dataset is imperative: a broader corpus will expose edge cases, reduce Percent Error@k, and allow the model to generalize across varied spatio‑temporal crime patterns, ultimately driving all key metrics upward. We chose o4‑mini and DeepSeekV3 as our baseline because its favorable trade‑off among accuracy, computational efficiency, and cost makes it a realistic benchmark for real‑world deployment, yet the current evaluation clearly shows that without domain‑specific fine‑tuning it cannot match the task‑specific precision of Llama3‑8B‑Instruct, underscoring the decisive impact of targeted data and adaptation.
+
+% This discrepancy is likely rooted in architectural and training differences. o4‑mini is believed to use a Mixture‑of‑Experts (MoE) setup with approximately 40B total parameters—only about 8B of which are active per inference—whereas Llama3‑8B‑Instruct is a dense model with all 8B parameters actively contributing . While MoE architectures provide access to a broader parameter pool, this capacity advantage does not automatically translate to superior domain-specific performance. In contrast, the fully fine‑tuned Llama model has internalized domain-specific patterns—such as those needed to manipulate crime data (locations, dates, crime types, etc.)—enabling it to generate more accurate and relevant code.
 
 \section{Qualitative Analysis}
 
@@ -111,7 +117,7 @@ To validate our fine-tuned LLM's capability as an analytical assistant for crime
 
 \noindent \textbf{Scenario 1: Night-time Crime Prevention Impact Analysis}
 
-We posed the question: "What percentage reduction in overall crime could be achieved if all night-time crimes in Guangdong Province during 2019 were prevented?" This scenario evaluates the potential impact of enhanced nighttime patrol strategies or improved lighting infrastructure.
+We posed the question: ``What percentage reduction in overall crime could be achieved if all night-time crimes in Guangdong Province during 2019 were prevented?'' This scenario evaluates the potential impact of enhanced nighttime patrol strategies or improved lighting infrastructure.
 
 The model's analytical approach demonstrates sophisticated understanding of temporal crime patterns. As shown in Listing \ref{lst:q1}, the generated code correctly filters crimes by province and year, implements proper time-based categorization (defining night-time as 6 PM to 6 AM), and calculates the proportional impact of targeted interventions.
 
@@ -146,12 +152,12 @@ How much could the overall crime rate in Guangdong Province for 2019 be reduced,
 \caption{Scenario 1 Questions Reformulation and Responses}
 \end{table}
 
-The model's responses consistently identify a 46\% reduction in total crime if nighttime incidents were eliminated, which aligns with the original data. However, subtle issues undermine reliability: Answer 1 uses vague phrasing (“one of the outputs”) that reduces clarity; Answer 2 introduces an unsupported “31.57\% to 46\%” range, creating confusion; and Answer 3 incorrectly reports nighttime crime as 419 instead of 633, leading to an internally inconsistent breakdown. Overall, while the central metric was correctly identified in each case, the responses vary in clarity and factual consistency, highlighting the importance of using metrics like accuracy, relevancy, and truthfulness when evaluating LLM outputs
+The model's responses consistently identify a 46\% reduction in total crime if nighttime incidents were eliminated, which aligns with the original data. However, subtle issues undermine reliability: Answer 1 uses vague phrasing (``one of the outputs'') that reduces clarity; Answer 2 introduces an unsupported ``31.57\% to 46\%'' range, creating confusion; and Answer 3 incorrectly reports nighttime crime as 419 instead of 633, leading to an internally inconsistent breakdown. These inconsistencies highlight the need for the model to provide more comprehensive explanations alongside numerical results, ensuring users can understand the reasoning process and verify calculations. The variations in supporting details across different query formulations demonstrate the model's current limitations in maintaining consistent reasoning when the same question is asked in different ways, suggesting a need for more diverse training examples that focus on detailed crime temporal analysis.
 
 
-\noindent \textbf{Scenario 2: Spatial Crime Diffusion Effects}
+\noindent \textbf{Scenario 2: Spatial Crime Diffusion Effects}  % TODO: mejorar
 
-The second scenario examined spatial crime relationships: "How would the average crime in neighboring counties (within a 70 km radius of [22.516998, 113.392723]) change if crime at that central point were reduced by 20\%?" This question tests the model's capacity for geospatial reasoning and understanding of crime diffusion effects.
+The second scenario examined spatial crime relationships: ``How would the average crime in neighboring counties (within a 70 km radius of [22.516998, 113.392723]) change if crime at that central point were reduced by 20\%?'' This question tests the model's capacity for geospatial reasoning and understanding of crime diffusion effects.
 
 The model's implementation, presented in Listing \ref{lst:q2}, demonstrates interesting geospatial processing capabilities. It correctly creates a buffer zone around the specified coordinates, identifies neighboring counties through geometric intersection analysis, and simulates crime reduction scenarios through statistical sampling.
 
@@ -191,7 +197,7 @@ The model's responses are inconsistent in how they handle the core metric. Two a
 
 \noindent \textbf{Scenario 3: Reporting Rate Impact on Safety Rankings}
 
-The final scenario explored data quality implications: "Considering the top 10 safest counties in Guangdong Province, how would this ranking change if crime reporting increased by 15\% in Zhongshan City in 2019?" This question examines how improved reporting mechanisms might alter safety assessments.
+The final scenario explored data quality implications: ``Considering the top 10 safest counties in Guangdong Province, how would this ranking change if crime reporting increased by 15\% in Zhongshan City in 2019?'' This question examines how improved reporting mechanisms might alter safety assessments.
 
 The model's approach, illustrated in Listing \ref{lst:q3}, systematically ranks counties by crime frequency, simulates increased reporting rates, and evaluates ranking changes. The analysis revealed that despite a 15\% increase in reported crimes (from 80 to 92 incidents), Zhongshan City maintained its fourth position among the safest counties.
 
@@ -271,20 +277,13 @@ The model's Scenario 3 responses exhibit varied relevance and task completion: o
 
 \noindent \textbf{Analytical Implications and Future Potential}
 
-These case studies demonstrate the model's practical utility despite the quantitative metrics presented in Table \ref{tab:combined_metrics}. While our fine-tuned LLaMA3 model shows room for improvement in compilation success rates, the generated code consistently exhibits interesting capabilities in data filtering, temporal analysis, geospatial processing, and statistical simulation—all essential for crime data analysis.
+These case studies demonstrate the model's practical utility despite the quantitative metrics presented in Table \ref{tab:combined_metrics}. While our fine-tuned Llama3 model shows room for improvement in compilation success rates, the generated code consistently exhibits interesting capabilities in data filtering, temporal analysis, geospatial processing, and statistical simulation, all essential for crime data analysis.
 
 The qualitative analysis reveals that even with current limitations, the model successfully transforms complex criminological questions into executable analytical workflows with contextually appropriate interpretations. This bridges the gap between technical analysis and policy-relevant insights, enabling law enforcement agencies to make informed decisions about resource allocation and intervention strategies.
 
-These promising results suggest that with continued refinement—particularly through expanded domain-specific datasets and targeted improvements to reduce compilation errors—our approach could become a valuable tool for evidence-based policing initiatives. The counterfactual analysis framework validates the potential of fine-tuned LLMs for supporting data-driven decision-making in public safety contexts, especially in regions where technological resources for crime analysis may be limited.
-
-
-
-% \section{Reformulation of Scenarios questions} 
-
-
-
+These promising results suggest that with continued refinement, particularly through expanded domain-specific datasets and targeted improvements to reduce compilation errors, our approach could become a valuable tool for evidence-based policing initiatives. The counterfactual analysis framework validates the potential of fine-tuned LLMs for supporting data-driven decision-making in public safety contexts.
 
 
 \section{Final considerations}
 
-This chapter evaluated our fine-tuned LLaMA3-8B-Instruct model for crime data analysis, demonstrating that despite higher compilation error rates compared to o4-mini (perc\_error@k: 0.233 vs 0.003), the model significantly outperformed in solution accuracy (pass@k: 0.742 vs 0.303), indicating superior semantic understanding of crime-related queries. Through three scenarios analyzing Guangdong Province crime data, we validated the model's practical utility for evidence-based policing, revealing that night-time crime prevention could reduce overall crime by 46\%, spatial interventions produce significant spillover effects (13.85\% reduction in neighboring areas), and safety rankings remain stable despite improved reporting rates. The results confirm that fine-tuned LLMs can effectively bridge technical data analysis with policy-relevant insights, though expanding the domain-specific dataset remains crucial for reducing compilation errors and enhancing generalization across varied crime patterns.
+This chapter evaluated our fine-tuned Llama3-8B-Instruct model for crime data analysis, demonstrating that despite higher compilation error rates compared to o4-mini (Percent Error@k: 0.233 vs 0.003), the model significantly outperformed in solution accuracy (Pass@k: 0.742 vs 0.303), indicating superior semantic understanding of crime-related queries. Through three scenarios analyzing Guangdong Province crime data, we validated the model's practical utility for evidence-based policing, revealing that night-time crime prevention could reduce overall crime by 46\%, spatial interventions produce significant spillover effects (13.85\% reduction in neighboring areas), and safety rankings remain stable despite improved reporting rates. The results confirm that fine-tuned LLMs can effectively bridge technical data analysis with policy-relevant insights, though expanding the domain-specific dataset remains crucial for reducing compilation errors and enhancing generalization across varied crime patterns.
