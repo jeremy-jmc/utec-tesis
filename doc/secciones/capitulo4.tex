@@ -41,7 +41,6 @@ The other hyperparameters (such as LoRa range and batch size) were chosen accord
 
 \begin{table}[hbtp]
 \centering
-\label{tab:hyperparameters}
 \small
 \begin{tabular}{ll}
   \toprule
@@ -63,13 +62,13 @@ Quantization & 4-bit (NF4, double quant) \\
 \bottomrule
 \end{tabular}
 \caption{Fine-tuning Hyperparameters for ChinaCrimesQACode}
+\label{tab:hyperparameters}
 \end{table}
 
 \section{Quantitative Results}
 
 \begin{table}[hbtp]
 \centering
-\label{tab:combined_metrics}
 \setlength{\tabcolsep}{3.5pt}
 \small
 \begin{tabular}{l|ccc|ccc|ccc}
@@ -85,9 +84,10 @@ CodeBLEU@k\,($\uparrow$)     & 0.355 & 0.044 & 0.353 & 0.370 & 0.054 & 0.375 & \
 \bottomrule
 \end{tabular}
 \caption{Comparison of Evaluation Metrics: Fine-tuned Llama3, o4-mini, and DeepSeekV3 (Test Set)}
+\label{tab:combined_metrics}
 \end{table}
 
-Based on the results shown in Table~\ref{tab:combined_metrics}, we can draw some conclusions about the zero-shot performance of the fine-tuned LLaMA3‑8B‑Instruct model compared to the base o4‑mini and DeepSeekV3. First, LLaMA3‑8B‑Instruct has a higher Percent Error@k than both o4‑mini and DeepSeekV3. However, it performs much better in Pass@k and Pass\textasciicircum k, meaning that even if some of its outputs don’t compile correctly, it still gives more accurate and meaningful answers. On the other hand, o4‑mini shows a very low Percent Error@k, but this can be misleading—it often produces code that runs but does not solve the problem.
+Based on the results shown in Table~\ref{tab:combined_metrics}, we can draw some conclusions about the zero-shot performance of the fine-tuned LLaMA3‑8B‑Instruct model compared to the base o4‑mini and DeepSeekV3. First, LLaMA3‑8B‑Instruct has a higher Percent Error@k than both o4‑mini and DeepSeekV3. However, it performs much better in Pass@k and Pass\textasciicircum k, meaning that even if some of its outputs don't compile correctly, it still gives more accurate and meaningful answers. On the other hand, o4‑mini shows a very low Percent Error@k, but this can be misleading—it often produces code that runs but does not solve the problem.
 
 DeepSeekV3 sits in the middle. It has a lower Percent Error@k than LLaMA3 and is close to o4‑mini, but its pass rates are still much lower than LLaMA3. This suggests that while DeepSeekV3 can write code that looks good and runs, it doesn't always solve the task properly. Interestingly, it gets the highest CodeBLEU@k score (0.372), which means it produces well-written code, even if the logic is not fully correct. This higher CodeBLEU score might be attributed to the fact that our dataset was derived from this model's outputs, potentially creating stylistic similarities that favor DeepSeekV3 in this particular metric without translating to better task performance.
 
@@ -134,7 +134,6 @@ The analysis revealed that Guangdong Province recorded 1,376 total crimes in 201
 
 \begin{table}[hbtp]
 \centering
-\label{tab:questions_responses}
 \small
 \begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
 \hline
@@ -150,6 +149,7 @@ How much could the overall crime rate in Guangdong Province for 2019 be reduced,
 \hline
 \end{tabular}
 \caption{Scenario 1 Questions Reformulation and Responses}
+\label{tab:questions_responses}
 \end{table}
 
 The model's responses consistently identify a 46\% reduction in total crime if nighttime incidents were eliminated, which aligns with the original data. However, subtle issues undermine reliability: Answer 1 uses vague phrasing (``one of the outputs'') that reduces clarity; Answer 2 introduces an unsupported ``31.57\% to 46\%'' range, creating confusion; and Answer 3 incorrectly reports nighttime crime as 419 instead of 633, leading to an internally inconsistent breakdown. These inconsistencies highlight the need for the model to provide more comprehensive explanations alongside numerical results, ensuring users can understand the reasoning process and verify calculations. The variations in supporting details across different query formulations demonstrate the model's current limitations in maintaining consistent reasoning when the same question is asked in different ways, suggesting a need for more diverse training examples that focus on detailed crime temporal analysis.
@@ -173,7 +173,6 @@ The analysis predicted that a 20\% crime reduction at the central hotspot would 
 \noindent \textbf{Scenario 2 - Questions Reformulation and Responses}
 \begin{table}[hbtp]
 \centering
-\label{tab:questions_responses_2}
 \small
 \begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
 \hline
@@ -190,6 +189,7 @@ This is because the current average crime rate of 206.18 crimes per county decre
 \hline
 \end{tabular}
 \caption{Scenario 2 Questions Reformulation and Responses}
+\label{tab:questions_responses_2}
 \end{table}
 
 The model's responses are inconsistent in how they handle the core metric. Two answers present a clear, mathematically coherent scenario: a 20\% reduction from an average of 206.18 crimes per county to roughly 164.95, matching an absolute drop of 41.23 incidents, which aligns with a 20\% reduction (Answer 1 and 3). However, Answer 2 deviates by directly stating a 13.85\% decrease, aligning with the original statement about spatial spillover—but fails to link this to actual crime counts, creating confusion about whether it's relative or absolute. The inconsistency stems from mixing absolute count reduction (41.23 incidents) with relative spillover percentage (13.85\%). Clarity suffers as neither explanation bridges the two interpretations: one focuses on raw crime numbers, the other on proportional impact, but neither integrates both.
@@ -256,7 +256,6 @@ The model's approach, illustrated in Listing \ref{lst:q3}, systematically ranks 
 
 \begin{table}[hbtp]
 \centering
-\label{tab:questions_responses_3}
 \small
 \begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
 \hline
@@ -270,6 +269,7 @@ In the context of the top 10 safest counties in Guangdong Province, what changes
 \hline
 \end{tabular}
 \caption{Scenario 3 Questions Reformulation and Responses}
+\label{tab:questions_responses_3}
 \end{table}
 
 The model's Scenario 3 responses exhibit varied relevance and task completion: only the first answer correctly states that Zhongshan would stay fourth after a 15\% crime increase, directly addressing the ranking impact, while the second and third responses either fabricate data errors or refuse to answer, thus failing task completion.

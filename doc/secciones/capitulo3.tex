@@ -174,13 +174,13 @@ For model evaluation, we adopted a comprehensive approach combining both automat
 
 \section{Inference Workflow}
 
-This section describes the inference pipeline implemented for our case studies, detailing the process from user query to final response. As illustrated in Figure~\ref{fig:inference_pipeline}, the workflow consists of several key stages: first, the user query is processed by a fine-tuned Llama3-8B model, which generates multiple code solutions. Each code snippet is executed to produce corresponding outputs. Finally, a Llama3-8B-Base model performs summarization of these results to create the final response presented to the user.
+This section describes the inference pipeline implemented for our case studies, detailing the process from user query to final response. As illustrated in Figure~\ref{fig:inference_pipeline}, the workflow consists of several key stages: first, the user query is processed by a fine-tuned Llama3-8B-Instruct model, which generates multiple code solutions. Each code snippet is executed to produce corresponding outputs. Finally, a Llama3-8B-Base model performs summarization of these results to create the final response presented to the user.
 %  This architecture enables robust and accurate responses to complex geospatial crime analytics queries.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.9\textwidth]{images/inference_pipeline.drawio.png}
-  \caption{Chat inference pipeline}
+  \caption{Chat inference pipeline: The user query is first processed by our fine-tuned Llama3-8B-Instruct model that generates multiple code solutions. Each code snippet is executed independently to produce corresponding outputs. Finally, a Llama3-8B-Base model summarizes these results to create a coherent final response presented to the user.}
   \label{fig:inference_pipeline}
 \end{figure}
 
