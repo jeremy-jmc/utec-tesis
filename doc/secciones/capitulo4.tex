@@ -39,17 +39,17 @@ The selection of key hyperparameters for training was guided by empirical observ
 
 The other hyperparameters (such as LoRa range and batch size) were chosen according to hardware limitations. Full detail in Table \ref{tab:hyperparameters}.
 
-\begin{table}[H]
+\begin{table}[hbtp]
 \centering
-\caption{Fine-tuning Hyperparameters for ChinaCrimeQACode}
 \label{tab:hyperparameters}
+\small
 \begin{tabular}{ll}
-\toprule
-\textbf{Hyperparameter} & \textbf{Value} \\
-\midrule
-LoRA rank ($r$) & 64 \\
-LoRA alpha & 16 \\
-LoRA dropout & 0.0 \\
+  \toprule
+  \textbf{Hyperparameter} & \textbf{Value} \\
+  \midrule
+  LoRA rank ($r$) & 64 \\
+  LoRA alpha & 16 \\
+  LoRA dropout & 0.0 \\
 Batch size (per device) & 32 \\
 Gradient accumulation steps & 4 \\
 Max sequence length & 3,200 tokens \\
@@ -62,28 +62,34 @@ Weight decay & 0.01 \\
 Quantization & 4-bit (NF4, double quant) \\
 \bottomrule
 \end{tabular}
+\caption{Fine-tuning Hyperparameters for ChinaCrimesQACode}
 \end{table}
 
 \section{Quantitative Results}
 
-\begin{table}[H]
+\begin{table}[hbtp]
 \centering
+<<<<<<< HEAD
 \caption{Comparison of Evaluation Metrics: Fine-tuned LLaMA3, o4-mini, and DeepSeek-Chat (Test Set)}
 \resizebox{\textwidth}{!}{%
+=======
+\label{tab:combined_metrics}
+\setlength{\tabcolsep}{3.5pt}
+\small
+>>>>>>> 299a0e6bd51244f9f8253cb75cb37ee127951099
 \begin{tabular}{l|ccc|ccc|ccc}
 \toprule
 \textbf{Metric} & \multicolumn{3}{c|}{\textbf{Fine-tuned LLaMA3}} & \multicolumn{3}{c|}{\textbf{o4-mini}} & \multicolumn{3}{c}{\textbf{DeepSeek-Chat}} \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10}
  & \textbf{Mean} & \textbf{Std} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{Median} & \textbf{Mean} & \textbf{Std} & \textbf{Median} \\
-\midrule
-perc\_error@k\,($\downarrow$)  & 0.233 & 0.299 & 0.125 & 0.003 & 0.014 & 0.000 & 0.025 & 0.060 & 0.000 \\
-pass@k\,($\uparrow$)           & 0.742 & 0.437 & 1.000 & 0.303 & 0.459 & 0.000 & 0.202 & 0.401 & 0.000 \\
-pass\_over\_k\,($\uparrow$)     & 0.460 & 0.410 & 0.406 & 0.063 & 0.175 & 0.000 & 0.051 & 0.161 & 0.000 \\
-code\_bleu@k\,($\uparrow$)     & 0.355 & 0.044 & 0.353 & 0.370 & 0.054 & 0.375 & 0.372 & 0.061 & 0.379 \\
+ \midrule
+Percent Error@k\,($\downarrow$)  & 0.233 & 0.299 & 0.125 & \textbf{0.003} & \textbf{0.014} & \textbf{0.000} & 0.025 & 0.060 & \textbf{0.000} \\
+Pass@k\,($\uparrow$)           & \textbf{0.742} & \textbf{0.437} & \textbf{1.000} & 0.303 & 0.459 & 0.000 & 0.202 & 0.401 & 0.000 \\
+Pass\textasciicircum k\,($\uparrow$)     & \textbf{0.460} & \textbf{0.410} & \textbf{0.406} & 0.063 & 0.175 & 0.000 & 0.051 & 0.161 & 0.000 \\
+CodeBLEU@k\,($\uparrow$)     & 0.355 & 0.044 & 0.353 & 0.370 & 0.054 & 0.375 & \textbf{0.372} & \textbf{0.061} & \textbf{0.379} \\
 \bottomrule
 \end{tabular}
-}
-\label{tab:combined_metrics}
+\caption{Comparison of Evaluation Metrics: Fine-tuned LLaMA3, o4-mini, and DeepSeek-Chat (Test Set)}
 \end{table}
 
 Based on the observed metrics in Table \ref{tab:combined_metrics}, several conclusions emerge regarding the performance of the fine-tuned LLaMA3‑8B‑Instruct model versus the base o4‑mini. First, LLaMA3‑8B‑Instruct exhibits a higher perc\_error@k than o4‑mini; yet it significantly outperforms o4‑mini in both pass@k and pass\_over\_k. This indicates that, despite a slightly lower rate of successful compilation, the fine‑tuned model produces more precise and semantically relevant solutions. In contrast, o4‑mini's better perc\_error@k can be misleading: it often compiles code that runs but fails to solve the problem correctly.
@@ -125,10 +131,10 @@ The analysis revealed that Guangdong Province recorded 1,376 total crimes in 201
 
 \noindent \textbf{Scenario 1 - Questions Reformulation and Responses}
 
-\begin{table}[H]
+\begin{table}[hbtp]
 \centering
-\caption{Scenario 1 Questions Reformulation and Responses}
 \label{tab:questions_responses}
+\small
 \begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
 \hline
 \textbf{Question} & \textbf{Response} \\
@@ -142,6 +148,7 @@ Using the highest percentage (46.00\%), if all nighttime crimes were eradicated,
 How much could the overall crime rate in Guangdong Province for 2019 be reduced, in percentage terms, if all night-time crimes were prevented? & The correct total number of crimes in Guangdong Province for 2019 is 1376, with 957 daytime crimes and 419 nighttime crimes. If all night-time crimes were eliminated, the crime rate would decrease by 46.00\% (because the night-time crimes account for 30.45\% of the total crimes). \\
 \hline
 \end{tabular}
+\caption{Scenario 1 Questions Reformulation and Responses}
 \end{table}
 
 The model's responses consistently identify a 46\% reduction in total crime if nighttime incidents were eliminated, which aligns with the original data. However, subtle issues undermine reliability: Answer 1 uses vague phrasing (“one of the outputs”) that reduces clarity; Answer 2 introduces an unsupported “31.57\% to 46\%” range, creating confusion; and Answer 3 incorrectly reports nighttime crime as 419 instead of 633, leading to an internally inconsistent breakdown. Overall, while the central metric was correctly identified in each case, the responses vary in clarity and factual consistency, highlighting the importance of using metrics like accuracy, relevancy, and truthfulness when evaluating LLM outputs
@@ -163,10 +170,10 @@ The analysis predicted that a 20\% crime reduction at the central hotspot would 
 
 
 \noindent \textbf{Scenario 2 - Questions Reformulation and Responses}
-\begin{table}[H]
+\begin{table}[hbtp]
 \centering
-\caption{Scenario 2 Questions Reformulation and Responses}
 \label{tab:questions_responses_2}
+\small
 \begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
 \hline
 \textbf{Question} & \textbf{Response} \\
@@ -181,6 +188,7 @@ The current average crime rate in counties within a 70 km radius of [22.516998, 
 This is because the current average crime rate of 206.18 crimes per county decreased by 20.00\%. \\
 \hline
 \end{tabular}
+\caption{Scenario 2 Questions Reformulation and Responses}
 \end{table}
 
 The model's responses are inconsistent in how they handle the core metric. Two answers present a clear, mathematically coherent scenario: a 20\% reduction from an average of 206.18 crimes per county to roughly 164.95, matching an absolute drop of 41.23 incidents, which aligns with a 20\% reduction (Answer 1 and 3). However, Answer 2 deviates by directly stating a 13.85\% decrease, aligning with the original statement about spatial spillover—but fails to link this to actual crime counts, creating confusion about whether it's relative or absolute. The inconsistency stems from mixing absolute count reduction (41.23 incidents) with relative spillover percentage (13.85\%). Clarity suffers as neither explanation bridges the two interpretations: one focuses on raw crime numbers, the other on proportional impact, but neither integrates both.
@@ -245,10 +253,10 @@ The model's approach, illustrated in Listing \ref{lst:q3}, systematically ranks 
 
 \noindent \textbf{Scenario 3 - Questions Reformulation and Responses}
 
-\begin{table}[H]
+\begin{table}[hbtp]
 \centering
-\caption{Scenario 3 Questions Reformulation and Responses}
 \label{tab:questions_responses_3}
+\small
 \begin{tabular}{|p{0.4\textwidth}|p{0.5\textwidth}|}
 \hline
 \textbf{Question} & \textbf{Response} \\
@@ -260,7 +268,9 @@ If crime reporting in Zhongshan City had increased by 15\% in 2019, what impact 
 In the context of the top 10 safest counties in Guangdong Province, what changes would occur in the rankings if Zhongshan City's crime reports rose by 15\% in 2019? & Not possible to answer. \\
 \hline
 \end{tabular}
+\caption{Scenario 3 Questions Reformulation and Responses}
 \end{table}
+
 The model's Scenario 3 responses exhibit varied relevance and task completion: only the first answer correctly states that Zhongshan would stay fourth after a 15\% crime increase, directly addressing the ranking impact, while the second and third responses either fabricate data errors or refuse to answer, thus failing task completion.
 
 
@@ -274,12 +284,12 @@ These promising results suggest that with continued refinement—particularly th
 
 
 
+% \section{Reformulation of Scenarios questions} 
 
 
 
 
 
-
-\section{Resume}
+\section{Final considerations}
 
 This chapter evaluated our fine-tuned LLaMA3-8B-Instruct model for crime data analysis, demonstrating that despite higher compilation error rates compared to o4-mini (perc\_error@k: 0.233 vs 0.003), the model significantly outperformed in solution accuracy (pass@k: 0.742 vs 0.303), indicating superior semantic understanding of crime-related queries. Through three scenarios analyzing Guangdong Province crime data, we validated the model's practical utility for evidence-based policing, revealing that night-time crime prevention could reduce overall crime by 46\%, spatial interventions produce significant spillover effects (13.85\% reduction in neighboring areas), and safety rankings remain stable despite improved reporting rates. The results confirm that fine-tuned LLMs can effectively bridge technical data analysis with policy-relevant insights, though expanding the domain-specific dataset remains crucial for reducing compilation errors and enhancing generalization across varied crime patterns.
