@@ -1,7 +1,7 @@
 \chapter{ METHODOLOGY}
 
 \noindent
-In this chapter, we present the methodological framework adopted for our study (Figure \ref{fig:methodology_overview}). We detail the processes of data preparation, question-code generation, model training, and evaluation. Each section outlines the specific steps and techniques employed to ensure the reproducibility of our results. For transparency, all prompts used in this research are included in the Appendix.
+This chapter outlines the methodological approach we employed in our research (Figure \ref{fig:methodology_overview}). We describe our procedures for data preparation, the creation of question-code pairs, model training processes, and evaluation strategy. Each section provides detailed explanations of the methods and techniques we used to ensure our findings can be replicated. To maintain transparency, we have included all prompts utilized throughout this study in the Appendix.
 
 % TODO: specify that the dataset is question-code pairs
 
@@ -9,7 +9,7 @@ In this chapter, we present the methodological framework adopted for our study (
   \centering
   \includegraphics[width=\textwidth]{images/metodologiaExtended.png}
   \captionsetup{justification=raggedright,singlelinecheck=false}
-  \caption{Methodology overview: First, we prepare the crime data by cleaning and normalizing the dataset, incorporating geographic boundaries and OpenStreetMap data. Next, we generate question-code pairs using an open source LLM. Then, we fine-tune a Llama-3.1-8B model on these pairs. Finally, we evaluate the model's performance and implement an inference pipeline to conduct a case study.}
+  \caption{Methodology overview: Our approach consists of four main phases. We begin by preprocessing crime data through cleaning and normalization, while integrating geographic boundaries and OpenStreetMap information. We then create a synthetic dataset of question-code pairs using a large language model. This dataset is used to fine-tune a Llama-3.1-8B Instruct model. The final phase involves evaluating model performance and developing an inference pipeline for a practical case study}
   \label{fig:methodology_overview}
 \end{figure}
 
@@ -22,20 +22,23 @@ This section describes the procedures followed to curate and preprocess the data
 
 \subsection{Data sources}
 
-Our study utilizes the extensive China crime dataset published by \cite{Zhang2025CrimeDatasetChina}. We selected this dataset due to its substantial volume of data, extensive temporal coverage, and broad territorial scope. To provide geographic context, we incorporated administrative boundary data (containing polygon geometries for provinces, cities, and counties) from \cite{GeoJSON2025China} and complemented this with road network graph data from OpenStreetMap (\cite{Vargas2021OSM}). This integration enabled us to calculate spatial relationships between criminal incidents and transportation infrastructure, an important analytical dimension in our research. Comprehensive details of all dataset attributes are available in Appendix \ref{appendix:dataset}.
+Our study utilizes the extensive China crime dataset published by \cite{Zhang2025CrimeDatasetChina}. We selected this dataset due to its substantial volume of data, wide temporal coverage, and broad territorial scope. To provide geographic context, we incorporated administrative boundary data (containing polygon geometries for provinces, cities, and counties) from \cite{GeoJSON2025China} and complemented this with road network graph data from OpenStreetMap (\cite{Vargas2021OSM}). This integration enabled us to calculate spatial relationships between criminal incidents and street polygons. Comprehensive details of all dataset attributes are available in Appendix \ref{appendix:dataset}.
 
 \subsection{Data sources cleaning and normalization}
+We cleaned and prepared the dataset through several steps. First, we removed any records from the \texttt{crimes\_df} dataframe that had missing information. We then translated all Chinese text to English using Google Translate to make the data accessible for analysis. Date formats were standardized across all dataframes to ensure proper temporal analysis.
 
-The dataset underwent a comprehensive cleaning process to ensure consistency. First, we removed all rows with missing values in the \texttt{crimes\_df} dataframe, which contains the main crime data. Next, we translated all text fields to English using Google Translate, making the dataset accessible to a wider audience. We then standardized the date formats across all dataframes to ensure consistency in temporal analysis. After that, to reduce the number of categories in the \texttt{crime\_type} column, we applied a classification using a LLM (DeepSeekV3) to group similar crime types into broader categories. Finally, to maintain analytical focus, we filtered the dataset to retain only the three provinces with the highest crime incidence during the 2017–2019 period: \textit{Jiangsu}, \textit{Guangdong}, and \textit{Zhejiang}.
+To simplify the analysis, we reduced the number of crime categories by grouping similar types together. We used the DeepSeekV3 language model to classify and merge related crime types into broader, more manageable categories. 
+
+Finally, we focused our study on the three provinces with the most crime incidents between 2017 and 2019: \textit{Jiangsu}, \textit{Guangdong}, and \textit{Zhejiang}. This approach allowed us to work with a more focused dataset while still maintaining sufficient data volume for meaningful analysis.
 
 \section{Question-Answer dataset generation}
 
 % We develop a synthetic dataset named "ChinaCrimesQACode" that contains question-code pairs for crime data analysis. 
-This section describes the methodology used to generate the question-code pairs for our synthetic dataset. We detail how we designed the prompts to elicit accurate and functional code solutions from the DeepSeek V3 model, which serves as the backbone for generating answers to user queries.
+This section describes the methodology used to generate the question-code pairs for our synthetic dataset. We detail how we designed the prompts to elicit accurate and functional code solutions from the DeepSeek V3 model, which we used to generate the ground-truth of our dataset.
 
 \subsection{Question generation}
 
-First, we created 100 question templates (inspired by \citep{Dai2024QASTKG, Contractor2020QATourism}), covering different types of inquiries including spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
+First, we created 100 question templates (inspired by \citep{Dai2024QASTKG, Contractor2020QATourism}), covering different types of inquiries like spatio-temporal, comparative, and causal questions about crime data. These templates were designed to be adaptable for crime datasets from other countries as well.
 
 We expanded this initial set through question augmentation techniques used by \cite{Yin2024MuMathCode, Li2024MuggleMath, Jain2024MetaFineTuning}, specifically rephrasing (with temperature setting of 0.5) and alteration (with temperature setting of 0.75) via few-shot prompting (see prompts in Listings \ref{prompt:question_rephrasing} and \ref{prompt:question_augmentation}). These question categories are summarized in Table~\ref{tab:question_types}. % see Table~\ref{tab:question_type_counts}, 
 
@@ -78,7 +81,7 @@ We expanded this initial set through question augmentation techniques used by \c
 
 \subsection{Code-answer generation}
 
-For each original question type, we manually wrote one Python code solution to serve as a reference. These hand-crafted examples provided context for generating additional synthetic code answers using the DeepSeek V3 model, guided by a structured prompt and nucleus sampling \citep{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath} with a top\_p value of 0.95. This allowed the model to explore diverse reasoning paths and alternative implementations.
+For each original question type, we manually wrote one Python code solution to serve as a reference. These hand-crafted examples provided context for generating additional synthetic code answers using the DeepSeek V3 model, guided by a structured prompt and nucleus sampling \citep{Holtzman2020NucleusSampling, Ahmad2025OCRNVidia, Nvidia2024KaggleMath} with a top-p value of 0.95. This allowed the model to explore diverse reasoning paths and alternative implementations.
 
 The answer generation prompt (Figure~\ref{fig:answer_generation_prompt_structure}) follows a layered structure designed to guide the DeepSeek V3 model through a rich, contextualized reasoning process. At the top level, the \textbf{System Instructions} define the model’s role and restrict its scope of reasoning, ensuring consistency and relevance across generations. The \textbf{User Prompt} includes several critical components: the \textit{Dataset Context}, which introduces the \textit{Dataset Specification} of the three core dataframes (\texttt{crimes\_df}, \texttt{streets\_df}, and \texttt{geometries\_df}); one-shot \textit{Reference Material}, offering prior examples (reference question and code) to scaffold the model’s behavior; the target \textit{User Question}; and a \textit{Detailed Task Description} outlining specific rules, especially when the question is a rephrased or altered version of a known query.
 
@@ -129,17 +132,17 @@ The resulting dataset, which we named ``ChinaCrimesQACode'', contains around 5,0
 
 \section{Training and evaluation}
 
-This section outlines the process of training and evaluating our fine-tuned Llama-3.1-8B model, covering prompt design, model selection, training setup and assessment metrics used.
+This section outlines the process of training and evaluating our fine-tuned Llama-3.1-8B Instruct model, covering prompt design, model selection, training setup and assessment metrics used.
 
 
 \section{Training & evaluation}
 
-This section describes the training and evaluation processes for our fine-tuned Llama-3.1-8B model, detailing the techniques used for supervised fine-tuning, the evaluation metrics employed, and the overall performance of the model.
+This section describes the training and evaluation processes for our fine-tuned Llama-3.1-8B Instruct model, detailing the techniques used for supervised fine-tuning, the evaluation metrics employed, and the overall performance of the model.
 
 
 \subsection{Training prompt structure}
 
-The training prompt (Figure~\ref{fig:training_prompt_structure}) was designed to fine-tune the model toward robust code generation. It follows a layered structure similar in philosophy to the answer generation prompt (Figure~\ref{fig:answer_generation_prompt_structure}), but introduces stricter constraints and excludes example-based reasoning to encourage generalization. Specifically, the training prompt follows a zero-shot setup—forcing the model to synthesize reasoning paths from schema knowledge and natural language instructions alone, without relying on reference code.
+The training prompt (Figure~\ref{fig:training_prompt_structure}) was designed to fine-tune the model toward robust code generation. It follows a layered structure similar in philosophy to the answer generation prompt (Figure~\ref{fig:answer_generation_prompt_structure}), but introduces stricter constraints and excludes example-based reasoning to encourage generalization. Specifically, the training prompt follows a zero-shot setup, forcing the model to synthesize reasoning paths from schema knowledge and natural language instructions alone, without relying on reference code.
 
 At the top level, the \textbf{System Instructions} define the model’s identity as a geospatial crime analytics expert and restrict the environment to specific, pre-approved libraries. This promotes deterministic and reproducible outputs by reducing spurious library imports and implementation drift.
 
@@ -191,4 +194,4 @@ This section describes the inference pipeline implemented for our case studies, 
 
 \section{Summary}
 
-This methodology chapter presented a comprehensive framework for crime data analysis through natural language queries. Beginning with dataset preparation using Chinese crime data, administrative boundaries, and road networks, we detailed the data cleaning process and focused on three high-crime provinces. We then described our question-code dataset creation through template-based generation, augmentation techniques, and code generation using DeepSeek V3. Our prompt engineering utilized structured contexts for both answer generation and model training. We fine-tuned the Llama-3.1-8B model using Unsloth for computational efficiency, and employed multiple evaluation metrics including pass@k and CodeBLEU. Finally, we outlined our inference workflow that leverages multiple code solutions to provide accurate responses to user queries about crime analytics.
+This methodology chapter presented a comprehensive framework for crime data analysis through natural language queries. Beginning with dataset preparation using Chinese crime data, administrative boundaries, and road networks, we detailed the data cleaning process and focused on three high-crime provinces. We then described our question-code dataset creation through template-based generation, augmentation techniques, and code generation using DeepSeek V3. Our prompt engineering utilized structured contexts for both answer generation and model training. We fine-tuned the Llama-3.1-8B Instruct model using Unsloth for computational efficiency, and employed multiple evaluation metrics including pass@k and CodeBLEU. Finally, we outlined our inference workflow that leverages multiple code solutions to provide accurate responses to user queries about crime analytics.
