@@ -62,12 +62,12 @@ The theoretical foundation of LLMs lies in probabilistic language modeling. Give
 \subsection{LLM decoding methods}
 % , \citep{Minaee2025LLMSurvey}, 
 
-After a language model has estimated the probability distribution for the next token, a \emph{decoding method} is required to turn those probabilities into actual text \citep{Shi2024DecodingMethods}. In practice, three classical strategies are widely used:
+Once a language model has assigned likelihoods to each possible next token, it must still choose a single path forward, a step handled by a \emph{decoding strategy} \citep{Shi2024DecodingMethods}. In practice, three classical strategies are widely used:
 
 \begin{itemize}
-    \item \textbf{Greedy search}: selects the single most probable token at every step. It is fast and deterministic but can produce repetitive or less diverse text.
+    \item \textbf{Greedy strategy}: at every turn the decoder picks the candidate with the highest score.  This makes generation lightning-fast and fully repeatable, but the text can feel mechanical or repetitive.
     \item \textbf{Beam search}: keeps the \(k\) best partial sequences (beams) at each step and expands them in parallel, usually yielding more coherent results than greedy search at the cost of extra computation.
-    \item \textbf{Multinomial sampling}: samples a token according to its probability (often with a temperature, top-\(k\), or top-\(p\) filter), encouraging diversity and creativity in the generated text \citep{Qin2025DynamicWidthSpeculativeBeamDecoding}.
+    \item \textbf{Probabilistic (multinomial) sampling}: the next token is drawn at random in proportion to its probability, often after applying temperature scaling, top-\(k\), or top-\(p\) trimming, to inject freshness and variety into the output \citep{Qin2025DynamicWidthSpeculativeBeamDecoding}.
 \end{itemize}
 
 
