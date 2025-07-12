@@ -183,7 +183,7 @@ where \(N\) is the number of samples, \(y_i\) is the ground truth answer for sam
 
 \subsection{Pass\textasciicircum k}
 
-Pass\textasciicircum k is a metric designed to evaluate the likelihood of a model generating a correct answer across all \(k\) responses. This metric is particularly useful for assessing the consistency and reliability of model performance in scenarios where multiple outputs are generated.
+Pass\textasciicircum k is a metric designed to evaluate the likelihood of a model generating a correct answer across all \(k\) responses \citep{Yao2024TauBench}. This metric is particularly useful for assessing the consistency and reliability of model performance in scenarios where multiple outputs are generated.
 
 \begin{equation}
     Pass^{K} = (\frac{c}{n})^{K}
@@ -202,7 +202,7 @@ where \(c\) is the number of correct answers in the top-k responses, and \(n\) i
 
 \subsection{Code-BLEU}
 
-CodeBLEU is a specialized metric designed to evaluate the quality of code generation by comparing machine-generated code against one or more reference implementations. It extends the traditional BLEU metric \citep{Papineni2002BLEU}, commonly used in natural language processing for tasks such as machine translation—by incorporating programming-specific characteristics such as syntax, structure, and semantic correctness \citep{Ren2020CodeBLEU}. This makes CodeBLEU better aligned with the nuanced requirements of programming languages.
+CodeBLEU is a specialized metric designed to evaluate the quality of code generation by comparing machine-generated code against one or more reference implementations. It extends the traditional BLEU metric \citep{Papineni2002BLEU}, commonly used in natural language processing for tasks such as machine translation, by incorporating programming-specific characteristics such as syntax, structure, and semantic correctness \citep{Ren2020CodeBLEU}. This makes CodeBLEU better aligned with the nuanced requirements of programming languages.
 
 The metric is formulated as a weighted linear combination of four complementary components:
 \begin{equation}
@@ -241,4 +241,4 @@ where \(BP\) is the brevity penalty, \(w_n\) denotes the weight assigned to n-gr
 
 This chapter established the theoretical foundations necessary to understand the construction of intelligent crime data interfaces using LLMs. It first introduced spatio-temporal data as a formal structure to model real-world phenomena, particularly criminal incidents, across both time and space. It then detailed how LLMs, built on the transformer architecture, can be trained and adapted through supervised fine-tuning, instruction tuning, and parameter-efficient methods like LoRA to specialize in tasks such as answering user queries or interpreting structured crime datasets.
 
-The chapter also explored prompting strategies and tool-integrated reasoning, which enable LLMs to go beyond static text generation to incorporate external data tools and iterative logic. Finally, it reviewed evaluation metrics such as Pass@k, Majority@k, and CodeBLEU, which are crucial for assessing the accuracy, consistency, and functional correctness of generated outputs. These concepts set the groundwork for the subsequent chapters.
+The chapter also explored prompting strategies and tool-integrated reasoning, which enable LLMs to go beyond static text generation to incorporate external data tools and iterative logic. Finally, it reviewed evaluation metrics such as Pass@k, Pass\textasciicircum k, and CodeBLEU, which are crucial for assessing the accuracy, consistency, and functional correctness of generated outputs. These concepts set the groundwork for the subsequent chapters.
