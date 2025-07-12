@@ -60,6 +60,11 @@ The theoretical foundation of LLMs lies in probabilistic language modeling. Give
 
 % TODO: complete this subsection
 \subsection{LLM decoding methods}
+<<<<<<< HEAD
+
+
+ \citep{Shi2024DecodingMethods}, \citep{Minaee2025LLMSurvey}, \citep{Qin2025DynamicWidthSpeculativeBeamDecoding}
+=======
 % , \citep{Minaee2025LLMSurvey}, 
 
 Once a language model has assigned likelihoods to each possible next token, it must still choose a single path forward, a step handled by a \emph{decoding strategy} \citep{Shi2024DecodingMethods}. In practice, three classical strategies are widely used:
@@ -70,6 +75,7 @@ Once a language model has assigned likelihoods to each possible next token, it m
     \item \textbf{Probabilistic (multinomial) sampling}: the next token is drawn at random in proportion to its probability, often after applying temperature scaling, top-\(k\), or top-\(p\) trimming, to inject freshness and variety into the output \citep{Qin2025DynamicWidthSpeculativeBeamDecoding}.
 \end{itemize}
 
+>>>>>>> 7a95689c6248772f9d7014f08564a9ea737ef530
 
 \subsection{Supervised Fine-Tuning}
 
