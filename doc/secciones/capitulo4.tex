@@ -157,7 +157,7 @@ The model's responses consistently identify a 46\% reduction in total crime if n
 
 \noindent \textbf{Scenario 2: Spatial Crime Diffusion Effects}  % TODO: mejorar
 
-The second scenario examined spatial crime relationships: ``How would the average crime in neighboring counties (within a 70 km radius of [22.516998, 113.392723]) change if crime at that central point were reduced by 20\%?'' This question tests the model's capacity for geospatial reasoning and understanding of crime diffusion effects.
+The second scenario examined spatial crime relationships: ``How would the total number of crimes across all counties within a 70 km radius of the point [22.516998, 113.392723] change if crime in that area were reduced by 20\%?'' This question tests the model's capacity for geospatial reasoning and understanding of crime diffusion effects.
 
 The model's implementation, presented in Listing \ref{lst:q2}, demonstrates interesting geospatial processing capabilities. It correctly creates a buffer zone around the specified coordinates, identifies neighboring counties through geometric intersection analysis, and simulates crime reduction scenarios through statistical sampling.
 
