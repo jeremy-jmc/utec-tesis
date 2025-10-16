@@ -48,7 +48,7 @@ In response to these concerns, several visualization tools \citep{Garcia2022CriP
 A key challenge in crime prevention is the lack of accessible tools that help both citizens and authorities interpret complex crime data. While large volumes of data are publicly available \citep{Zhang2025CrimeDatasetChina, NYCDataset, ChicagoDataset}, they're often difficult to analyze without technical skills or time \citep{Zengli2020CrimePatterns}. Crime patterns constantly shift across time and space. Some areas may be riskier at night, others during weekends or certain seasons. Without tools that clearly communicate these dynamics in real time, people struggle to make safe decisions, and authorities face obstacles in allocating resources effectively.
 
 % * Paragraph 4 – Gaps in SOTA Methods
-%Although recent tools have improved the visual representation of crime data, they still present critical limitations in usability and applicability. Many platforms depend heavily on user expertise and offer mostly static or pre-defined visualizations that demand manual interpretation \citep{Garcia2022CriPAV}. This limits their value in dynamic, real-world scenarios where fast decisions are required. Without systems that deliver clear, real-time insights tailored to a user's context, both citizens and authorities remain underserved in their efforts to understand and respond to urban crime.
+Although recent tools have improved the visual representation of crime data, they still present critical limitations in usability and applicability. Many platforms depend heavily on user expertise and offer mostly static or pre-defined visualizations that demand manual interpretation \citep{Garcia2022CriPAV}. This limits their value in dynamic, real-world scenarios where fast decisions are required. Without systems that deliver clear, real-time insights tailored to a user's context, both citizens and authorities remain underserved in their efforts to understand and respond to urban crime.
 
 % TODO: Users may lack the knowledge or skills to interact with the visualization effectively. Without proper guidance or intuitive interaction design, users may struggle to fully leverage the interactive capabilities of the visualization. \citep{Liu2024NLDriven}
 
@@ -84,17 +84,17 @@ In this study, we aim to enhance crime-prevention efforts and raise awareness ab
 \section{Research Objectives} % Objectives
 
 \subsection{General Objectives}
-Develop an chat-based tool that leverages LLMs to assist in crime prevention efforts by enabling user-data interaction by natural language queries.
+Develop an interactive chat-based map tool that leverages LLMs to assist in crime prevention efforts by enabling user-data interaction through natural language queries.
 
 \subsection{Specific Objectives}
 \begin{itemize}
     \item Data recollection from publicly available crime datasets, and pre-processing to create a structured dataset suitable for LLM training and evaluation.
-
     \item Design and implement a chat-based interface that allows users to query crime data and receive textual responses, based on code execution.
     % both textual and visual feedback.
     \item Create a question-answering dataset specifically tailored for crime data.
     \item Address privacy and security concerns by focusing on the use of open-source LLMs as alternative solutions to proprietary models.
-    % \item Implement and agent-based system that utilizes LLMs to process and analyze spatio-temporal crime data, providing insights and recommendations to users.
+    \item Implement and agent-based system that utilizes LLMs to process and analyze spatio-temporal crime data, providing insights to users.
+    \item Develop a map interface that allows users to visualize crime data in relation to geographic locations, enhancing the contextual understanding of crime patterns.
     % \item Lay the groundwork for future research on advanced LLM-based analyses, such as prediction, topological analysis, and clustering.
 \end{itemize}
 

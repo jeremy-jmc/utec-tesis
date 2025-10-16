@@ -90,6 +90,18 @@ Subsequent systems have incorporated advanced analytical techniques to deepen in
 
 Collectively, these systems illustrate the evolution from interactive, district-level exploration to sophisticated, model-driven hotspot analytics at finer spatial and temporal resolutions.
 
+More recently, visualization systems have shifted towards user-facing applications that combine geospatial analytics with real-time risk communication. Hong et al. \citep{mti9020016} developed a mobile crime-safety-map application that computes a dynamic safety index by integrating government-sourced data on protective and risk factors. The system visualizes urban environments through heatmaps and geofencing, enabling users to assess the relative safety of their immediate surroundings. By correlating the safety index with official crime data, the application demonstrates how interactive visualizations can move beyond analytical tasks for researchers or law enforcement towards tools that directly inform and reassure the general public.
+
+
+
+\section{NLP in Data Visualization}
+
+% \subsection{Early Rule-Based and Semantic Parsing Approaches}
+
+Early rule-based and semantic parsing approaches to natural language interfaces for data visualization focused on mapping user queries to visualization specifications using predefined syntactic rules and probabilistic grammars. For example, Eviza \citep{Setlur2016Eviza} introduced a natural language interface for visual data analysis that leverages a probabilistic grammar-based approach with template-based autocompletion and a finite state machine to manage conversational context. This system enabled users, especially those inexperienced with database query languages like SQL, to interactively filter and manipulate visualizations, particularly on geographic datasets. However, these approaches faced challenges with complex or lengthy queries and certain grammatical constructs, in part due to the inherent ambiguity of natural language arising from syntactic and semantic variations between the user's mental model and the system's interpretation, highlighting the limitations of early rule-based methods.
+
+Similarly, NL4DV \citep{Narechania2021NL4DV} provided a Python package for prototyping visualizations from natural language input, allowing users to specify high-level tasks over tabular data. It utilized established NLP toolkits (NLTK, Stanford CoreNLP, spaCy) to parse queries and generate chart specifications, abstracting implementation details from users. While effective for chart specification and exploratory data analysis, NL4DV was limited in its support for spatial operations, conversational feedback, and multi-turn interactions. Together, these systems illustrate the strengths and limitations of early rule-based and semantic parsing approaches, motivating the shift toward more robust, learning-based methods in subsequent research.
+
 % \citep{Garcia2021CrimAnalyzer} propose CrimAnalyzer, that relies on Non-negative Matrix Factorization (NMF) to identify hostpots.
 % \citep{Garcia2022CriPAV} propose CriPAV a visualization system to assist experts to figure out the relation between crime and urban features, using autoencoders to generate embeddings of hotspots to cluster them. 
 
