@@ -78,6 +78,10 @@ We expanded this initial set through question augmentation techniques used by \c
 \label{tab:question_types}
 \end{table}
 
+\subsection{Human verification}
+
+After generating the augmented questions, we conducted a manual review to ensure their quality and relevance. This process involved checking for grammatical correctness, clarity, alignment with the intended meaning of the original templates, and entities highlighting. We also verified that the questions were appropriate for the crime data context and could be effectively addressed through code solutions. Any questions that did not meet these criteria were either revised or discarded to maintain the integrity of the dataset.
+
 
 \subsection{Code-answer generation}
 
@@ -101,7 +105,7 @@ With this prompt (adaptable to both paraphrased and altered questions), we execu
 
 To ensure quality, we verified that all LLM-generated Python solutions executed correctly. After that, we dropped the questions with no valid code solutions (limit exceeded, code with errors, or no code generated). Finally, we conducted manual reviews of all question-code pairs to guarantee their quality.
 
-The resulting dataset, which we named ``ChinaCrimesQACode'', contains around 5,000 question-code solution pairs, representing an adequate sample volume for effective model training \citep{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation. The dataset is publicly available on HuggingFace for further research and development.  %  (Table~\ref{tab:dataset_split})
+The resulting dataset, which we named ``ChinaCrimesQACodeFunction'', contains around 22,300 question-code solution pairs, representing an adequate sample volume for effective model training \citep{Unsloth2024Dataset1}. We divided the dataset into training and test subsets using an 80/20 split to facilitate robust model training and comprehensive evaluation. The dataset is publicly available on HuggingFace for further research and development.  %  (Table~\ref{tab:dataset_split})
 % This review process involved verifying that the answers were accurate, relevant, and aligned with the corresponding questions. We also ensured that the answers were concise and clear, making them suitable for use in our visualization tool.
 
 % \begin{table}[H]
@@ -192,6 +196,22 @@ This section describes the inference pipeline implemented for our case studies, 
   \label{fig:inference_pipeline}
 \end{figure}
 
-\section{Summary}
+\section{Visualization Tool Integration}
 
-This methodology chapter presented a comprehensive framework for crime data analysis through natural language queries. Beginning with dataset preparation using Chinese crime data, administrative boundaries, and road networks, we detailed the data cleaning process and focused on three high-crime provinces. We then described our question-code dataset creation through template-based generation, augmentation techniques, and code generation using DeepSeekV3. Our prompt engineering utilized structured contexts for both answer generation and model training. We fine-tuned the Llama-3.1-8B Instruct model using Unsloth for computational efficiency, and employed multiple evaluation metrics including pass@k, pass \textasciicircum k and CodeBLEU. Finally, we outlined our inference workflow that leverages multiple code solutions to provide accurate responses to user queries about crime analytics.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{images/tesis-Visualization tool.png}
+  \caption{Visualization tool integration: The user interacts with the map interface to explore crime data insights. While the user makes selections and inputs queries related to the criminality, the backend system processes these requests using our fine-tuned Llama3-8B-Instruct model to generate code solutions. The generated code is executed to retrieve relevant data, which is then visualized on the map interface for user interpretation.}
+  \label{fig:visualization_tool_integration}
+\end{figure}
+
+To demonstrate the practical application of our fine-tuned model, we integrated it into a web-based visualization tool (Figure~\ref{fig:visualization_tool_integration}). The system architecture employs a conversational interface where users interact with a map to explore crime data insights. The backend processes user queries through a main conversational model that orchestrates the workflow: it interprets natural language inputs, determines when specialized code generation is required, and invokes our fine-tuned model to produce executable solutions. These code outputs are then executed and their results interpreted by the main model to generate comprehensive responses.
+
+This interactive tool enables users to explore crime data through both visual and conversational interfaces. Users can formulate natural language queries about crime analytics, which are processed by our Llama3-8B-Instruct model to generate Python code solutions. The executed code retrieves relevant data that is subsequently visualized on the map, facilitating dynamic exploration of complex geospatial crime datasets.
+
+The visualization tool provides the following map interaction capabilities:
+\begin{itemize}
+  \item \textbf{Zooming and Panning:} Users can navigate across different geographic scales and regions to examine spatial crime patterns at various levels of detail.
+  \item \textbf{Area Selection:} Multiple selection tools (rectangle, polygon, and lasso) enable users to define custom geographic boundaries for filtering and analyzing crime data within specific regions of interest.
+  \item \textbf{Chat Interface:} A conversational window processes natural language queries through the fine-tuned Llama3-8B-Instruct model. Based on the query complexity and response requirements, the system may generate Vega-Lite specifications to visualize analytical results as interactive charts and graphs.
+\end{itemize}
