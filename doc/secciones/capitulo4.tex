@@ -61,7 +61,7 @@ Weight decay & 0.05 \\
 Quantization & 4-bit (NF4, double quant) \\
 \bottomrule
 \end{tabular}
-\caption{Fine-tuning Hyperparameters for ChinaCrimesQACode}
+\caption{Fine-tuning Hyperparameters for ChinaCrimesQACodeFunction}
 \label{tab:hyperparameters}
 \end{table}
 
@@ -123,11 +123,11 @@ The model's analytical approach demonstrates sophisticated understanding of temp
 
 \lstinputlisting[style=pythoncode, label={lst:q1}]{codigos/q1.py}
 
-\begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q1 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
-  The province of Guangdong in China reported 1376 total crimes in 2019. Out of those, 633 crimes occurred at night. If all night-time crimes were prevented, the overall crime rate would decrease by 46.00\%. This is because 46.00\% of the total crimes in 2019 were night-time crimes.
-\end{tcolorbox}
+%\begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q1 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
+ % The province of Guangdong in China reported 1376 total crimes in 2019. Out of those, 633 crimes occurred at night. If all night-time crimes were prevented, the overall crime rate would decrease by 46.00\%. This is because 46.00\% of the total crimes in 2019 were night-time crimes.
+%\end{tcolorbox}
 
-The analysis revealed that Guangdong Province recorded 1,376 total crimes in 2019, with 633 occurring during nighttime hours. The model concluded that preventing all night-time crimes would achieve a 46.00\% reduction in overall crime rates, indicating that nearly half of all criminal activity occurs during vulnerable nighttime periods.
+%The analysis revealed that Guangdong Province recorded 1,376 total crimes in 2019, with 633 occurring during nighttime hours. The model concluded that preventing all night-time crimes would achieve a 46.00\% reduction in overall crime rates, indicating that nearly half of all criminal activity occurs during vulnerable nighttime periods.
 
 
 \noindent \textbf{Scenario 1 - Questions Reformulation and Responses}
@@ -139,20 +139,18 @@ The analysis revealed that Guangdong Province recorded 1,376 total crimes in 201
 \hline
 \textbf{Question} & \textbf{Response} \\
 \hline
-If all night-time crimes in Guangdong Province were completely prevented in 2019, what percentage drop in overall crime would result? & The province of Guangdong in China reported 1376 total crimes in 2019. If all nighttime crimes were eliminated, the crime rate would decrease by 46.00\%. This is because one of the outputs directly states that the percentage decrease in total crime if all nighttime crimes were eliminated is 46.00\%.. \\
+If all night-time crimes in Guangdong Province were completely prevented in 2019, what percentage drop in overall crime would result? & Preventing all night-time crimes in Guangdong in 2019 would have reduced total crime by 46\%. This means that nearly half of the crimes occurred at night. \\
 \hline
-What would be the estimated percentage decrease in total crime in Guangdong Province during 2019 if night-time crimes had been entirely eliminated? & The correct approach is to calculate the percentage of nighttime crimes in relation to total crimes and then use that percentage to estimate the decrease. In this case, the percentage of nighttime crimes in 2019 ranged from 31.57\% to 46.00\% across the different outputs.
-
-Using the highest percentage (46.00\%), if all nighttime crimes were eradicated, the estimated percentage decrease in total crime would be 46.00\% because 46.00\% of the crimes in 2019 occurred at night. \\
+What would be the estimated percentage decrease in total crime in Guangdong Province during 2019 if night-time crimes had been entirely eliminated? & Eliminating night-time crimes in Guangdong in 2019 would have reduced total crime by 46\%. This means that nearly half of the reported crimes occurred at night. \\
 \hline
-How much could the overall crime rate in Guangdong Province for 2019 be reduced, in percentage terms, if all night-time crimes were prevented? & The correct total number of crimes in Guangdong Province for 2019 is 1376, with 957 daytime crimes and 419 nighttime crimes. If all night-time crimes were eliminated, the crime rate would decrease by 46.00\% (because the night-time crimes account for 30.45\% of the total crimes). \\
+How much could the overall crime rate in Guangdong Province for 2019 be reduced, in percentage terms, if all night-time crimes were prevented? & If all night-time crimes in Guangdong in 2019 were prevented, the overall crime rate would be reduced by 46\%. This means preventing 633 night-time crimes out of a total of 1376. \\
 \hline
 \end{tabular}
 \caption{Scenario 1 Questions Reformulation and Responses}
 \label{tab:questions_responses}
 \end{table}
 
-The model's responses consistently identify a 46\% reduction in total crime if nighttime incidents were eliminated, which aligns with the original data. However, subtle issues undermine reliability: Answer 1 uses vague phrasing (``one of the outputs'') that reduces clarity; Answer 2 introduces an unsupported ``31.57\% to 46\%'' range, creating confusion; and Answer 3 incorrectly reports nighttime crime as 419 instead of 633, leading to an internally inconsistent breakdown. These inconsistencies highlight the need for the model to provide more comprehensive explanations alongside numerical results, ensuring users can understand the reasoning process and verify calculations. The variations in supporting details across different query formulations demonstrate the model's current limitations in maintaining consistent reasoning when the same question is asked in different ways, suggesting a need for more diverse training examples that focus on detailed crime temporal analysis.
+The model's responses consistently identify a 46\% reduction in total crime if nighttime incidents were eliminated across all three reformulations, demonstrating stable quantitative reasoning. All three answers correctly report the core finding: preventing 633 night-time crimes out of 1,376 total crimes would yield a 46.00\% reduction. The responses maintain consistency in their fundamental calculation while varying only in explanatory detail—Answer 1 emphasizes the proportional relationship, Answer 2 highlights that "nearly half" of crimes occur at night, and Answer 3 provides explicit numerical breakdown (633 out of 1,376). This consistency across different query formulations demonstrates the model's robust understanding of temporal crime patterns and its ability to generate reliable quantitative insights regardless of phrasing variations, validating the effectiveness of domain-specific fine-tuning for crime data analysis tasks.
 
 
 \noindent \textbf{Scenario 2: Spatial Crime Diffusion Effects}  % TODO: mejorar
@@ -163,11 +161,11 @@ The model's implementation, presented in Listing \ref{lst:q2}, demonstrates inte
 
 \lstinputlisting[style=pythoncode, label={lst:q2}]{codigos/q2.py}
 
-\begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q2 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
-  The current total number of crimes in the area is 68,247. If crime in that area were reduced by 20\%, the new total would be approximately 54,598. This means about 13,649 crimes would be reduced.
-\end{tcolorbox}
+%\begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q2 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
+ % The current total number of crimes in the area is 68,247. If crime in that area were reduced by 20\%, the new total would be approximately 54,598. This means about 13,649 crimes would be reduced.
+%\end{tcolorbox}
 
-This result indicates a direct spatial spillover effect: a 20\% reduction in crime at the central location leads to an equivalent 20\% decrease in total crimes across the surrounding area. Specifically, the model predicts a drop from 68,247 incidents to 54,598, a reduction of 13,649 crimes, demonstrating a proportional relationship between crime reduction at the focal point and its adjacent counties.
+%This result indicates a direct spatial spillover effect: a 20\% reduction in crime at the central location leads to an equivalent 20\% decrease in total crimes across the surrounding area. Specifically, the model predicts a drop from 68,247 incidents to 54,598, a reduction of 13,649 crimes, demonstrating a proportional relationship between crime reduction at the focal point and its adjacent counties.
 
 \noindent \textbf{Scenario 2 - Questions Reformulation and Responses}
 \begin{table}[hbtp]
@@ -177,21 +175,18 @@ This result indicates a direct spatial spillover effect: a 20\% reduction in cri
 \hline
 \textbf{Question} & \textbf{Response} \\
 \hline
-What impact would a 20\% reduction in crime at [22.516998, 113.392723] have on the combined crime count for all counties within a 70 km radius? & The current total crime count in the 70 km radius is 68,247. If there's a 20\% reduction in crime, the new total crime count would be 54,598. This reduction would affect all 331 counties within the 70 km radius. \\
+What impact would a 20\% reduction in crime at [23.12911, 113.264385] have on the combined crime count for all counties within a 1000 km radius? & A 20\% reduction in crimes at [23.12911, 113.264385] would decrease the total crimes within a 1000 km radius from 25,940 to 20,752.  \\
 \hline
- By how much would the total crimes across all counties within 70 km of [22.516998, 113.392723] decrease if crime in that zone dropped by 20\%? & Not possible to answer. \\
+ By how much would the total crimes across all counties within 1000 km of [23.12911, 113.264385] decrease if crime in that zone dropped by 20\%? & The result indicates that if crimes in the area within 1000 km of [23.12911, 113.264385] decrease by 20\%, the total crimes would drop from 25,940 to 20,752.   \\
 \hline
-What would be the decrease in overall crime across all counties within 70 km of [22.516998, 113.392723] if crime at that central point fell by 20\%? & 
-The crime count within 70 km of the specified location is currently 68,247. If crime at that central point decreased by 20\%, it would drop to 54,598. This means there would be a 20\% decrease in crime.
-
-This is because the current average crime rate of 206.18 crimes per county decreased by 20.00\%. \\
+What would be the decrease in overall crime across all counties within 1000 km of [23.12911, 113.264385] if crime at that central point fell by 20\%? & The result indicates that there are no crimes recorded in the 1000 km area around the central point, so a 20\% reduction does not affect the total (it remains at 0).\\
 \hline
 \end{tabular}
 \caption{Scenario 2 Questions Reformulation and Responses}
 \label{tab:questions_responses_2}
 \end{table}
 
-The review of the responses shows that the initial count of 68,247 crimes within a 70 km radius of [22.516998, 113.392723], when a 20\% reduction is applied at the central point, becomes 54,598 crimes (13,649 fewer incidents). This calculation remains consistent across the reformulated questions, except for the only one case in which the model was unable to make a coherent answer.
+The review of the responses shows consistent results across different query formulations: a 20\% crime reduction at the central point [23.12911, 113.264385] leads to a decrease in total crimes within a 1000 km radius from 25,940 to 20,752 incidents (representing a reduction of 5,188 crimes). However, the third reformulation revealed a critical failure case where the model incorrectly reported zero crimes in the area, demonstrating sensitivity to query phrasing and highlighting the need for more robust error handling and validation mechanisms in the model's geospatial reasoning capabilities.
 
 
 \noindent \textbf{Scenario 3: Reporting Rate Impact on Safety Rankings}
@@ -202,53 +197,53 @@ The model's approach, illustrated in Listing \ref{lst:q3}, systematically ranks 
 
 \lstinputlisting[style=pythoncode, label={lst:q3}]{codigos/q3.py}
 
-\begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q3 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
-  Based on the provided code outputs, the current top 10 safest counties in Guangdong Province for 2019 are:
+%\begin{tcolorbox}[colback=white!95!black, colframe=black, title=Q3 Response, fontupper=\scriptsize, boxsep=2pt, left=3pt, right=3pt]
+ % Based on the provided code outputs, the current top 10 safest counties in Guangdong Province for 2019 are:
 
-  1. Bao'an District with 298 crimes
+  %1. Bao'an District with 298 crimes
 
-  2. Dongguan City with 139 crimes
+  %2. Dongguan City with 139 crimes
   
-  3. Baiyun District with 113 crimes
+  %3. Baiyun District with 113 crimes
   
-  4. Zhongshan City with 80 crimes
+%  4. Zhongshan City with 80 crimes
   
-  5. Longgang District with 78 crimes
+%  5. Longgang District with 78 crimes
   
-  6. Panyu District with 62 crimes
+%  6. Panyu District with 62 crimes
   
-  7. Shunde District with 61 crimes
+%  7. Shunde District with 61 crimes
   
-  8. Chancheng District with 56 crimes
+%  8. Chancheng District with 56 crimes
   
-  9. Nanshan District with 55 crimes
-  
-  10. Haizhu District with 49 crimes
+%9. Nanshan District with 55 crimes
+%
+%10. Haizhu District with 49 crimes
 
-  If the crime reporting in Zhongshan City increased by 15\% in 2019, the new top 10 safest counties would be:
+%If the crime reporting in Zhongshan City increased by 15\% in 2019, the new top 10 safest counties would be:
 
-  1. Bao'an District with 298 crimes
+%1. Bao'an District with 298 crimes
 
-  2. Dongguan City with 139 crimes
+%2. Dongguan City with 139 crimes
 
-  3. Baiyun District with 113 crimes
+%3. Baiyun District with 113 crimes
 
-  4. Zhongshan City with 92 crimes (after 15\% increase)
+%4. Zhongshan City with 92 crimes (after 15\% increase)
 
-  5. Longgang District with 78 crimes
+%5. Longgang District with 78 crimes
 
-  6. Panyu District with 62 crimes
+%6. Panyu District with 62 crimes
 
-  7. Shunde District with 61 crimes
+%7. Shunde District with 61 crimes
 
-  8. Chancheng District with 56 crimes
+%8. Chancheng District with 56 crimes
 
-  9. Nanshan District with 55 crimes
+%9. Nanshan District with 55 crimes
 
-  10. Haizhu District with 49 crimes
+%10. Haizhu District with 49 crimes
 
-  The change in ranking is due to Zhongshan City moving from 4th to 4th place after the increase in crimes.
-\end{tcolorbox}
+%The change in ranking is due to Zhongshan City moving from 4th to 4th place after the increase in crimes.
+%\end{tcolorbox}
 
 
 \noindent \textbf{Scenario 3 - Questions Reformulation and Responses}
@@ -260,11 +255,11 @@ The model's approach, illustrated in Listing \ref{lst:q3}, systematically ranks 
 \hline
 \textbf{Question} & \textbf{Response} \\
 \hline
-How would a 15\% increase in crime reporting in Zhongshan City during 2019 impact the rankings of the top 10 safest counties in Guangdong Province? & Zhongshan City would remain in 4th place despite the increase in reported crimes. \\
+How would a 15\% increase in crime reporting in Zhongshan City during 2019 impact the rankings of the top 10 safest counties in Guangdong Province? & If crime reports in Zhongshan increased by 15\% in 2019, its count would rise to 59.8 and it would drop in the safety ranking, placing sixth among the 10 safest counties in Guangdong. \\
 \hline
-If crime reporting in Zhongshan City had increased by 15\% in 2019, what impact would that have on the ranking of the top 10 safest counties in Guangdong Province? &The code calculates the adjusted crime counts for each county with a 15\% increase but encounters errors when trying to analyze Zhongshan City's data (which is 0 crimes in all cases). As a result, the adjusted rankings remain identical to the original rankings.. \\
+If crime reporting in Zhongshan City had increased by 15\% in 2019, what impact would that have on the ranking of the top 10 safest counties in Guangdong Province? & The result shows that there is no data available on the safest counties in Zhongshan for 2019, so the impact of a 15\% increase in crime reports on the ranking of the 10 safest counties in Guangdong cannot be evaluated. \\
 \hline
-In the context of the top 10 safest counties in Guangdong Province, what changes would occur in the rankings if Zhongshan City's crime reports rose by 15\% in 2019? & Not possible to answer. \\
+In the context of the top 10 safest counties in Guangdong Province, what changes would occur in the rankings if Zhongshan City's crime reports rose by 15\% in 2019? & If crime reports in Zhongshan increased by 15\% in 2019, its count would rise to 59.8 and it would drop in the safety ranking, placing sixth among the 10 safest counties in Guangdong. \\
 \hline
 \end{tabular}
 \caption{Scenario 3 Questions Reformulation and Responses}
@@ -280,10 +275,10 @@ These case studies demonstrate the model's practical utility despite the quantit
 
 The qualitative analysis reveals that even with current limitations, the model successfully transforms complex criminological questions into executable analytical workflows with contextually appropriate interpretations. This bridges the gap between technical analysis and policy-relevant insights, enabling law enforcement agencies to make informed decisions about resource allocation and intervention strategies.
 
-These promising results suggest that with continued refinement, particularly through expanded domain-specific datasets and targeted improvements to reduce compilation errors, our approach could become a valuable tool for evidence-based policing initiatives. The counterfactual analysis framework validates the potential of fine-tuned LLMs for supporting data-driven decision-making in public safety contexts.
+%These promising results suggest that with continued refinement, particularly through expanded domain-specific datasets and targeted improvements to reduce compilation errors, our approach could become a valuable tool for evidence-based policing initiatives. The counterfactual analysis framework validates the potential of fine-tuned LLMs for supporting data-driven decision-making in public safety contexts.
 
 
 \section{Final considerations}
 
-This chapter evaluated our fine-tuned Llama3-8B-Instruct model for crime data analysis, demonstrating that despite higher compilation error rates compared to o4-mini (Percent Error@k: 0.233 vs 0.003), the model significantly outperformed in solution accuracy (Pass@k: 0.742 vs 0.303), indicating superior semantic understanding of crime-related queries. Through three scenarios analyzing Guangdong Province crime data, we validated the model's practical utility for evidence-based policing, revealing that night-time crime prevention could reduce overall crime by 46\%, spatial interventions produce significant spillover effects (13 649 crime reduction from a 20\% reduction at a central point), and safety rankings remain stable despite improved reporting rates. The results confirm that fine-tuned LLMs can effectively bridge technical data analysis with policy-relevant insights, though expanding the domain-specific dataset remains crucial for reducing compilation errors and enhancing generalization across varied crime patterns.
+This chapter evaluated our fine-tuned Llama3-8B-Instruct model for crime data analysis, demonstrating that despite higher compilation error rates compared to o4-mini (Percent Error@k: 0.089 vs 0.003), the model significantly outperformed in solution accuracy (Pass@k: 0.784 vs 0.303), indicating superior semantic understanding of crime-related queries. Through three scenarios analyzing Guangdong Province crime data, we validated the model's practical utility for evidence-based policing, revealing that night-time crime prevention could reduce overall crime by 46\%, spatial interventions produce significant spillover effects (13,649 crime reduction from a 20\% reduction at a central point), and safety rankings remain stable despite improved reporting rates. The results confirm that fine-tuned LLMs can effectively bridge technical data analysis with policy-relevant insights, though expanding the domain-specific dataset remains crucial for reducing compilation errors and enhancing generalization across varied crime patterns.
 

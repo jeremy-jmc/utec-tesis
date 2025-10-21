@@ -1,41 +1,50 @@
-import pandas as pd
-import numpy as np
-import shapely.geometry
-import geopandas as gpd
-from datetime import datetime
+import calendar
+import json
 import os
+import random
+import re
+import warnings
+from collections import Counter, defaultdict
+from datetime import datetime, time, timedelta
+import geopandas as gpd
+import numpy as np
+import pandas as pd
+from pandas.tseries.offsets import MonthEnd
+from shapely import geometry
+from shapely.geometry import (LineString,MultiLineString,MultiPoint,MultiPolygon,Point,Polygon,box,mapping)
+from shapely.ops import nearest_points, unary_union
+from tqdm import tqdm
 
-def solve(crimes_df: gpd.GeoDataFrame, streets_df: gpd.GeoDataFrame, geometries_df: gpd.GeoDataFrame) -> None:
-    
-    # Step 1: Filter for Guangdong Province and 2019 crimes
-    guangdong_crimes = crimes_df[
-        (crimes_df['incident_province'] == 'Guangdong Province') & 
-        (crimes_df['year'] == 2019)
-    ]
-    
-    print(f"Found {len(guangdong_crimes)} crimes in Guangdong Province for 2019")
+def solve(crimes_df: gpd.GeoDataFrame, streets_df: gpd.GeoDataFrame, geometries_df: gpd.GeoDataFrame) -> str:
+    # Step 1: Filter for crimes in Guangdong Province for the year 2019
+    guangdong_crimes_2019 = crimes_df[(crimes_df['incident_province'] == 'Guangdong Province') & 
+                                       (crimes_df['formatted_datetime'].dt.year == 2019)]
     
     # Step 2: Count crimes per county
-    county_crime_counts = guangdong_crimes.groupby('incident_county').size().reset_index(name='crime_count')
+    county_crime_counts = guangdong_crimes_2019['incident_county'].value_counts().reset_index()
+    county_crime_counts.columns = ['incident_county', 'crime_count']
     
-    # Step 3: Sort by crime count in descending order
-    county_crime_counts = county_crime_counts.sort_values('crime_count', ascending=False)
+    # Step 3: Identify the top 10 safest counties based on crime counts
+    safest_counties = county_crime_counts.nlargest(10, 'crime_count')
     
-    # Step 4: Get current top 10 safest counties
-    current_top_10 = county_crime_counts.head(10)
-    print("Current Top 10 Safest Counties:")
-    print(current_top_10[['incident_county', 'crime_count']])
+    # Step 4: Get the crime count for Zhongshan City
+    zhongshan_crime_count = safest_counties[safest_counties['incident_county'] == 'Zhongshan City']['crime_count'].values[0]
     
-    # Step 5: Filter for Zhongshan City crimes
-    zhongshan_crimes = guangdong_crimes[guangdong_crimes['incident_city'] == 'Zhongshan City']
+    # Step 5: Calculate the new crime count after a 15% increase
+    new_crime_count = zhongshan_crime_count * 1.15
     
-    # Step 6: Calculate adjusted crime counts
-    adjusted_counts = county_crime_counts.copy()
-    adjusted_counts.loc[adjusted_counts['incident_county'] == 'Zhongshan City', 'crime_count'] *= 1.15
+    # Step 6: Update the crime count for Zhongshan City
+    safest_counties.loc[safest_counties['incident_county'] == 'Zhongshan City', 'crime_count'] = new_crime_count
     
-    # Step 7: Sort adjusted counts
-    adjusted_top_10 = adjusted_counts.sort_values('crime_count', ascending=False).head(10)
+    # Step 7: Reorder the counties based on the updated crime counts
+    updated_rankings = safest_counties.sort_values(by='crime_count', ascending=False)
     
-    # Step 8: Print results
-    print("Adjusted Top 10 Safest Counties (15% increase in Zhongshan City):")
-    print(adjusted_top_10[['incident_county', 'crime_count']])
+    # Step 8: Prepare the result message
+    result = "Top 10 safest counties in Guangdong Province (2019):\n"
+    for index, row in updated_rankings.iterrows():
+        result += f"{row['incident_county']}: {row['crime_count']} crimes\n"
+    
+    # Step 9: Include the impact of the increase in Zhongshan City
+    result += f"Zhongshan City's crime count increased from {zhongshan_crime_count} to {new_crime_count}.\n"
+    
+    return result

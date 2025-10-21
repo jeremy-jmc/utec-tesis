@@ -33,7 +33,7 @@ Finally, we focused our study on the three provinces with the most crime inciden
 
 \section{Question-Answer dataset generation}
 
-% We develop a synthetic dataset named "ChinaCrimesQACode" that contains question-code pairs for crime data analysis. 
+% We develop a synthetic dataset named "ChinaCrimesQACodeFunction" that contains question-code pairs for crime data analysis. 
 This section describes the methodology used to generate the question-code pairs for our synthetic dataset. We detail how we designed the prompts to elicit accurate and functional code solutions from the DeepSeekV3 model, which we used to generate the ground-truth of our dataset.
 
 \subsection{Question generation}
@@ -74,7 +74,7 @@ We expanded this initial set through question augmentation techniques used by \c
 \texttt{multi\_step\_aggregation} & Multi-step reasoning and aggregation \\
 \bottomrule
 \end{tabular}
-\caption{Question types in the ChinaCrimesQACode dataset}
+\caption{Question types in the ChinaCrimesQACodeFunction dataset}
 \label{tab:question_types}
 \end{table}
 
@@ -212,3 +212,10 @@ The visualization tool provides the following map interaction capabilities:
   \item \textbf{Area Selection:} Multiple selection tools (rectangle, polygon, and lasso) enable users to define custom geographic boundaries for filtering and analyzing crime data within specific regions of interest.
   \item \textbf{Chat Interface:} A conversational window processes natural language queries through the fine-tuned Llama3-8B-Instruct model. Based on the query complexity and response requirements, the system may generate Vega-Lite specifications to visualize analytical results as interactive charts and graphs.
 \end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{images/frontend_chat.png}
+  \caption{Frontend chat interface: Users can interact with the system through a chat window, where they can input natural language queries related to crime data and make some selections as were described before. The chat interface is designed to facilitate seamless communication between the user and the backend processing system, enabling dynamic exploration of crime insights.}
+  \label{fig:frontend_chat_interface}
+\end{figure}
